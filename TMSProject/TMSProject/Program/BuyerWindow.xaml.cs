@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 namespace TMSProject.Program
 {
 	/// <summary>
-	/// Interaction logic for PlannerWindow.xaml
+	/// Interaction logic for BuyerWindow.xaml
 	/// </summary>
-	public partial class PlannerWindow : Window
+	public partial class BuyerWindow : Window
 	{
-		public PlannerWindow()
+		public BuyerWindow()
 		{
 			InitializeComponent();
 		}
@@ -44,7 +44,7 @@ namespace TMSProject.Program
 			switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
 			{
 				case "ItemHome":
-					usc = new PlannerHome();
+					usc = new BuyerHome();
 					GridMain.Children.Add(usc);
 					break;
 				case "ItemCreate":

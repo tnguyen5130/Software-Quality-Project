@@ -7,25 +7,38 @@
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              d:DesignHeight="540" d:DesignWidth="1010">
-    <Grid Background="#534bae">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="TBTemplate" >
+            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                <TextBox.Resources>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Foreground" Value="CadetBlue"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid Background="#534bae" >
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*"/>
             <ColumnDefinition Width="51*"/>
         </Grid.ColumnDefinitions>
         <Border Margin="10,10,50.6,10" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="520" Grid.ColumnSpan="2">
             <Border.Effect>
-                <DropShadowEffect BlurRadius="30" Color="LightGray" ShadowDepth="0"/>
+                <DropShadowEffect BlurRadius="30" Color="Black" ShadowDepth="0"/>
             </Border.Effect>
-            <StackPanel>
+            <StackPanel Margin="-4.4,-30.4,4.4,-19.6">
                 <Grid Margin="0 0 0 20"/>
-                <TextBlock Text="Add New Load" FontSize="30" FontWeight="Bold" Margin="0,0,517,20"/>
-                <TextBox materialDesign:HintAssist.Hint="Order ID" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5"/>
-                <TextBox materialDesign:HintAssist.Hint="Order Date" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5"/>
-                <TextBox materialDesign:HintAssist.Hint="Departure Location" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5"/>
-                <TextBox materialDesign:HintAssist.Hint="Destination Location" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5"/>
-                <TextBox materialDesign:HintAssist.Hint="Weight" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5"/>
-                <TextBox materialDesign:HintAssist.Hint="Pallet" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5"/>
-                <TextBox materialDesign:HintAssist.Hint="Van Type" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5"/>
+                <TextBlock Foreground="Blue" Text="Add New Load" FontSize="30" FontWeight="Bold" Margin="0,0,517,20"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Order ID"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Order Date"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Departure Location"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Destination Location"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Weight"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Pallet"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Van Type"/>
+
+     
                 <Button Content="Confirm" Margin="0 20" Click="btn_Order_Add"/>
             </StackPanel>
         </Border>

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace TMSProject.Program
 {
 	/// <summary>
-	/// Interaction logic for PlannerHome.xaml
+	/// Interaction logic for BuyerHome.xaml
 	/// </summary>
-	public partial class PlannerHome : UserControl
+	public partial class BuyerHome : UserControl
 	{
-		public PlannerHome()
+		public BuyerHome()
 		{
 			InitializeComponent();
 		}

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 using TMSProject.DBConnect;
 
 namespace TMSProject.Program
@@ -46,11 +47,11 @@ namespace TMSProject.Program
 				int status = 1; 
 				if (PlannerRadioButton.IsChecked == true)
 				{
-					status = 0; // sign in as Planner
+					status = 1; // sign in as Planner
 				}
 				else if (BuyerRadioButton.IsChecked == true)
 				{
-					status = 1; // default sign in as Buyer
+					status = 0; // default sign in as Buyer
 				}
 				else
 				{
@@ -61,9 +62,9 @@ namespace TMSProject.Program
 				if (input && status == 0)
 				{
 					MessageBox.Show("Correct Login Credentials");
-					PlannerWindow planner = new PlannerWindow();
+					BuyerWindow buyer = new BuyerWindow();
 					this.Visibility = Visibility.Collapsed; // hide window
-					planner.ShowDialog();
+					buyer.ShowDialog();
 					this.Visibility = Visibility.Visible; // show window
 				}
 				else 

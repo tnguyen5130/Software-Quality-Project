@@ -116,11 +116,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Program\PlannerHome.xaml">
+    <Page Include="Program\BuyerHome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Program\PlannerWindow.xaml">
+    <Page Include="Program\BuyerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,11 +129,11 @@
     <Compile Include="Program\OrderAdd.xaml.cs">
       <DependentUpon>OrderAdd.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Program\PlannerHome.xaml.cs">
-      <DependentUpon>PlannerHome.xaml</DependentUpon>
+    <Compile Include="Program\BuyerHome.xaml.cs">
+      <DependentUpon>BuyerHome.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Program\PlannerWindow.xaml.cs">
-      <DependentUpon>PlannerWindow.xaml</DependentUpon>
+    <Compile Include="Program\BuyerWindow.xaml.cs">
+      <DependentUpon>BuyerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
