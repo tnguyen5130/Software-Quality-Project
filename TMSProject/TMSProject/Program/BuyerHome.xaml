@@ -5,8 +5,22 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:TMSProject.Program"
              mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              d:DesignHeight="540" d:DesignWidth="1010">
-    <Grid>
-            
+    <Grid x:Name="GridMain" Background="#534bae" Margin="0,0,-0.4,0">
+        <Border Margin="149,63,169.6,98" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="379" Grid.ColumnSpan="2">
+            <TextBox Name="orderIDBox"  Margin="41,50,101.2,208.2" materialDesign:HintAssist.Hint="Order ID" Text="{Binding ID}"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18">
+                <TextBox.Resources>
+                    <Style TargetType="ContentControl">
+                        <Setter Property="Foreground" Value="Black"/>
+                    </Style>
+                </TextBox.Resources>
+            </TextBox>
+        </Border>
+        <TextBlock Foreground="Blue" Text="Order Info" FontSize="30" FontWeight="Bold" Margin="241,101,325,381"/>
+        <DatePicker Name="dt_StartDateFrom" Foreground="Black" materialDesign:HintAssist.Hint="Year/MM/DD" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="225,233,298,252" Height="55" />
+        <Button Content="OK" Margin="184,366,566,115" Click="btn_new_Order" Height="Auto" Background="Red"/>
+        <Button Content="Cancel" Margin="495,366,256,115" Click="btn_Cancel" Height="Auto" Background="Black"/>
     </Grid>
 </UserControl>

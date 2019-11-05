@@ -44,8 +44,8 @@
                         </TransformGroup>
                     </PasswordBox.RenderTransform>
                 </PasswordBox>
-                <RadioButton x:Name="PlannerRadioButton" Content="Sign in as Planner"/>
                 <RadioButton x:Name="BuyerRadioButton" Content="Sign in as Buyer" Height="31" Margin="0,0,-0.6,0" RenderTransformOrigin="0.495,1.144"/>
+                <RadioButton x:Name="PlannerRadioButton" Content="Sign in as Planner"/>
             </StackPanel>
         </Grid>
         <Button Click="Login_Click" Width="196" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="73,0,81.4,35.6" Content="LOGIN" Height="33" Style="{StaticResource MaterialDesignRaisedLightButton}" />

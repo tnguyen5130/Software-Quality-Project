@@ -16,30 +16,21 @@ using System.Windows.Shapes;
 namespace TMSProject.Program
 {
 	/// <summary>
-	/// Interaction logic for BuyerHome.xaml
+	/// Interaction logic for ShippingInfo.xaml
 	/// </summary>
-	public partial class BuyerHome : UserControl
+	public partial class ShippingInfo : UserControl
 	{
-		public BuyerHome()
+		public ShippingInfo()
 		{
 			InitializeComponent();
 		}
 
-		public void btn_new_Order(object sender, RoutedEventArgs e)
+		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			UserControl usc = null;
-			GridMain.Children.Clear();
 
-			// check if the order is exist or not
-
-			// show dialog that user is sure to continue 
-
-			// accept the order and open OrderAdd screen
-			usc = new OrderAdd();
-			GridMain.Children.Add(usc);
 		}
 
-		public void btn_Cancel(object sender, RoutedEventArgs e)
+		public void btn_Next(object sender, RoutedEventArgs e)
 		{
 
 		}

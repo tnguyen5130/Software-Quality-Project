@@ -27,7 +27,9 @@ namespace TMSProject.Program
 
 		public void btn_Order_Add(object sender, RoutedEventArgs e)
 		{
-
+			UserControl usc = null;
+			usc = new ShippingInfo();
+			GridMain.Children.Add(usc);
 		}
 	}
 }
