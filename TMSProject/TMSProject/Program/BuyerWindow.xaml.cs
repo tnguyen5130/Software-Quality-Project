@@ -44,7 +44,7 @@ namespace TMSProject.Program
 			switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
 			{
 				case "ItemOrder":
-					usc = new ShippingInfo();
+					usc = new OrderAdd();
 					GridMain.Children.Add(usc);
 					break;
 				case "ItemExit":

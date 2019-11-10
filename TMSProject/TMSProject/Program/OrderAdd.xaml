@@ -18,13 +18,9 @@
             </TextBox>
         </ControlTemplate>
     </UserControl.Resources>
-   
+
     <Grid Background="#534bae" x:Name="GridOrder">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
-        </Grid.ColumnDefinitions>
-        <Border Margin="10,10,50.6,10" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="520" Grid.ColumnSpan="2">
+        <Border Margin="10,10,50.6,10" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="520">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="30" Color="Black" ShadowDepth="0"/>
             </Border.Effect>
