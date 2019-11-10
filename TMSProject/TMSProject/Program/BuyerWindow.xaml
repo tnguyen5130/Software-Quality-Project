@@ -25,6 +25,7 @@
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Window.Resources>
+    
     <Window.Triggers>
         <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="ButtonOpenMenu">
             <BeginStoryboard Storyboard="{StaticResource OpenMenu}"/>
@@ -33,25 +34,28 @@
             <BeginStoryboard Storyboard="{StaticResource CloseMenu}"/>
         </EventTrigger>
     </Window.Triggers>
+    
     <Grid Background="#FFDEDEDE">
-        <Grid x:Name="GridMain" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="535" Width="926"/>
-        <Grid Height="60" VerticalAlignment="Top" Background="#FF5C99D6">
-            <Label Content="TMS Application" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="468,10,398,0" Foreground="Black" FontSize="28" RenderTransformOrigin="0.5,0.5" Width="214">
-                <Label.RenderTransform>
-                    <TransformGroup>
-                        <ScaleTransform/>
-                        <SkewTransform AngleY="0.214"/>
-                        <RotateTransform/>
-                        <TranslateTransform Y="0.263"/>
-                    </TransformGroup>
-                </Label.RenderTransform>
-            </Label>
-            <Grid.Effect>
-                <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
-            </Grid.Effect>
-        </Grid>
 
-        <Grid x:Name="GridMenu" Width="154" HorizontalAlignment="Left" Background="#FF31577E">
+        <Grid x:Name="GridMain" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="535" Width="926"/>
+            <Grid Height="60" VerticalAlignment="Top" Background="#FF5C99D6">
+                <Label Content="TMS Application" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="468,10,398,0" Foreground="Black" FontSize="28" RenderTransformOrigin="0.5,0.5" Width="214">
+                    <Label.RenderTransform>
+                        <TransformGroup>
+                            <ScaleTransform/>
+                            <SkewTransform AngleY="0.214"/>
+                            <RotateTransform/>
+                            <TranslateTransform Y="0.263"/>
+                        </TransformGroup>
+                    </Label.RenderTransform>
+                </Label>
+                <Grid.Effect>
+                    <DropShadowEffect BlurRadius="1" ShadowDepth="1" Color="#FFACACAC"/>
+                </Grid.Effect>
+            </Grid>
+
+
+            <Grid x:Name="GridMenu" Width="154" HorizontalAlignment="Left" Background="#FF31577E">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="1" Color="#FFAEAEAE"/>
             </Grid.Effect>
@@ -80,13 +84,7 @@
                             <materialDesign:PackIcon Kind="Add" Height="25" Width="25" Margin="10"/>
                             <TextBlock Text="Order" VerticalAlignment="Center" Margin="20 10"/>
                         </StackPanel>
-                    </ListViewItem>
-                    <ListViewItem x:Name="ItemInvoice" Height="60">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Invoice" Height="25" Width="25" Margin="10"/>
-                            <TextBlock Text="Invoice" VerticalAlignment="Center" Margin="20 10"/>
-                        </StackPanel>
-                    </ListViewItem>
+                    </ListViewItem>                    
                     <ListViewItem x:Name="ItemExit" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ExitToApp" Height="25" Width="25" Margin="10"/>

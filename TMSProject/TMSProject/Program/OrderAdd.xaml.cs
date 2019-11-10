@@ -29,7 +29,7 @@ namespace TMSProject.Program
 		{
 			UserControl usc = null;
 			usc = new ShippingInfo();
-			GridMain.Children.Add(usc);
+			GridOrder.Children.Add(usc);
 		}
 	}
 }

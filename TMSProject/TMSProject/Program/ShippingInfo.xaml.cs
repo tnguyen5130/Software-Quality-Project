@@ -30,7 +30,7 @@ namespace TMSProject.Program
 
 		}
 
-		public void btn_Next(object sender, RoutedEventArgs e)
+		public void btn_OK(object sender, RoutedEventArgs e)
 		{
 
 		}
