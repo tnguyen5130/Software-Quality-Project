@@ -16,13 +16,30 @@ using System.Windows.Shapes;
 namespace TMSProject.Program
 {
 	/// <summary>
-	/// Interaction logic for BuyerHome.xaml
+	/// Interaction logic for InvoiceWindow.xaml
 	/// </summary>
-	public partial class BuyerHome : UserControl
+	public partial class InvoiceWindow : UserControl
 	{
-		public BuyerHome()
+		public InvoiceWindow()
 		{
 			InitializeComponent();
+		}
+
+		private void Button_Click(object sender, RoutedEventArgs e)
+		{
+			try
+			{
+				this.IsEnabled = false;
+				PrintDialog printDialog = new PrintDialog();
+				if (printDialog.ShowDialog() == true)
+				{
+					printDialog.PrintVisual(print, "invoice");
+				}
+			}
+			finally
+			{
+				this.IsEnabled = true;
+			}
 		}
 	}
 }

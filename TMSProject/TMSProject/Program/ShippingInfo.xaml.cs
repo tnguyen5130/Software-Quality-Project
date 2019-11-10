@@ -16,20 +16,23 @@ using System.Windows.Shapes;
 namespace TMSProject.Program
 {
 	/// <summary>
-	/// Interaction logic for OrderAdd.xaml
+	/// Interaction logic for ShippingInfo.xaml
 	/// </summary>
-	public partial class OrderAdd : UserControl
+	public partial class ShippingInfo : UserControl
 	{
-		public OrderAdd()
+		public ShippingInfo()
 		{
 			InitializeComponent();
 		}
 
-		public void btn_Order_Add(object sender, RoutedEventArgs e)
+		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
-			UserControl usc = null;
-			usc = new ShippingInfo();
-			GridOrder.Children.Add(usc);
+
+		}
+
+		public void btn_OK(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }

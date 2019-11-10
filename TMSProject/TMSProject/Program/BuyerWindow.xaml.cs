@@ -43,13 +43,12 @@ namespace TMSProject.Program
 
 			switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
 			{
-				case "ItemHome":
-					usc = new BuyerHome();
+				case "ItemOrder":
+					usc = new ShippingInfo();
 					GridMain.Children.Add(usc);
 					break;
-				case "ItemCreate":
-					usc = new OrderAdd();
-					GridMain.Children.Add(usc);
+				case "ItemExit":
+					this.Close();
 					break;
 				default:
 					break;

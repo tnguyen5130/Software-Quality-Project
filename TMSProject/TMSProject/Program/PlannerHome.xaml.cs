@@ -16,20 +16,32 @@ using System.Windows.Shapes;
 namespace TMSProject.Program
 {
 	/// <summary>
-	/// Interaction logic for OrderAdd.xaml
+	/// Interaction logic for PlannerHome.xaml
 	/// </summary>
-	public partial class OrderAdd : UserControl
+	public partial class PlannerHome : UserControl
 	{
-		public OrderAdd()
+		public PlannerHome()
 		{
 			InitializeComponent();
 		}
 
-		public void btn_Order_Add(object sender, RoutedEventArgs e)
+		public void btn_new_Order(object sender, RoutedEventArgs e)
 		{
 			UserControl usc = null;
-			usc = new ShippingInfo();
-			GridOrder.Children.Add(usc);
+			GridMain.Children.Clear();
+
+			// check if the order is exist or not
+
+			// show dialog that user is sure to continue 
+
+			// accept the order and open OrderAdd screen
+			usc = new OrderAdd();
+			GridMain.Children.Add(usc);
+		}
+
+		public void btn_Cancel(object sender, RoutedEventArgs e)
+		{
+
 		}
 	}
 }

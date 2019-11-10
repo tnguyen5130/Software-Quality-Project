@@ -65,6 +65,9 @@
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
+    <Reference Include="ResponsiveGrid.Wpf, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\ResponsiveGrid.0.3.3\lib\net45\ResponsiveGrid.Wpf.dll</HintPath>
+    </Reference>
     <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\ShowMeTheXAML.1.0.12\lib\net45\ShowMeTheXAML.dll</HintPath>
     </Reference>
@@ -99,6 +102,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Program\InvoiceWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Program\Login.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -107,8 +114,38 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Classes\BusinessLayer\Admin.cs" />
+    <Compile Include="Classes\BusinessLayer\Billing.cs" />
+    <Compile Include="Classes\BusinessLayer\Buyer.cs" />
+    <Compile Include="Classes\BusinessLayer\Carrier.cs" />
+    <Compile Include="Classes\BusinessLayer\City.cs" />
+    <Compile Include="Classes\BusinessLayer\Contract.cs" />
+    <Compile Include="Classes\BusinessLayer\ContractMarketPlace.cs" />
+    <Compile Include="Classes\BusinessLayer\Customer.cs" />
+    <Compile Include="Classes\BusinessLayer\Employee.cs" />
+    <Compile Include="Classes\BusinessLayer\Invoice.cs" />
+    <Compile Include="Classes\BusinessLayer\Order.cs" />
+    <Compile Include="Classes\BusinessLayer\PlanInfo.cs" />
+    <Compile Include="Classes\BusinessLayer\Planner.cs" />
+    <Compile Include="Classes\BusinessLayer\Trip.cs" />
+    <Compile Include="Classes\DataLayer\BillingBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\BizCommon.cs" />
+    <Compile Include="Classes\DataLayer\BizDAO.cs" />
+    <Compile Include="Classes\DataLayer\CarrierBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\CityBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\CMPBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\ContractBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\CustomerBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\EmployeeBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\InvoiceBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\OrderBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\PlanInfoBizDAO.cs" />
+    <Compile Include="Classes\DataLayer\TripBizDAO.cs" />
     <Compile Include="DBConnect\Configs.cs" />
     <Compile Include="DBConnect\DBHandler.cs" />
+    <Compile Include="Program\InvoiceWindow.xaml.cs">
+      <DependentUpon>InvoiceWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Program\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -116,11 +153,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Program\BuyerHome.xaml">
+    <Page Include="Program\PlannerHome.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Program\BuyerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Program\ShippingInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -129,11 +170,14 @@
     <Compile Include="Program\OrderAdd.xaml.cs">
       <DependentUpon>OrderAdd.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Program\BuyerHome.xaml.cs">
-      <DependentUpon>BuyerHome.xaml</DependentUpon>
+    <Compile Include="Program\PlannerHome.xaml.cs">
+      <DependentUpon>PlannerHome.xaml</DependentUpon>
     </Compile>
     <Compile Include="Program\BuyerWindow.xaml.cs">
       <DependentUpon>BuyerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Program\ShippingInfo.xaml.cs">
+      <DependentUpon>ShippingInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>

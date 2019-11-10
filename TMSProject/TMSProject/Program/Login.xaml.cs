@@ -61,7 +61,7 @@ namespace TMSProject.Program
 				bool input = db.validate_login(username, password, status);
 				if (input && status == 0)
 				{
-					MessageBox.Show("Correct Login Credentials");
+					//MessageBox.Show("Correct Login Credentials");
 					BuyerWindow buyer = new BuyerWindow();
 					this.Visibility = Visibility.Collapsed; // hide window
 					buyer.ShowDialog();

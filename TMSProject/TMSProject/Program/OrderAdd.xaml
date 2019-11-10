@@ -18,10 +18,11 @@
             </TextBox>
         </ControlTemplate>
     </UserControl.Resources>
-    <Grid Background="#534bae" >
+   
+    <Grid Background="#534bae" x:Name="GridOrder">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="51*"/>
+            <ColumnDefinition Width="50*"/>
         </Grid.ColumnDefinitions>
         <Border Margin="10,10,50.6,10" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="520" Grid.ColumnSpan="2">
             <Border.Effect>
@@ -29,17 +30,19 @@
             </Border.Effect>
             <StackPanel Margin="-4.4,-30.4,4.4,-19.6">
                 <Grid Margin="0 0 0 20"/>
-                <TextBlock Foreground="Blue" Text="Add New Load" FontSize="30" FontWeight="Bold" Margin="0,0,517,20"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Order ID"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Order Date"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Departure Location"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Destination Location"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Weight"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Pallet"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Van Type"/>
+                <TextBlock Foreground="Blue" Text="Order ID:" FontSize="15" FontWeight="Bold" Margin="0,0,517,20"/>
+                <TextBlock Foreground="Blue" Text="Date:" FontSize="15" FontWeight="Bold" Margin="0,0,517,20"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Company"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Username"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Phone Number"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Address"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Postal Code"/>
+                <ComboBox Foreground="Black" materialDesign:HintAssist.Hint="City" Margin="0 5"/>
+                <ComboBox Foreground="Black" materialDesign:HintAssist.Hint="Province" Margin="0 5"/>
+                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Postal Code"/>
 
-     
-                <Button Content="Confirm" Margin="0 20" Click="btn_Order_Add"/>
+
+                <Button Content="Next" Margin="0 20" Click="btn_Order_Add"/>
             </StackPanel>
         </Border>
     </Grid>
