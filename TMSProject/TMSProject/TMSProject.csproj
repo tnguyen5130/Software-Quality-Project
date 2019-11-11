@@ -133,6 +133,7 @@
     <Page Include="Classes\View\ShippingInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
@@ -193,6 +194,15 @@
     <Compile Include="DBConnect\DBHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Program\OrderAdd.xaml.cs">
+      <DependentUpon>OrderAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Program\PlannerHome.xaml.cs">
+      <DependentUpon>PlannerHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Program\PlannerWindow.xaml.cs">
+      <DependentUpon>PlannerWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
