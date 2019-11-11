@@ -161,6 +161,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Program\PlannerInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Program\PlannerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Program\ShippingInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -175,6 +183,12 @@
     </Compile>
     <Compile Include="Program\BuyerWindow.xaml.cs">
       <DependentUpon>BuyerWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Program\PlannerInfo.xaml.cs">
+      <DependentUpon>PlannerInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Program\PlannerWindow.xaml.cs">
+      <DependentUpon>PlannerWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Program\ShippingInfo.xaml.cs">
       <DependentUpon>ShippingInfo.xaml</DependentUpon>

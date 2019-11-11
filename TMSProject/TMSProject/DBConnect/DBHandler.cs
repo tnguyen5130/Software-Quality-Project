@@ -164,8 +164,8 @@ namespace TMSProject.DBConnect
 		/*
 		 * Function: validate_login()
 		 * Description: to validate and sign in as Buyer or Planner
-		 *				0: sign in as Planner
-		 *				1: sign in as Buyer
+		 *				1: sign in as Planner
+		 *				0: sign in as Buyer
 		 * Input:	username string
 		 *			password string
 		 *			status int

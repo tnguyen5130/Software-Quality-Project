@@ -59,12 +59,18 @@ namespace TMSProject.Program
 				}
 
 				bool input = db.validate_login(username, password, status);
-				if (input && status == 0)
+				if (input && status == 0) // login as Buyer
 				{
-					//MessageBox.Show("Correct Login Credentials");
 					BuyerWindow buyer = new BuyerWindow();
 					this.Visibility = Visibility.Collapsed; // hide window
 					buyer.ShowDialog();
+					this.Visibility = Visibility.Visible; // show window
+				}
+				else if (input && status == 1) // login as planner
+				{
+					PlannerWindow planner = new PlannerWindow();
+					this.Visibility = Visibility.Collapsed; // hide window
+					planner.ShowDialog();
 					this.Visibility = Visibility.Visible; // show window
 				}
 				else 

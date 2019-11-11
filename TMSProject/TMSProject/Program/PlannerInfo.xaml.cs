@@ -16,18 +16,13 @@ using System.Windows.Shapes;
 namespace TMSProject.Program
 {
 	/// <summary>
-	/// Interaction logic for PlannerHome.xaml
+	/// Interaction logic for PlannerInfo.xaml
 	/// </summary>
-	public partial class PlannerHome : UserControl
+	public partial class PlannerInfo : UserControl
 	{
-		public PlannerHome()
+		public PlannerInfo()
 		{
 			InitializeComponent();
-		}
-
-		public void btn_Load(object sender, RoutedEventArgs e)
-		{
-
 		}
 	}
 }
