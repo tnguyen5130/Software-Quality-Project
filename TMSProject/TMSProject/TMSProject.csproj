@@ -102,97 +102,97 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Program\InvoiceWindow.xaml">
+    <Page Include="Classes\View\BuyerWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Program\Login.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="Classes\View\InvoiceWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\Login.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\OrderAdd.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\PlannerHome.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\PlannerInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\PlannerWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\ShippingInfo.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Classes\BusinessLayer\Admin.cs" />
-    <Compile Include="Classes\BusinessLayer\Billing.cs" />
-    <Compile Include="Classes\BusinessLayer\Buyer.cs" />
-    <Compile Include="Classes\BusinessLayer\Carrier.cs" />
-    <Compile Include="Classes\BusinessLayer\City.cs" />
-    <Compile Include="Classes\BusinessLayer\Contract.cs" />
-    <Compile Include="Classes\BusinessLayer\ContractMarketPlace.cs" />
-    <Compile Include="Classes\BusinessLayer\Customer.cs" />
-    <Compile Include="Classes\BusinessLayer\Employee.cs" />
-    <Compile Include="Classes\BusinessLayer\Invoice.cs" />
-    <Compile Include="Classes\BusinessLayer\Order.cs" />
-    <Compile Include="Classes\BusinessLayer\PlanInfo.cs" />
-    <Compile Include="Classes\BusinessLayer\Planner.cs" />
-    <Compile Include="Classes\BusinessLayer\Trip.cs" />
-    <Compile Include="Classes\DataLayer\BillingBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\BizCommon.cs" />
-    <Compile Include="Classes\DataLayer\BizDAO.cs" />
-    <Compile Include="Classes\DataLayer\CarrierBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\CityBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\CMPBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\ContractBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\CustomerBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\EmployeeBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\InvoiceBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\OrderBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\PlanInfoBizDAO.cs" />
-    <Compile Include="Classes\DataLayer\TripBizDAO.cs" />
-    <Compile Include="DBConnect\Configs.cs" />
-    <Compile Include="DBConnect\DBHandler.cs" />
-    <Compile Include="Program\InvoiceWindow.xaml.cs">
-      <DependentUpon>InvoiceWindow.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Program\Login.xaml.cs">
-      <DependentUpon>Login.xaml</DependentUpon>
-    </Compile>
-    <Page Include="Program\OrderAdd.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Program\PlannerHome.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Program\BuyerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Program\PlannerInfo.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Program\PlannerWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Program\ShippingInfo.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Program\OrderAdd.xaml.cs">
-      <DependentUpon>OrderAdd.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Program\PlannerHome.xaml.cs">
-      <DependentUpon>PlannerHome.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Program\BuyerWindow.xaml.cs">
+    <Compile Include="Classes\Model\Admin.cs" />
+    <Compile Include="Classes\Model\Billing.cs" />
+    <Compile Include="Classes\Model\Buyer.cs" />
+    <Compile Include="Classes\Model\Carrier.cs" />
+    <Compile Include="Classes\Model\City.cs" />
+    <Compile Include="Classes\Model\Contract.cs" />
+    <Compile Include="Classes\Model\ContractMarketPlace.cs" />
+    <Compile Include="Classes\Model\Customer.cs" />
+    <Compile Include="Classes\Model\Employee.cs" />
+    <Compile Include="Classes\Model\Invoice.cs" />
+    <Compile Include="Classes\Model\Order.cs" />
+    <Compile Include="Classes\Model\PlanInfo.cs" />
+    <Compile Include="Classes\Model\Planner.cs" />
+    <Compile Include="Classes\Model\Trip.cs" />
+    <Compile Include="Classes\Controller\BillingBizDAO.cs" />
+    <Compile Include="Classes\Controller\BizCommon.cs" />
+    <Compile Include="Classes\Controller\BizDAO.cs" />
+    <Compile Include="Classes\Controller\CarrierBizDAO.cs" />
+    <Compile Include="Classes\Controller\CityBizDAO.cs" />
+    <Compile Include="Classes\Controller\CMPBizDAO.cs" />
+    <Compile Include="Classes\Controller\ContractBizDAO.cs" />
+    <Compile Include="Classes\Controller\CustomerBizDAO.cs" />
+    <Compile Include="Classes\Controller\EmployeeBizDAO.cs" />
+    <Compile Include="Classes\Controller\InvoiceBizDAO.cs" />
+    <Compile Include="Classes\Controller\OrderBizDAO.cs" />
+    <Compile Include="Classes\Controller\PlanInfoBizDAO.cs" />
+    <Compile Include="Classes\Controller\TripBizDAO.cs" />
+    <Compile Include="Classes\View\BuyerWindow.xaml.cs">
       <DependentUpon>BuyerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Program\PlannerInfo.xaml.cs">
+    <Compile Include="Classes\View\InvoiceWindow.xaml.cs">
+      <DependentUpon>InvoiceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\Login.xaml.cs">
+      <DependentUpon>Login.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\OrderAdd.xaml.cs">
+      <DependentUpon>OrderAdd.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\PlannerHome.xaml.cs">
+      <DependentUpon>PlannerHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\PlannerInfo.xaml.cs">
       <DependentUpon>PlannerInfo.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Program\PlannerWindow.xaml.cs">
+    <Compile Include="Classes\View\PlannerWindow.xaml.cs">
       <DependentUpon>PlannerWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Program\ShippingInfo.xaml.cs">
+    <Compile Include="Classes\View\ShippingInfo.xaml.cs">
       <DependentUpon>ShippingInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DBConnect\Configs.cs" />
+    <Compile Include="DBConnect\DBHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
