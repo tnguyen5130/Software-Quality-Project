@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TMSProject.Classes.Model;
+using TMSProject.Classes.Controller;
 
 namespace TMSProject.Classes.View
 {
@@ -20,14 +22,29 @@ namespace TMSProject.Classes.View
 	/// </summary>
 	public partial class OrderAdd : UserControl
 	{
-		public OrderAdd()
+        int seq = 1;
+        public OrderAdd()
 		{
 			InitializeComponent();
 		}
 
 		public void btn_Order_Add(object sender, RoutedEventArgs e)
 		{
-			UserControl usc = null;
+            Order order = new Order();
+            order.orderID = txtOrderID.Text;
+            order.orderDate = txtDate.Text;
+
+            Customer customer = new Customer();
+            customer.customerCity = txtCity.SelectedItem.ToString();
+            customer.telno = txtTelPhone.ToString();
+            customer.zipcode = txtPostalCode.ToString();
+            customer.address = txtAddress.ToString();
+                               
+            customer.customerID = customer.generateCustomerID(seq);
+            customer.Save();
+
+            seq += 1;
+            UserControl usc = null;
 			usc = new ShippingInfo();
 			GridOrder.Children.Add(usc);
 		}

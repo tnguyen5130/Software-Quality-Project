@@ -46,5 +46,11 @@ namespace TMSProject.Classes.Model
             var customerList = new CustomerBizDAO().GetCustomers(pattern);
             return customerList;
         }
+
+        public string generateCustomerID(int seq)
+        {
+            string value = String.Format("{0:D3}", seq);
+            return "cus" + DateTime.Now.ToString() + value;
+        }
     }
 }

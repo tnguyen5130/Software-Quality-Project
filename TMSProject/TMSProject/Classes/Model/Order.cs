@@ -48,10 +48,9 @@ namespace TMSProject.Classes.Model
             return orderList;
         }
 
-        public string generateOrderID(int seq)
-        {
-            // Naming ord + date + seq
-            return null;
+        public string generateOrderID(int seq,int time)
+        {            
+            return "ord"+DateTime.Now.ToString()+time;
         }
 
         public bool fieldsValidation()
