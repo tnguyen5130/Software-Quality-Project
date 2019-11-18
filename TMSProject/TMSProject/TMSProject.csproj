@@ -118,14 +118,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Classes\View\OrderList_Planner_Confirm.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Classes\View\OrderSelected.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Classes\View\PlannerHome.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -185,12 +177,6 @@
     </Compile>
     <Compile Include="Classes\View\OrderAdd.xaml.cs">
       <DependentUpon>OrderAdd.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\View\OrderList_Planner_Confirm.xaml.cs">
-      <DependentUpon>OrderList_Planner_Confirm.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\View\OrderSelected.xaml.cs">
-      <DependentUpon>OrderSelected.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\View\PlannerHome.xaml.cs">
       <DependentUpon>PlannerHome.xaml</DependentUpon>

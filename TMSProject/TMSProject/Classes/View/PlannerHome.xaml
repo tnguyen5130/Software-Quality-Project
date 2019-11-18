@@ -20,7 +20,7 @@
         <Border Margin="-255,16,-234,10" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="514"/>
         <TextBlock Foreground="Blue" Text="Order Info" FontSize="30" FontWeight="Bold"/>
         <DataGrid
-  Margin="114,279,140.4,83"
+  Margin="114,66,141,83"
   ItemsSource="{Binding Items3}"
   CanUserSortColumns="True"
   CanUserAddRows="False" />
