@@ -8,7 +8,7 @@ namespace TMSProject.Classes.Controller
 {
     public class BizCommon
     {
-        public string newOrder()
+        public string newOrderID()
         {
             return null;
         }
@@ -36,6 +36,12 @@ namespace TMSProject.Classes.Controller
         public string newBillingID()
         {
             return null;
+        }
+
+        public string newInvoiceID(int seq)
+        {
+            string value = String.Format("{0:D3}", seq);
+            return "INV" + value;
         }
     }
 }

@@ -35,10 +35,14 @@ namespace TMSProject.Classes.View
             order.orderDate = txtDate.Text;
 
             Customer customer = new Customer();
-            customer.customerCity = txtCity.SelectedItem.ToString();
-            customer.telno = txtTelPhone.ToString();
-            customer.zipcode = txtPostalCode.ToString();
-            customer.address = txtAddress.ToString();
+            customer.customerCompany = txtCompany.Text;
+            customer.customerName = txtFirstName.Text + " " + txtLastName.Text;
+            customer.customerCity = txtCity.SelectedValue.ToString();
+            customer.customerProvince = txtProvince.SelectedValue.ToString();
+            customer.telno = txtTelPhone.Text;
+            customer.zipcode = txtPostalCode.Text;
+            customer.address = txtAddress.Text;
+
                                
             customer.customerID = customer.generateCustomerID(seq);
             customer.Save();

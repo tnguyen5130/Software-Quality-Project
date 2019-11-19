@@ -230,4 +230,9 @@ ALTER TABLE `projectslinger`.`admin`
 ADD COLUMN `adminPassword` VARCHAR(45) NULL AFTER `adminEmployeeID`;
 ALTER TABLE `projectslinger`.`planner` 
 CHANGE COLUMN `plannerEmployeePassword` `plannerPassword` VARCHAR(45) NULL DEFAULT NULL ;
+ALTER TABLE `projectslinger`.`customer` 
+ADD COLUMN `customerCompany` VARCHAR(45) NOT NULL AFTER `zipcode`;
+ALTER TABLE `projectslinger`.`customer` 
+ADD COLUMN `customerProvince` VARCHAR(45) NOT NULL AFTER `customerCompany`;
+
 
