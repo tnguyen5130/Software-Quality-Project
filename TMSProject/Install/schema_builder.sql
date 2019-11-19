@@ -1,6 +1,6 @@
 -- customer
-create DATABASE Milstones;
-USE Milstones ;
+create DATABASE projectslinger;
+USE projectslinger ;
 
 -- customer
 create table customer
@@ -223,3 +223,11 @@ create table admin
         foreign key (adminEmployeeID) references employee (employeeID)
 )
     charset=utf8;
+    
+ALTER TABLE `projectslinger`.`buyer` 
+ADD COLUMN `buyerPassword` VARCHAR(45) NOT NULL AFTER `buyerEmployeeID`;
+ALTER TABLE `projectslinger`.`admin` 
+ADD COLUMN `adminPassword` VARCHAR(45) NULL AFTER `adminEmployeeID`;
+ALTER TABLE `projectslinger`.`planner` 
+CHANGE COLUMN `plannerEmployeePassword` `plannerPassword` VARCHAR(45) NULL DEFAULT NULL ;
+

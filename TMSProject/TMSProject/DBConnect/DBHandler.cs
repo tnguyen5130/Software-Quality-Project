@@ -47,13 +47,107 @@ namespace TMSProject.DBConnect
 			}
 		}
 
-		/*
+        /*
+		 * Function: validate_login()
+		 * Description: to validate and sign in as Buyer or Planner
+		 *				0: sign in as Buyer
+		 *				1: sign in as Planner
+         *				2: sign in as Admin
+		 * Input:	username string
+		 *			password string
+		 *			status int
+		 * Return:	true - login successful
+		 *			false -login fail
+		 */
+        public bool validate_login(string username, string password, int status)
+        {
+            bool retCode = false;
+            // Query for sign in as Planner
+            string queryPlanner = "Select * from projectslinger.planner where plannerEmployeeID=@user and plannerPassword=@pass";
+            // Query for sign in as Buyer
+            string queryBuyer = "Select * from projectslinger.buyer where buyerEmployeeID=@user and buyerPassword=@pass";
+            //Query for sign in as Admin
+            string queryAdmin = "Select * from projectslinger.admin where adminID=@user and adminPassword=@pass";
+            // open connection
+            if (this.OpenConnection() == true)
+            {
+                
+                // Buyer sign in
+                if (status == 0)
+                {
+                    MySqlCommand cmd = new MySqlCommand(queryBuyer, connection);
+                    // Prepared statement
+                    cmd.Parameters.AddWithValue("@user", username);
+                    cmd.Parameters.AddWithValue("@pass", password);
+                    cmd.Prepare();
+                    cmd.Connection = connection;
+                    // Retrieve data from database and execute
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.Read())
+                    {
+                        this.CloseConnection(); // close connection
+                        retCode = true;
+                    }
+                    else
+                    {
+                        this.CloseConnection(); // close connection
+                        retCode = false;
+                    }
+                } // end if status
+                // Planner sign in
+                else if (status == 1)
+                {
+                    MySqlCommand cmd = new MySqlCommand(queryPlanner, connection);
+                    // Prepared statement
+                    cmd.Parameters.AddWithValue("@user", username);
+                    cmd.Parameters.AddWithValue("@pass", password);
+                    cmd.Prepare();
+                    cmd.Connection = connection;
+                    // Retrieve data from database and execute
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.Read())
+                    {
+                        this.CloseConnection(); // close connection
+                        retCode = true;
+                    }
+                    else
+                    {
+                        this.CloseConnection(); // close connection
+                        retCode = false;
+                    }
+                }
+                else if (status == 2)
+                {
+                    MySqlCommand cmd = new MySqlCommand(queryAdmin, connection);
+                    // Prepared statement
+                    cmd.Parameters.AddWithValue("@user", username);
+                    cmd.Parameters.AddWithValue("@pass", password);
+                    cmd.Prepare();
+                    cmd.Connection = connection;
+                    // Retrieve data from database and execute
+                    MySqlDataReader rdr = cmd.ExecuteReader();
+                    if (rdr.Read())
+                    {
+                        this.CloseConnection(); // close connection
+                        retCode = true;
+                    }
+                    else
+                    {
+                        this.CloseConnection(); // close connection
+                        retCode = false;
+                    }
+                }
+            } // end open connection
+            return retCode;
+        }
+
+        /*
 		 * Function: OpenConnection
 		 * Description: act as open connection statement
 		 * Input: 
 		 * Return: true if success - false if fail
 		 */
-		private bool OpenConnection()
+        private bool OpenConnection()
 		{
 			try
 			{
@@ -99,137 +193,6 @@ namespace TMSProject.DBConnect
 				Log.Fatal(ex.Message);
 				return false;
 			}
-		}
-
-		/*
-		* Function: Insert
-		* Description: act as insert statement
-		* Input: query stirng
-		* Return: none
-		*/
-		public void Insert(string query)
-		{
-			//open connection
-			if (this.OpenConnection() == true)
-			{
-				//create command and assign the query and connection from the constructor
-				MySqlCommand cmd = new MySqlCommand(query, connection);
-				//Execute command
-				cmd.ExecuteNonQuery();
-				//close connection
-				this.CloseConnection();
-			}
-		}
-
-		/*
-	 * Function: Update
-	 * Description: act as update statement
-	 * Input: query stirng
-	 * Return: none
-	 */
-		public void Update(string query)
-		{
-			//Open connection
-			if (this.OpenConnection() == true)
-			{
-				//create command and assign the query and connection from the constructor
-				MySqlCommand cmd = new MySqlCommand(query, connection);
-				//Execute command
-				cmd.ExecuteNonQuery();
-				//close connection
-				this.CloseConnection();
-			}
-		}
-
-		/*
-		 * Function: Delete
-		 * Description: act as delete statement
-		 * Input: query stirng
-		 * Return: none
-		 */
-		public void Delete(string query)
-		{
-			// open connection
-			if (this.OpenConnection() == true)
-			{   
-				//create command and assign the query and connection from the constructor
-				MySqlCommand cmd = new MySqlCommand(query, connection);
-				//Execute command
-				cmd.ExecuteNonQuery();
-				//close connection
-				this.CloseConnection();
-			}
-		}
-
-		/*
-		 * Function: validate_login()
-		 * Description: to validate and sign in as Buyer or Planner
-		 *				1: sign in as Planner
-		 *				0: sign in as Buyer
-		 * Input:	username string
-		 *			password string
-		 *			status int
-		 * Return:	true - login successful
-		 *			false -login fail
-		 */
-		public bool validate_login(string username, string password, int status)
-		{
-			bool retCode = false;
-			// Query for sign in as Planner
-			string queryPlanner = "Select * from tms.admin where PlannerID=@user and PlannerPassword=@pass";
-			// Query for sign in as Buyer
-			string queryBuyer = "Select * from tms.admin where BuyerID=@user and BuyerPassword=@pass";
-			// open connection
-			if (this.OpenConnection() == true)
-			{
-				// Planner sign in
-				if (status == 0) 
-				{
-					MySqlCommand cmd = new MySqlCommand(queryPlanner, connection);
-					// Prepared statement
-					cmd.Parameters.AddWithValue("@user", username);
-					cmd.Parameters.AddWithValue("@pass", password);
-					cmd.Prepare();
-					cmd.Connection = connection;
-					// Retrieve data from database and execute
-					MySqlDataReader rdr = cmd.ExecuteReader();
-					if (rdr.Read())
-					{
-						this.CloseConnection(); // close connection
-						retCode = true;
-					}
-					else
-					{
-						this.CloseConnection(); // close connection
-						retCode = false;
-					}
-				}
-				else if (status == 1)
-				{
-					MySqlCommand cmd = new MySqlCommand(queryBuyer, connection);
-					// Prepared statement
-					cmd.Parameters.AddWithValue("@user", username);
-					cmd.Parameters.AddWithValue("@pass", password);
-					cmd.Prepare();
-					cmd.Connection = connection;
-					// Retrieve data from database and execute
-					MySqlDataReader rdr = cmd.ExecuteReader();
-					if (rdr.Read())
-					{
-						this.CloseConnection(); // close connection
-						retCode = true;
-					}
-					else
-					{
-						this.CloseConnection(); // close connection
-						retCode = false;
-					}
-				} // end if status
-			} // end open connection
-			return retCode;
-		}
-
-
-
+		}		
 	}
 }
