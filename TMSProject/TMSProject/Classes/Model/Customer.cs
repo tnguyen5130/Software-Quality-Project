@@ -49,7 +49,7 @@ namespace TMSProject.Classes.Model
             return customerList;
         }
 
-        public string generateCustomerID(int seq)
+        public string newCustomerID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
             return "cus" + DateTime.Now.ToString("yyyyMMdd") + value;

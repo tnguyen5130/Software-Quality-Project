@@ -48,17 +48,17 @@ namespace TMSProject.Classes.Controller
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+                const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, orderDate, originalCity, desCityID, carrierID, orderStatus)
+	                                            VALUES (@OrderID, @ContractID, @OrderDate, @OriginalCity, @DesCityID, @CarrierID, @OrderStatus);";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductName", order.orderID);
-                myCommand.Parameters.AddWithValue("@SupplierID", order.contractID);
-                myCommand.Parameters.AddWithValue("@CategoryID", order.orderDate);
-                myCommand.Parameters.AddWithValue("@QuantityPerUnit", order.origincalCityID);
-                myCommand.Parameters.AddWithValue("@UnitPrice", order.desCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.orderStatus);
+                myCommand.Parameters.AddWithValue("@OrderID", order.orderID);
+                myCommand.Parameters.AddWithValue("@ContractID", order.contractID);
+                myCommand.Parameters.AddWithValue("@OrderDate", order.orderDate);
+                myCommand.Parameters.AddWithValue("@OriginalCity", order.origincalCityID);
+                myCommand.Parameters.AddWithValue("@DesCityID", order.desCityID);
+                myCommand.Parameters.AddWithValue("@OrderStatus", order.orderStatus);
                 
                 myConn.Open();
 

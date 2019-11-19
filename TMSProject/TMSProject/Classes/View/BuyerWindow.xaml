@@ -37,8 +37,26 @@
 
     <Grid Background="#FFDEDEDE">
 
-        <Grid x:Name="GridMain" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="535" Width="926"/>
-        <Grid Height="60" VerticalAlignment="Top" Background="#FF5C99D6">
+        <Grid x:Name="GridMain" HorizontalAlignment="Right" VerticalAlignment="Bottom" Height="535" Width="926">
+            <Image>
+                <Image.Source>
+                    <BitmapImage DecodePixelWidth="926" DecodePixelHeight="535" UriSource="/Resource/splashscreen.jpg" />
+                </Image.Source>
+            </Image>
+            <Grid Width="124">
+                <Button
+                Click="btn_Order_Begin"
+                Style="{StaticResource MaterialDesignRaisedDarkButton}"
+                Height="Auto"
+                Background="Red"
+                materialDesign:ButtonAssist.CornerRadius="25"
+                ToolTip="MaterialDesignRaisedDarkButton with Round Corners" Margin="328,400,-380,41.2">
+                    <TextBlock Text="Begin Order"  VerticalAlignment="Center" Foreground="WhiteSmoke" FontSize="24"/>
+                </Button>
+            </Grid>
+        </Grid>
+        <Grid Height="60" VerticalAlignment="Top" Background="#FF5C99D6">          
+
             <Label Content="TMS Application" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="468,10,398,0" Foreground="Black" FontSize="28" RenderTransformOrigin="0.5,0.5" Width="214">
                 <Label.RenderTransform>
                     <TransformGroup>

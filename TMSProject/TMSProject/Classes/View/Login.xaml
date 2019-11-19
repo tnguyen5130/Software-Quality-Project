@@ -25,12 +25,25 @@
             </Rectangle.Fill>
         </Rectangle>
 
+
+
         <Rectangle Height="278" VerticalAlignment="Bottom" Margin="35,0,35.4,41.6" RadiusY="10" RadiusX="10" Fill="White">
             <Rectangle.Effect>
                 <DropShadowEffect BlurRadius="15" Direction="0" RenderingBias="Quality" ShadowDepth="1" Color="#FFBBBBBB"/>
             </Rectangle.Effect>
         </Rectangle>
         <Grid VerticalAlignment="Bottom" Margin="35,80" Height="240">
+            <Button
+                Click="btn_Exit"
+                Background="Black"
+                Style="{StaticResource MaterialDesignFloatingActionMiniDarkButton}"
+                ToolTip="MaterialDesignFloatingActionMiniDarkButton" Margin="247,-114,-6.6,314" Height="Auto" Width="40" RenderTransformOrigin="0.061,0.316" HorizontalAlignment="Left">
+                <materialDesign:PackIcon
+                    Kind="ExitRun"
+                    Background="Red"
+                    Height="24"
+                    Width="24" />
+            </Button>
             <Label Content="TMS Application" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="5" Foreground="Gray" FontSize="18"/>
             <StackPanel VerticalAlignment="Center" Margin="15,44,10.4,10" Height="186">
                 <TextBox Name="usernameBox" materialDesign:HintAssist.Hint="ID" Text="{Binding ID}"  Style="{DynamicResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18" Height="38"/>
