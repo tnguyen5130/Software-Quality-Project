@@ -1,4 +1,11 @@
-﻿using System;
+﻿//* FILE			: BillingBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : BillingBizDAO for the biiling infomation 
+
+
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using TMSProject.Classes.Model;
@@ -7,10 +14,24 @@ using System.Data;
 
 namespace TMSProject.Classes.Controller
 {
+    /*==========================================================================================================================*/
+    // Name         : BillingBizDAO
+    // Purpose      : contain all the name definitions and relative path of files
+    // Description  : this class defines name of BillingBizDAO connect to database and update, insert and delete the billing
+    /*==========================================================================================================================*/
     public class BillingBizDAO
     {
+        // Connect with the database
         private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
 
+
+        /* =========================================================================================================================
+        * Name		: UpdateBilling																						
+        * Purpose	: to UPDATE the billing infor whenever create an new order 	
+        * Inputs	: Billing billing		    : an object called billing																												
+        * Outputs	: None																											
+        * Returns	: None																										
+        ===========================================================================================================================*/
         public void UpdateBilling(Billing billing)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -36,7 +57,13 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
+        /* =========================================================================================================================
+        * Name		: InsertBilling																						
+        * Purpose	: to INSERT the billing infor whenever create an new order 	
+        * Inputs	: Billing billing		    : an object called billing																												
+        * Outputs	: None																											
+        * Returns	: None																										
+        ===========================================================================================================================*/
         public void InsertBilling(Billing billing)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -59,6 +86,14 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+        /* =========================================================================================================================
+        * Name		: DeleteBilling																						
+        * Purpose	: to DELETE the billing infor whenever create an new order 	
+        * Inputs	: Billing billing		    : an object called billing																												
+        * Outputs	: None																											
+        * Returns	: None																										
+        ===========================================================================================================================*/
         public void DeleteBilling(Billing billing)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -76,6 +111,14 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /* =========================================================================================================================
+        * Name		: GetBillings																						
+        * Purpose	: to GET the billing infor whenever create an new order 	
+        * Inputs	: Billing billing		    : an object called billing																												
+        * Outputs	: None																											
+        * Returns	: None																										
+        ===========================================================================================================================*/
         public List<Billing> GetBillings(string searchItem)
         {
             const string sqlStatement = @" SELECT 
@@ -126,6 +169,15 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+
+        /* =========================================================================================================================
+        * Name		: DataTableToBillingList																						
+        * Purpose	: to STORE the billing infor whenever create an new order 	
+        * Inputs	: Billing billing		    : an object called billing																												
+        * Outputs	: None																											
+        * Returns	: None																										
+        ===========================================================================================================================*/
         private List<Billing> DataTableToBillingList(DataTable table)
         {
             var billings = new List<Billing>();

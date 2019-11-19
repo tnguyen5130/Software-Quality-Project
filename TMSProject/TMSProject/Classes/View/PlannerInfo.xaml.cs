@@ -24,5 +24,10 @@ namespace TMSProject.Classes.View
 		{
 			InitializeComponent();
 		}
-	}
+
+        private void TimeTable_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+    }
 }
