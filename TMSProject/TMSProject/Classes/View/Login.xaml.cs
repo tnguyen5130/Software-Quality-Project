@@ -45,14 +45,18 @@ namespace TMSProject.Classes.View
 			{
 				DBHandler db = new DBHandler();
 				int status = 1; 
-				if (PlannerRadioButton.IsChecked == true)
+				if (BuyerRadioButton.IsChecked == true)
 				{
-					status = 1; // sign in as Planner
+					status = 0; // sign in as Buyer
 				}
-				else if (BuyerRadioButton.IsChecked == true)
+				else if (PlannerRadioButton.IsChecked == true)
 				{
-					status = 0; // default sign in as Buyer
+					status = 1; // default sign in as Planner
 				}
+                else if (AdminRadioButton.IsChecked == true)
+                {
+                    status = 2;
+                }
 				else
 				{
 					MessageBox.Show("Please choose to sign in as ...");
@@ -73,6 +77,10 @@ namespace TMSProject.Classes.View
 					planner.ShowDialog();
 					this.Visibility = Visibility.Visible; // show window
 				}
+                else if (input && status == 2)
+                {
+
+                }
 				else 
 				{
 					MessageBox.Show("Incorrect Login Credentials");

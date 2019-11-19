@@ -12,7 +12,6 @@ namespace TMSProject.DBConnect
 		public static string dbPort = "3306";
 		public static string dbUID = "root";
 		public static string dbPassword = "Cc8635130";
-		public static string dbDatabase = "tms";
-
+		public static string dbDatabase = "projectslinger";       
 	}
 }
