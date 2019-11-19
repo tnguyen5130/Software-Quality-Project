@@ -7,12 +7,14 @@ using TMSProject.Classes.Model;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using TMSProject.DBConnect;
 
 namespace TMSProject.Classes.Controller
 {
     public class CustomerBizDAO
     {
-        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         public void UpdateCustomer(Customer customer)
         {
