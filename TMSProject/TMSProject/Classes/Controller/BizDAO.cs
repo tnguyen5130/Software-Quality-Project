@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Configuration;
+using TMSProject.DBConnect;
 
 namespace TMSProject.Classes.Controller
 {
     //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+    //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
     public class BizDAO
     {
