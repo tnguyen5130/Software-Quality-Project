@@ -31,7 +31,7 @@ namespace TMSProject.Classes.Controller
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
                     myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
-                    myCommand.Parameters.AddWithValue("@CategoryId", plan.tripID);
+                    //myCommand.Parameters.AddWithValue("@CategoryId", plan.tripID);
                     myCommand.Parameters.AddWithValue("@UnitPrice", plan.startCityID);
                     myCommand.Parameters.AddWithValue("@UnitsInStock", plan.endCityID);
                     myCommand.Parameters.AddWithValue("@UnitsInStock", plan.workingTime);

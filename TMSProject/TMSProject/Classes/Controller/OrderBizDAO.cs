@@ -60,7 +60,6 @@ namespace TMSProject.Classes.Controller
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-<<<<<<< HEAD
                 try
                 {
                     const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, orderDate, originalCityID, desCityID, carrierID, orderStatus)
@@ -77,31 +76,14 @@ namespace TMSProject.Classes.Controller
                     myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
                 
                     myConn.Open();
-=======
-                const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, orderDate, originalCity, desCityID, carrierID, orderStatus)
-	                                            VALUES (@OrderID, @ContractID, @OrderDate, @OriginalCity, @DesCityID, @CarrierID, @OrderStatus);";
->>>>>>> 3c765d5050898e05342c0eb00a7a51612041337b
 
                     myCommand.ExecuteNonQuery();
                     return true;
-
-<<<<<<< HEAD
                 }
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     return false;
-=======
-                myCommand.Parameters.AddWithValue("@OrderID", order.orderID);
-                myCommand.Parameters.AddWithValue("@ContractID", order.contractID);
-                myCommand.Parameters.AddWithValue("@OrderDate", order.orderDate);
-                myCommand.Parameters.AddWithValue("@OriginalCity", order.origincalCityID);
-                myCommand.Parameters.AddWithValue("@DesCityID", order.desCityID);
-                myCommand.Parameters.AddWithValue("@OrderStatus", order.orderStatus);
-                
-                myConn.Open();
->>>>>>> 3c765d5050898e05342c0eb00a7a51612041337b
-
                 }
             }
 
