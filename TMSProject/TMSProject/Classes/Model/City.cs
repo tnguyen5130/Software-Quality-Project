@@ -47,17 +47,17 @@ namespace TMSProject.Classes.Model
             return cityList;
         }
 
-<<<<<<< HEAD
+
         public List<City> GetCityName(string pattern)
         {
             var cityList = new CityBizDAO().GetCityName(pattern);
             return cityList;
-=======
+        }
+
         public string newCityID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
             return "C" + value;
->>>>>>> 3c765d5050898e05342c0eb00a7a51612041337b
         }
     }
 }
