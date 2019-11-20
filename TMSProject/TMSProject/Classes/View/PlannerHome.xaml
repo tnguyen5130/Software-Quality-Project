@@ -15,16 +15,41 @@
              FontFamily="{DynamicResource MaterialDesignFont}"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              d:DesignHeight="540" d:DesignWidth="1010">
-    
-    <Grid x:Name="GridMain" Background="#c67c00" Margin="0,0,-0.4,0">
-        <Border Margin="-255,16,-234,10" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="514"/>
-        <TextBlock Foreground="Blue" Text="Order Info" FontSize="30" FontWeight="Bold"/>
+
+    <Grid x:Name="GridMain" Background="#c67c00" Margin="0,0,-0.4,0">      
         <DataGrid
-  Margin="114,66,141,83"
-  ItemsSource="{Binding Items3}"
-  CanUserSortColumns="True"
-  CanUserAddRows="False" />
-        
-        <Button Content="Load" Margin="364,462,388,19" Click="btn_Load" Height="Auto" Background="Black"/>
+            x:Name="OrderList"
+            ColumnWidth="*"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Margin="303,46,358,114"
+            AutoGenerateColumns="True"
+            CanUserSortColumns="True"
+            CanUserAddRows="False" Width="349">
+            <DataGrid.ItemContainerStyle>
+                <Style TargetType="DataGridRow">
+                    <EventSetter Event="MouseDoubleClick" Handler="Row_DoubleClick"/>
+                </Style>
+            </DataGrid.ItemContainerStyle>
+        </DataGrid>
+
+        <materialDesign:DialogHost CloseOnClickAway="True">
+            <materialDesign:DialogHost.DialogContent>
+                <Grid Width="300" Height="150" HorizontalAlignment="Center">
+                    <StackPanel Orientation="Horizontal" Margin="15">
+                        <materialDesign:PackIcon Kind="Select" Foreground="{StaticResource PrimaryHueMidBrush}" Width="50" Height="50"/>
+                        <TextBlock x:Name="txtMessage" Foreground="Gray" Width="200" Margin="15 5" TextWrapping="Wrap"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15">
+                        <Button x:Name="btn_Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}" Margin="4" VerticalAlignment="Center">
+                            Cancel
+                        </Button>
+                        <Button x:Name="btn_Proceed" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}" Margin="4" VerticalAlignment="Center">
+                            Proceed
+                        </Button>
+                    </StackPanel>
+                </Grid>
+            </materialDesign:DialogHost.DialogContent>
+            <Button Command="{x:Static materialDesign:DialogHost.OpenDialogCommand}" Margin="364,462,388,19" Click="btn_Confirm" Height="Auto" Background="Black">CONFIRM</Button>
+        </materialDesign:DialogHost>
     </Grid>
 </UserControl>
