@@ -1,4 +1,12 @@
-﻿using System;
+﻿//* FILE			: OrderBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : OrderBizDAO for the biiling infomation
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +19,19 @@ using System.Configuration;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class InvoiceBizDAO
+    /// \brief This class contains the invoice's information for a Order file when buyer make an order
+    /// \author : <i>Nhung Luong <i>
     public class OrderBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
+
+        /// \brief This method UpdateOrder for user 
+        /// \details <b>Details</b>
+        /// This method will update order when finishing order
+        /// \return  void
         public void UpdateOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -43,7 +59,10 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
+        /// \brief This method InsertOrder for user 
+        /// \details <b>Details</b>
+        /// This method will insert order when finishing order
+        /// \return  void
         public void InsertOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -67,6 +86,11 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+        /// \brief This method DeleteOrder for user 
+        /// \details <b>Details</b>
+        /// This method will delete order when finishing order
+        /// \return  void
         public void DeleteOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -84,6 +108,12 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+
+        /// \brief This method GetOrders for user 
+        /// \details <b>Details</b>
+        /// This method will get order when finishing order
+        /// \return  void
         public List<Order> GetOrders(string searchItem)
         {
             const string sqlStatement = @" SELECT 
@@ -134,6 +164,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method DataTableToOrderList for user 
+        /// \details <b>Details</b>
+        /// This method will store order when finishing order
+        /// \return  void
         private List<Order> DataTableToOrderList(DataTable table)
         {
             var orders = new List<Order>();
