@@ -102,13 +102,29 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Classes\View\AdminWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Classes\View\BackupWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Classes\View\BuyerWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Classes\View\CarrierWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Classes\View\InvoiceWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\LogFilesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Classes\View\Login.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -129,6 +145,10 @@
     <Page Include="Classes\View\PlannerWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\RouteWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Classes\View\ShippingInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -166,11 +186,23 @@
     <Compile Include="Classes\Controller\OrderBizDAO.cs" />
     <Compile Include="Classes\Controller\PlanInfoBizDAO.cs" />
     <Compile Include="Classes\Controller\TripBizDAO.cs" />
+    <Compile Include="Classes\View\AdminWindow.xaml.cs">
+      <DependentUpon>AdminWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\BackupWindow.xaml.cs">
+      <DependentUpon>BackupWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\View\BuyerWindow.xaml.cs">
       <DependentUpon>BuyerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\View\CarrierWindow.xaml.cs">
+      <DependentUpon>CarrierWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\View\InvoiceWindow.xaml.cs">
       <DependentUpon>InvoiceWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\LogFilesWindow.xaml.cs">
+      <DependentUpon>LogFilesWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\View\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
@@ -187,11 +219,21 @@
     <Compile Include="Classes\View\PlannerWindow.xaml.cs">
       <DependentUpon>PlannerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\View\RouteWindow.xaml.cs">
+      <DependentUpon>RouteWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\View\ShippingInfo.xaml.cs">
       <DependentUpon>ShippingInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\View\TablesWindow.xaml.cs">
+      <DependentUpon>TablesWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DBConnect\Configs.cs" />
     <Compile Include="DBConnect\DBHandler.cs" />
+    <Page Include="Classes\View\TablesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
