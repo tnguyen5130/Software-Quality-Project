@@ -16,43 +16,82 @@ namespace TMSProject.Classes.Controller
         //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-        public void UpdateOrder(Order order)
+        public bool UpdateOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
-	                                            SET CategoryId = @CategoryId,
-                                                    UnitPrice = @UnitPrice,
-		                                            UnitsInStock = @UnitsInStock
-	                                            WHERE ProductID = @ProductID; ";
+                try
+                {   
+                    const string sqlStatement = @"  UPDATE ordering
+	                                            SET contractID = @contractID,
+                                                    orderDate = @orderDate,
+		                                            originalCityID = @originalCityID,
+                                                    desCityID = @desCityID,
+                                                    carrierID = @carrierID,
+                                                    orderStatus = @orderStatus
+	                                            WHERE orderID = @orderID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", order.orderID);
-                myCommand.Parameters.AddWithValue("@CategoryId", order.contractID);
-                myCommand.Parameters.AddWithValue("@UnitPrice", order.orderDate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.origincalCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.desCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.carrierID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.orderStatus);
+                myCommand.Parameters.AddWithValue("@contractID", order.contractID);
+                myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
+                myCommand.Parameters.AddWithValue("@originalCityID", order.origincalCityID);
+                myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
+                myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
+                myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
+                myCommand.Parameters.AddWithValue("@orderID", order.orderID);
 
                 myConn.Open();
 
                 myCommand.ExecuteNonQuery();
+                
+                return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
 
         }
 
-
-        public void InsertOrder(Order order)
+        public bool InsertOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
+<<<<<<< HEAD
+                try
+                {
+                    const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, orderDate, originalCityID, desCityID, carrierID, orderStatus)
+	                                                VALUES (@orderID, @contractID, @orderDate, @originalCityID, @desCityID, @carrierID, @orderStatus); ";
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    
+                    myCommand.Parameters.AddWithValue("@orderID", order.orderID);
+                    myCommand.Parameters.AddWithValue("@contractID", order.contractID);
+                    myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
+                    myCommand.Parameters.AddWithValue("@originalCityID", order.origincalCityID);
+                    myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
+                    myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
+                    myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
+                
+                    myConn.Open();
+=======
                 const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, orderDate, originalCity, desCityID, carrierID, orderStatus)
 	                                            VALUES (@OrderID, @ContractID, @OrderDate, @OriginalCity, @DesCityID, @CarrierID, @OrderStatus);";
+>>>>>>> 3c765d5050898e05342c0eb00a7a51612041337b
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.ExecuteNonQuery();
+                    return true;
 
+<<<<<<< HEAD
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+=======
                 myCommand.Parameters.AddWithValue("@OrderID", order.orderID);
                 myCommand.Parameters.AddWithValue("@ContractID", order.contractID);
                 myCommand.Parameters.AddWithValue("@OrderDate", order.orderDate);
@@ -61,8 +100,9 @@ namespace TMSProject.Classes.Controller
                 myCommand.Parameters.AddWithValue("@OrderStatus", order.orderStatus);
                 
                 myConn.Open();
+>>>>>>> 3c765d5050898e05342c0eb00a7a51612041337b
 
-                myCommand.ExecuteNonQuery();
+                }
             }
 
         }
@@ -87,29 +127,16 @@ namespace TMSProject.Classes.Controller
         public List<Order> GetOrders(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
+                                                orderID, 
+                                                contractID, 
+                                                orderDate, 
+                                                originalCityID, 
+                                                desCityID, 
+                                                carrierID,
+                                                orderStatus
+                                            FROM ordering
+		                                        
+                                            WHERE orderID = @SearchItem ";
 
 
             using (var myConn = new MySqlConnection(connectionString))

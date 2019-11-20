@@ -12,48 +12,63 @@ using System.Configuration;
 namespace TMSProject.Classes.Controller
 {
     public class CityBizDAO
-    {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+    {  
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-        public void UpdateCity(City city)
+        public bool UpdateCity(City city)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
-	                                            SET CategoryId = @CategoryId,
-                                                    UnitPrice = @UnitPrice,
-		                                            UnitsInStock = @UnitsInStock
-	                                            WHERE ProductID = @ProductID; ";
+                try
+                {
+                    const string sqlStatement = @"  UPDATE city
+	                                            SET cityName = @cityName
+	                                            WHERE cityID = @cityID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", city.cityID);
-                myCommand.Parameters.AddWithValue("@CategoryId", city.cityName);
+                    myCommand.Parameters.AddWithValue("@cityName", city.cityName);
+                    myCommand.Parameters.AddWithValue("@cityID", city.cityID);
+
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
                 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
             }
 
         }
 
-
-        public void InsertCarrier(City city)
+        public bool InsertCity(City city)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+                try
+                {
+                    const string sqlStatement = @"  INSERT INTO city (cityID, cityName)
+	                                            VALUES (@cityID, @cityName); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", city.cityID);
-                myCommand.Parameters.AddWithValue("@CategoryId", city.cityName);
-                
-                myConn.Open();
+                    myCommand.Parameters.AddWithValue("@cityID", city.cityID);
+                    myCommand.Parameters.AddWithValue("@cityName", city.cityName);
 
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
 
         }
@@ -75,34 +90,44 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        public List<City> GetCityName(string searchItem)
+        {
+            const string sqlStatement = @" SELECT 
+                                                cityId, 
+                                                cityName 
+                                            FROM city
+                                            WHERE cityName = @SearchItem; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var cities = DataTableToCityList(dataTable);
+
+                return cities;
+            }
+        }
+
         public List<City> GetCities(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
-
-
+                                                cityId, 
+                                                cityName 
+                                            FROM city
+                                            WHERE cityID = @SearchItem; "; 
+                                                
             using (var myConn = new MySqlConnection(connectionString))
             {
 

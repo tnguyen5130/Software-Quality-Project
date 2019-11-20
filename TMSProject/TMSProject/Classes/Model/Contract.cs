@@ -14,18 +14,20 @@ namespace TMSProject.Classes.Model
         public string startDate { get; set; }
         public string endDate { get; set; }
         public string completeStatus { get; set; }
+        public string command { get; set; }
 
         public Contract() { }
 
         public void Save()
         {
-            if (contractID != "")
+            bool flag = false;
+            if (command == "UPDATE")
             {
-                new ContractBizDAO().UpdateContract(this);
+                flag = new ContractBizDAO().UpdateContract(this);
             }
-            else
+            else if(command == "INSERT")
             {
-                new ContractBizDAO().InsertContract(this);
+                flag = new ContractBizDAO().InsertContract(this);
             }
         }
 

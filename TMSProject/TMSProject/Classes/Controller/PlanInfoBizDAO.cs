@@ -16,52 +16,72 @@ namespace TMSProject.Classes.Controller
         //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-        public void UpdatePlanInfo(PlanInfo plan)
+        public bool UpdatePlanInfo(PlanInfo plan)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
+                try
+                {
+                    const string sqlStatement = @"  UPDATE products
 	                                            SET CategoryId = @CategoryId,
                                                     UnitPrice = @UnitPrice,
 		                                            UnitsInStock = @UnitsInStock
 	                                            WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
-                myCommand.Parameters.AddWithValue("@CategoryId", plan.tripID);
-                myCommand.Parameters.AddWithValue("@UnitPrice", plan.startCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", plan.endCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", plan.workingTime);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", plan.distance);
+                    myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", plan.tripID);
+                    myCommand.Parameters.AddWithValue("@UnitPrice", plan.startCityID);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", plan.endCityID);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", plan.workingTime);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", plan.distance);
+
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
                 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
             }
 
         }
 
 
-        public void InsertPlanInfo(PlanInfo plan)
+        public bool InsertPlanInfo(PlanInfo plan)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+                try
+                {
+                    const string sqlStatement = @" INSERT INTO planinfo (planID, orderID, startCityID, endCityID, workingTime, distance)
+	                                            VALUES (@planID, @orderID, @startCityID, @endCityID, @workingTime, @distance); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
-                myCommand.Parameters.AddWithValue("@CategoryId", plan.tripID);
-                myCommand.Parameters.AddWithValue("@UnitPrice", plan.startCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", plan.endCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", plan.workingTime);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", plan.distance);
+                    myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
+                    myCommand.Parameters.AddWithValue("@orderID", plan.orderID);
+                    myCommand.Parameters.AddWithValue("@startCityID", plan.startCityID);
+                    myCommand.Parameters.AddWithValue("@endCityID", plan.endCityID);
+                    myCommand.Parameters.AddWithValue("@workingTime", plan.workingTime);
+                    myCommand.Parameters.AddWithValue("@distance", plan.distance);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+                
             }
 
         }
@@ -83,39 +103,27 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        public List<PlanInfo> GetPlanInfos(string searchItem)
+        public List<PlanInfo> GetPlanInfos(string orderID)
         {
             const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
-
+                                                trip.orderID, 
+                                                sum(distance) as distance, 
+                                                sum(workingTime) as workingTime, 
+                                                originalCityID, 
+                                                desCityID 
+                                            FROM trip
+                                            INNER JOIN 
+                                                mileage on trip.startCity = mileage.startCityID and trip.endCity = mileage.endCityID
+                                            INNER JOIN 
+                                                ordering on trip.orderID = ordering.orderID group by trip.orderID
+                                            WHERE trip.orderID = @orderID
+                                            GROUP BY trip.orderID; ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -141,12 +149,11 @@ namespace TMSProject.Classes.Controller
             {
                 plans.Add(new PlanInfo
                 {
-                    planID = row["planID"].ToString(),
-                    tripID = row["tripID"].ToString(),
-                    startCityID = row["startCityID"].ToString(),
-                    endCityID = row["endCityID"].ToString(),
+                    planID = row["orderID"].ToString(),
+                    distance = Convert.ToDouble(row["distance"]),
                     workingTime = Convert.ToDouble(row["workingTime"]),
-                    distance = Convert.ToDouble(row["distance"])
+                    startCityID = row["originalCityID"].ToString(),
+                    endCityID = row["desCityID"].ToString(),
             });
             }
 

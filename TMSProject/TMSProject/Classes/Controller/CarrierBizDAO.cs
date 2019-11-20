@@ -20,22 +20,23 @@ namespace TMSProject.Classes.Controller
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
+                const string sqlStatement = @"  UPDATE carrier
 	                                            SET CategoryId = @CategoryId,
                                                     UnitPrice = @UnitPrice,
 		                                            UnitsInStock = @UnitsInStock
-	                                            WHERE ProductID = @ProductID; ";
+
+	                                            WHERE carrierID = @carrierID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", carrier.carrierID);
                 myCommand.Parameters.AddWithValue("@CategoryId", carrier.depotCity);
                 myCommand.Parameters.AddWithValue("@UnitPrice", carrier.carrierName);
                 myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlAvail);
                 myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlAvail);
                 myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlRate);
                 myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlRate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.feeferCharge);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.reeferCharge);
+                myCommand.Parameters.AddWithValue("@ProductID", carrier.carrierID);
 
                 myConn.Open();
 
@@ -61,7 +62,7 @@ namespace TMSProject.Classes.Controller
                 myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlAvail);
                 myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlRate);
                 myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlRate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.feeferCharge);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.reeferCharge);
 
 
                 myConn.Open();
@@ -91,30 +92,18 @@ namespace TMSProject.Classes.Controller
         public List<Carrier> GetCarriers(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
-
+                                                carrierID, 
+                                                depotCity, 
+                                                carrierName, 
+                                                ftlAvail, 
+                                                ltlAvail, 
+                                                ftlRate,
+                                                ltlRate, 
+                                                reeferCharge,
+                                                cityName
+                                            FROM carrier
+                                            INNER JOIN city on carrier.depotCity = city.cityID
+                                            WHERE city.cityName = @SearchItem ; ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
@@ -146,14 +135,14 @@ namespace TMSProject.Classes.Controller
             {
                 carriers.Add(new Carrier
                 {
-                    carrierID = row["contractID"].ToString(),
-                    depotCity = row["initiateBy"].ToString(),
-                    carrierName = row["startDate"].ToString(),
+                    carrierID = row["carrierID"].ToString(),
+                    depotCity = row["depotCity"].ToString(),
+                    carrierName = row["carrierName"].ToString(),
                     ftlAvail = Convert.ToDouble(row["ftlAvail"]),
                     ltlAvail = Convert.ToDouble(row["ltlAvail"]),
                     ftlRate = Convert.ToDouble(row["ftlRate"]),
                     ltlRate = Convert.ToDouble(row["ltlRate"]),
-                    feeferCharge = Convert.ToDouble(row["feeferCharge"])
+                    reeferCharge = Convert.ToDouble(row["reeferCharge"])
             });
             }
 

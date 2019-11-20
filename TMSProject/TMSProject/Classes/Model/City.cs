@@ -11,19 +11,22 @@ namespace TMSProject.Classes.Model
     {
         public string cityID { get; set; }
         public string cityName { get; set; }
+        public string command { get; set; }
        
 
         public City() { }
 
         public void Save()
         {
-            if (cityID != "")
+            bool flag = false;
+
+            if (command == "UPDATE")
             {
-                new CityBizDAO().UpdateCity(this);
+                flag = new CityBizDAO().UpdateCity(this);
             }
-            else
+            else if (command =="INSERT")
             {
-                //new CityBizDAO().InsertCity(this);
+                flag = new CityBizDAO().InsertCity(this);
             }
         }
 
@@ -38,16 +41,23 @@ namespace TMSProject.Classes.Model
             return cities[0];
         }
 
-        public List<City> GetOrders(string pattern)
+        public List<City> GetCities(string pattern)
         {
             var cityList = new CityBizDAO().GetCities(pattern);
             return cityList;
         }
 
+<<<<<<< HEAD
+        public List<City> GetCityName(string pattern)
+        {
+            var cityList = new CityBizDAO().GetCityName(pattern);
+            return cityList;
+=======
         public string newCityID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
             return "C" + value;
+>>>>>>> 3c765d5050898e05342c0eb00a7a51612041337b
         }
     }
 }

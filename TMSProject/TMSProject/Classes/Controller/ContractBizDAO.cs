@@ -12,56 +12,71 @@ using System.Configuration;
 namespace TMSProject.Classes.Controller
 {
     public class ContractBizDAO
-    {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+    {   
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-        public void UpdateContract(Contract contract)
+        public bool UpdateContract(Contract contract)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
-	                                            SET CategoryId = @CategoryId,
-                                                    UnitPrice = @UnitPrice,
-		                                            UnitsInStock = @UnitsInStock
-	                                            WHERE ProductID = @ProductID; ";
+                try
+                {
+                    const string sqlStatement = @"  UPDATE contract
+	                                            SET InitiateBy = @initiateBy,
+                                                    startDate = @startDate,
+		                                            endDate = @endDate,
+                                                    completeStatus = @completeStatus
+	                                            WHERE contractID = @contractID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", contract.contractID);
-                myCommand.Parameters.AddWithValue("@CategoryId", contract.initiateBy);
-                myCommand.Parameters.AddWithValue("@UnitPrice", contract.startDate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", contract.endDate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", contract.completeStatus);
-                
-                myConn.Open();
+                    myCommand.Parameters.AddWithValue("@initiateBy", contract.initiateBy);
+                    myCommand.Parameters.AddWithValue("@startDate", contract.startDate);
+                    myCommand.Parameters.AddWithValue("@endDate", contract.endDate);
+                    myCommand.Parameters.AddWithValue("@completeStatus", contract.completeStatus);
+                    myCommand.Parameters.AddWithValue("@contractID", contract.contractID);
 
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
-
         }
 
-
-        public void InsertContract(Contract contract)
+        public bool InsertContract(Contract contract)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+                try
+                {
+                    const string sqlStatement = @"  INSERT INTO contract (contractID, initiateBy, startDate, endDate, completeStatus)
+	                                            VALUES (@contractID, @initiateBy, @startDate, @endDate, @completeStatus); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", contract.contractID);
-                myCommand.Parameters.AddWithValue("@CategoryId", contract.initiateBy);
-                myCommand.Parameters.AddWithValue("@UnitPrice", contract.startDate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", contract.endDate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", contract.completeStatus);
+                    myCommand.Parameters.AddWithValue("@ProductID", contract.contractID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", contract.initiateBy);
+                    myCommand.Parameters.AddWithValue("@UnitPrice", contract.startDate);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", contract.endDate);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", contract.completeStatus);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
-
         }
 
         public void DeleteContract(Contract contract)
@@ -81,39 +96,22 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        public List<Contract> GetContracts(string searchItem)
+        public List<Contract> GetContracts(string contractID)
         {
             const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
-
+                                                contractID, 
+                                                InitiateBy, 
+                                                startDate, 
+                                                endDate, 
+                                                completeStatus
+                                            FROM contract
+                                            WHERE contractID = @contractID; ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+                myCommand.Parameters.AddWithValue("@contractID", contractID);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -133,11 +131,11 @@ namespace TMSProject.Classes.Controller
 
         private List<Contract> DataTableToContractList(DataTable table)
         {
-            var orders = new List<Contract>();
+            var contracts = new List<Contract>();
 
             foreach (DataRow row in table.Rows)
             {
-                orders.Add(new Contract
+                contracts.Add(new Contract
                 {
                     contractID = row["contractID"].ToString(),
                     initiateBy = row["initiateBy"].ToString(),
@@ -147,7 +145,7 @@ namespace TMSProject.Classes.Controller
             });
             }
 
-            return orders;
+            return contracts;
         }
     }
 }

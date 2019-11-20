@@ -10,24 +10,28 @@ namespace TMSProject.Classes.Model
     public class PlanInfo
     {
         public string planID { get; set; }
-        public string tripID { get; set; }
+        public string orderID { get; set; }
         public string startCityID { get; set; }
         public string endCityID { get; set; }
         public double workingTime { get; set; }
         public double distance { get; set; }
+        public string command { get; set; }
 
         public PlanInfo() { }
 
-        public void Save()
+        public bool Save()
         {
-            if (planID != "")
+            bool flag = false;
+            if (command == "UPDATE")
             {
-                new PlanInfoBizDAO().UpdatePlanInfo(this);
+                flag = new PlanInfoBizDAO().UpdatePlanInfo(this);
             }
-            else
+            else if (command == "INSERT")
             {
-                new PlanInfoBizDAO().InsertPlanInfo(this);
+                flag = new PlanInfoBizDAO().InsertPlanInfo(this);
             }
+
+            return flag;
         }
 
         public void Delete()
