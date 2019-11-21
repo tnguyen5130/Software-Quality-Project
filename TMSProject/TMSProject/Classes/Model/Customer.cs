@@ -52,7 +52,7 @@ namespace TMSProject.Classes.Model
         public string newCustomerID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
-            return "cus" + DateTime.Now.ToString("yyyyMMdd") + value;
+            return "cus" + DateTime.Now.ToString("yyyyMMddTHH:mm:ssZ") + value;
         }
     }
 }

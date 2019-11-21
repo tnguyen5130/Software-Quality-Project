@@ -57,7 +57,7 @@ namespace TMSProject.Classes.Model
             return trips[0];
         }
 
-        public List<Trip> GetTrips(string startCityID, string endCityID)
+        public List<Trip> GetTripsST(string startCityID, string endCityID)
         {
             var tripList = new TripBizDAO().GetTrips(startCityID, endCityID);
             return tripList;

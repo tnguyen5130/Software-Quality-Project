@@ -8,6 +8,7 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using System.Windows.Controls;
 
 namespace TMSProject.Classes.Controller
 {
@@ -130,7 +131,7 @@ namespace TMSProject.Classes.Controller
                                                 
             using (var myConn = new MySqlConnection(connectionString))
             {
-
+                myConn.Open();
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
                 myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
@@ -166,5 +167,35 @@ namespace TMSProject.Classes.Controller
 
             return cities;
         }
+
+        public void getCityNameList(ComboBox box)
+        {
+
+            const string sqlStatement = @" SELECT 
+                                                cityName 
+                                            FROM city; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                myConn.Open();
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                MySqlDataReader dr = myCommand.ExecuteReader();             
+
+                while (dr.Read())
+                {
+                    City city = new City();
+                    city.cityName = dr.GetString("cityName");
+                    box.Items.Add(city.cityName);
+                }
+            }
+        }
+
     }
 }

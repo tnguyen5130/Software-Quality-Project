@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using TMSProject.Classes.Controller;
+using TMSProject.Classes.Model;
 
 namespace TMSProject.Classes.View
 {
@@ -23,12 +25,15 @@ namespace TMSProject.Classes.View
 		public ShippingInfo()
 		{
 			InitializeComponent();
+            fillFromToComboBox();
 		}
 
-		private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-
-		}
+        private void fillFromToComboBox()
+        {
+            CityBizDAO cityBiz = new CityBizDAO();
+            cityBiz.getCityNameList(boxFrom);
+            cityBiz.getCityNameList(boxTo);
+        }
 
 		public void btn_OK(object sender, RoutedEventArgs e)
 		{
