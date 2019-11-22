@@ -61,16 +61,16 @@ namespace TMSProject.Classes.View
                 MessageBox.Show("Invalid Telephone Number!!");
                 retCode = false;
             }
-            else if (!Regex.IsMatch(txtPostalCode.Text, @"^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$"))
-            {
-                MessageBox.Show("Invalid Postal Code, try (ex: N2P 0C7)");
-                retCode = false;
-            }
-            else if (!Regex.IsMatch(txtAddress.Text, @"^\d+\s[A-z]+\s[A-z]+"))  
+            else if (!Regex.IsMatch(txtAddress.Text, @"^\d+\s[A-z]+\s[A-z]+"))
             {
                 MessageBox.Show("Invalid Address, try (ex: 61 Park Street)");
                 retCode = false;
             }
+            else if (!Regex.IsMatch(txtPostalCode.Text, @"^^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] ?\d[A-Z]\d)$$"))
+            {
+                MessageBox.Show("Invalid Postal Code, try (ex: N2P 0C7)");
+                retCode = false;
+            }            
             else if (txtCity.SelectedIndex <= -1) // nothing selected
             {
                 MessageBox.Show("City Box must be selected");
@@ -108,10 +108,20 @@ namespace TMSProject.Classes.View
                 customer.Save();
 
                 seq += 1;
-            
-                UserControl usc = null;
-                usc = new ShippingInfo();
-                GridOrder.Children.Add(usc);
+
+                if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                {
+                    //do no stuff
+
+                }
+                else
+                {
+                    //do yes stuff
+                    UserControl usc = null;
+                    usc = new ShippingInfo();
+                    GridOrder.Children.Add(usc);
+                }
+                
             }            
 		}
 	}
