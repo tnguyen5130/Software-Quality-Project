@@ -46,8 +46,8 @@ namespace TMSProject.Classes.View
                 if (OrderList.SelectedItem == null) return;
                 DataRowView dr = OrderList.SelectedItem as DataRowView;
                 DataRow newDr = dr.Row;
-                //MessageBox.Show(Convert.ToString(newDr.ItemArray[1]));
-                ItemSelect = Convert.ToString(newDr.ItemArray[1]);
+                MessageBox.Show(Convert.ToString(newDr.ItemArray[0]));
+                ItemSelect = Convert.ToString(newDr.ItemArray[0]);
             }
             catch (Exception ex)
             {
@@ -58,17 +58,25 @@ namespace TMSProject.Classes.View
 
         public void btn_Confirm(object sender, RoutedEventArgs e)
 		{
-            txtMessage.Text = "Your OrderID selected is: " + ItemSelect;
+            txtMessage.Text = "Your OrderID selected is: " + ItemSelect;            
 		}
 
-        public void btn_Proceed(object sender, RoutedEventArgs e)
+        public void btn_Proceed_Click(object sender, RoutedEventArgs e)
         {
-
+            if (ItemSelect != null)
+            {
+                Order order = new Order();
+                order.orderID = ItemSelect;
+                UserControl usc = null;
+                usc = new PlannerInfo();
+                GridMain.Children.Add(usc);
+            }
         }
 
-        public void btn_Cancel(object sender, RoutedEventArgs e)
+        public void btn_Cancel_Click(object sender, RoutedEventArgs e)
         {
-
+            // If user doesn't want to close, cancel closure
+           
         }
-	}
+    }
 }

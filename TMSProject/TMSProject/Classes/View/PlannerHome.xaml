@@ -36,14 +36,14 @@
             <materialDesign:DialogHost.DialogContent>
                 <Grid Width="300" Height="150" HorizontalAlignment="Center">
                     <StackPanel Orientation="Horizontal" Margin="15">
-                        <materialDesign:PackIcon Kind="Select" Foreground="{StaticResource PrimaryHueMidBrush}" Width="50" Height="50"/>
+                        <materialDesign:PackIcon Kind="BookmarkBorder" Foreground="{StaticResource PrimaryHueMidBrush}" Width="50" Height="50"/>
                         <TextBlock x:Name="txtMessage" Foreground="Gray" Width="200" Margin="15 5" TextWrapping="Wrap"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="15">
-                        <Button x:Name="btn_Cancel" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}" Margin="4" VerticalAlignment="Center">
+                        <Button Name="btn_Cancel" Click="btn_Cancel_Click" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}" Margin="4" VerticalAlignment="Center">
                             Cancel
                         </Button>
-                        <Button x:Name="btn_Proceed" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}" Margin="4" VerticalAlignment="Center">
+                        <Button Name="btn_Proceed" Click="btn_Proceed_Click" Command="{x:Static materialDesign:DialogHost.CloseDialogCommand}" Style="{DynamicResource MaterialDesignFlatButton}" Margin="4" VerticalAlignment="Center">
                             Proceed
                         </Button>
                     </StackPanel>

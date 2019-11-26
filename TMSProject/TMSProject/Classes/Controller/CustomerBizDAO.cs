@@ -85,30 +85,11 @@ namespace TMSProject.Classes.Controller
 
         public List<Customer> GetCustomers(string searchItem)
         {
-            const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
+            const string sqlStatement = @" SELECT customerName, customerCompany, telno, address, customerCity, customerProvince, zipcode
+                                           FROM customer 
+                                           INNER JOIN ordering
+                                           WHERE customer.customerID = ordering.customerID
+                                           AND ordering.orderID = @SearchItem; ";
 
 
             using (var myConn = new MySqlConnection(connectionString))
@@ -141,12 +122,13 @@ namespace TMSProject.Classes.Controller
             {
                 customers.Add(new Customer
                 {
-                    customerID = row["customerID"].ToString(),
                     customerName = row["customerName"].ToString(),
-                    customerCity = row["customerCity"].ToString(),
+                    customerCompany = row["customerCompany"].ToString(),
                     telno = row["telno"].ToString(),
                     address = row["address"].ToString(),
-                    zipcode = row["zipcode"].ToString()
+                    customerCity = row["customerCity"].ToString(),
+                    customerProvince = row["customerProvince"].ToString(),
+                    zipcode = row["zipcode"].ToString()          
             });
             }
 
