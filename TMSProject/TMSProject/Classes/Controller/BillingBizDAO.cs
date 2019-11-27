@@ -22,12 +22,12 @@ using TMSProject.DBConnect;
 /// \author : <i>Nhung Luong<i>
 namespace TMSProject.Classes.Controller
 {
-
     /*==========================================================================================================================*/
     // Name         : BillingBizDAO
     // Purpose      : contain all the name definitions and relative path of files
     // Description  : this class defines name of BillingBizDAO connect to database and update, insert and delete the billing
     /*==========================================================================================================================*/
+
     /// \class BillingBizDAO
     /// \brief This class contains the billing's information for a billing file when buyer make an order
     /// \author : <i>Nhung Luong<i>
@@ -48,7 +48,6 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will update billing infomation when finishing an order
         /// \return  void
-
         public void UpdateBilling(Billing billing)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -73,9 +72,7 @@ namespace TMSProject.Classes.Controller
             }
 
         }
-
-
-
+      
         /* =========================================================================================================================
         * Name		: InsertBilling																						
         * Purpose	: to INSERT the billing infor whenever create an new order 	
@@ -83,6 +80,7 @@ namespace TMSProject.Classes.Controller
         * Outputs	: None																											
         * Returns	: None																										
         ===========================================================================================================================*/
+
         /// \brief This method InsertBilling for user
         /// \details <b>Details</b>
         /// This method will insert billing infomation when into order details and invoice
@@ -108,8 +106,6 @@ namespace TMSProject.Classes.Controller
             }
 
         }
-
-
 
         /* =========================================================================================================================
         * Name		: DeleteBilling																						
@@ -139,16 +135,13 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
-
-
         /* =========================================================================================================================
-       * Name		: GetBillings																						
-       * Purpose	: to GET the billing infor whenever create an new order 	
-       * Inputs	: Billing billing		    : an object called billing																												
-       * Outputs	: None																											
-       * Returns	: None																										
-       ===========================================================================================================================*/
+        * Name		: GetBillings																						
+        * Purpose	: to GET the billing infor whenever create an new order 	
+        * Inputs	: Billing billing		    : an object called billing																												
+        * Outputs	: None																											
+        * Returns	: None																										
+        ===========================================================================================================================*/
         /// \brief This method GetBillings for user
         /// \details <b>Details</b>
         /// This method will get billing infomation when into order details and invoice

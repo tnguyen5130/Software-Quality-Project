@@ -13,9 +13,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TMSProject.Classes.Model;
 using TMSProject.DBConnect;
+using TMSProject.Classes.View;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using System.Windows.Controls;
 
 namespace TMSProject.Classes.Controller
 {
@@ -116,37 +118,17 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public List<Order> GetOrders(string searchItem)
         {
-            const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
+            const string sqlStatement = @" SELECT orderID, orderDate                                                
+                                            FROM ordering
+                                            WHERE orderID = @OrderID, 
+                                                  orderDate = @OrderDate ";
 
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+                myCommand.Parameters.AddWithValue("@OrderID", searchItem);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -164,7 +146,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /// \brief This method DataTableToOrderList for user 
         /// \details <b>Details</b>
         /// This method will store order when finishing order
@@ -178,16 +159,40 @@ namespace TMSProject.Classes.Controller
                 orders.Add(new Order
                 {
                     orderID = row["orderID"].ToString(),
-                    contractID = row["contractID"].ToString(),
                     orderDate = row["orderDate"].ToString(),
-                    origincalCityID = row["originalCityID"].ToString(),
-                    desCityID = row["desCityID"].ToString(),
-                    carrierID = row["carrierID"].ToString(),
-                    orderStatus = row["orderStatus"].ToString()
                 });
             }
 
             return orders;
+        }
+
+        public void loadOrderList(DataGrid grid)
+        {
+            const string sqlStatement = @" SELECT orderID, orderDate FROM ordering;";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                //myCommand.Parameters.AddWithValue("@OrderID", order.orderID);
+                //myCommand.Parameters.AddWithValue("@OrderDate", order.orderDate);
+
+                //myConn.Open();
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                DataTable dataTable = new DataTable("ordering");
+
+                myAdapter.Fill(dataTable);
+
+                //var orders = DataTableToOrderList(dataTable);
+
+                grid.ItemsSource = dataTable.DefaultView;             
+            }
         }
 
     }

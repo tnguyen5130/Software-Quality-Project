@@ -31,6 +31,8 @@ namespace TMSProject.Classes.Model
         /// </summary>
         public string customerID { get; set; }
         public string customerName { get; set; }
+        public string customerCompany { get; set; }
+        public string customerProvince { get; set; }
         public string customerCity { get; set; }
         public string telno { get; set; }
         public string address { get; set; }
@@ -66,16 +68,13 @@ namespace TMSProject.Classes.Model
         {
             new CustomerBizDAO().DeleteCustomer(this);
         }
-
-
-
         /// \brief This method GetById
         /// \details <b>Details</b>
         /// This method will get emelent by ID
         /// \return  void
         public Customer GetById(string customerID)
         {
-            var customers = new CustomerBizDAO().GetCustomers(customerID);
+            var customers = new CustomerBizDAO().GetCustomers(orderID);
             return customers[0];
         }
 
