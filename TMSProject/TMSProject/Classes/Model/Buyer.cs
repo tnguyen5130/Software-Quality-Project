@@ -22,10 +22,6 @@ namespace TMSProject.Classes.Model
     /// \author : <i>Yonchul Choi <i>
     public class Buyer
     {
-        /// A String to get employee ID
-        public string buyerEmployeeID { get; set; }
-
-
         /// \brief This method Buyer for user 
         /// \details <b>Details</b>
         /// This method will get Buyer ID

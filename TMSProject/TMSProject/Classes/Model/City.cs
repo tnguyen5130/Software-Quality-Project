@@ -82,11 +82,11 @@ namespace TMSProject.Classes.Model
         }
 
 
-        public List<City> GetCityName(string pattern)
-        {
-            var cityList = new CityBizDAO().GetCityName(pattern);
-            return cityList;
-        }
+        //public List<City> GetCityName(string pattern)
+        //{
+        //    var cityList = new CityBizDAO().GetCityName(pattern);
+        //    return cityList;
+        //}
 
         public string newCityID(int seq)
         {

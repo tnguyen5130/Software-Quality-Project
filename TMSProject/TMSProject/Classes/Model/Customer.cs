@@ -34,7 +34,6 @@ namespace TMSProject.Classes.Model
         public string customerCompany { get; set; }
         public string customerProvince { get; set; }
         public string customerCity { get; set; }
-        public string customerProvince { get; set; }
         public string telno { get; set; }
         public string address { get; set; }
         public string zipcode { get; set; }
@@ -73,7 +72,7 @@ namespace TMSProject.Classes.Model
         /// \details <b>Details</b>
         /// This method will get emelent by ID
         /// \return  void
-        public Customer GetById(string customerID)
+        public Customer GetById(string orderID)
         {
             var customers = new CustomerBizDAO().GetCustomers(orderID);
             return customers[0];

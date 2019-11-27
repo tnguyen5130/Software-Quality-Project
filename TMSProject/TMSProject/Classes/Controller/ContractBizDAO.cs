@@ -31,7 +31,7 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will update contract database 
         /// \return  void
-        public void UpdateContract(Contract contract)
+        public bool UpdateContract(Contract contract)
 
         {
             using (var myConn = new MySqlConnection(connectionString))

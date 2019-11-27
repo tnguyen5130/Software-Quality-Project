@@ -167,7 +167,6 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will get employee when finishing order
         /// \return  void
-        public List<Employee>;
         private List<Employee> DataTableToEmployeeList(DataTable table)
         {
             var employees = new List<Employee>();

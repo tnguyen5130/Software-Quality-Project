@@ -31,7 +31,7 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will update city for select ting start and end city
         /// \return  void
-        public void UpdateCity(City city)
+        public bool UpdateCity(City city)
 
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -66,7 +66,7 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will insert city for selecting start and end city
         /// \return  void
-        public void InsertCarrier(City city)
+        public bool InsertCity(City city)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {

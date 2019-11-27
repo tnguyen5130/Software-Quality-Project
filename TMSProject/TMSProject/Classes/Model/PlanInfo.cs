@@ -75,7 +75,7 @@ namespace TMSProject.Classes.Model
         /// \return  void
         public PlanInfo GetById(string planID)
         {
-            var plans = new PlanInfoBizDAO().GetPlanInfo(planID);
+            var plans = new PlanInfoBizDAO().GetPlanInfos(planID);
             return plans[0];
         }
 
@@ -86,7 +86,7 @@ namespace TMSProject.Classes.Model
         /// \return  void
         public List<PlanInfo> GetPlanInfo(string pattern)
         {
-            var planList = new PlanInfoBizDAO().GetPlanInfo(pattern);
+            var planList = new PlanInfoBizDAO().GetPlanInfos(pattern);
             return planList;
         }
 
