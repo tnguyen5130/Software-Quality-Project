@@ -27,24 +27,43 @@ namespace TMSProject.Classes.Model
         /// </summary>
         public string tripID { get; set; }
         public string orderID { get; set; }
+        public string startCity { get; set; }
+        public string endCity { get; set; }
         public string tripStatus { get; set; }
-        
+        public string command { get; set; }
+
+        //order + mileage information for making trips
+        public string contractID { get; set; }
+        public string orderDate { get; set; }
+        public string originalCityID { get; set; }
+        public string desCityID { get; set; }
+        public string carrierID { get; set; }
+        public string orderStatus { get; set; }
+        public string mileageID { get; set; }
+        public string startCityID { get; set; }
+        public string endCityID { get; set; }
+        public double distance { get; set; }
+        public double workingTime { get; set; }
+
         public Trip() { }
 
         /// \brief This method Save trip 
         /// \details <b>Details</b>
         /// This method will save trip
         /// \return  void
-        public void Save()
+        public bool Save()
         {
-            if (tripID != "")
+            bool flag = false;
+            if (command == "UPDATE")
             {
-                new TripBizDAO().UpdateTrip(this);
+                flag = new TripBizDAO().UpdateTrip(this);
             }
-            else
+            else if (command == "INSERT")
             {
-                new TripBizDAO().InsertTrip(this);
+                flag = new TripBizDAO().InsertTrip(this);
             }
+
+            return flag;
         }
 
 
@@ -69,14 +88,19 @@ namespace TMSProject.Classes.Model
             return trips[0];
         }
 
+        public List<Trip> GetTripsST(string startCityID, string endCityID)
+        {
+            var tripList = new TripBizDAO().GetTrips(startCityID, endCityID);
+            return tripList;
+        }
 
         /// \brief This method Delete
         /// \details <b>Details</b>
         /// This method will delete trip
         /// \return  void
-        public List<Trip> GetTrips(string pattern)
+        public List<Trip> GetTrips(string tripID)
         {
-            var tripList = new TripBizDAO().GetTrips(pattern);
+            var tripList = new TripBizDAO().GetTrips(tripID);
             return tripList;
         }
 

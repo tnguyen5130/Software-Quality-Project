@@ -37,7 +37,7 @@ namespace TMSProject.Classes.Model
         public double ltlAvail { get; set; }
         public double ftlRate { get; set; }
         public double ltlRate { get; set; }
-        public double feeferCharge { get; set; }
+        public double reeferCharge { get; set; }
 
         public Carrier() { }
 

@@ -34,20 +34,27 @@ namespace TMSProject.Classes.Controller
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
-	                                            SET CategoryId = @CategoryId,
-                                                    UnitPrice = @UnitPrice,
-		                                            UnitsInStock = @UnitsInStock
-	                                            WHERE ProductID = @ProductID; ";
+                const string sqlStatement = @"  UPDATE customer
+	                                            SET customerID = @CustomerID,
+                                                    customerCompany = @CustomerCompany,
+                                                    customerName = @CustomerName,
+                                                    customerCity = @CustomerCity,
+                                                    customerProvince = @CustomerProvince,
+		                                            telno = @CustomerTelPhone,
+                                                    address = @CustomerAddress,
+                                                    zipcode = @CustomerZipcode
+	                                            WHERE customerID = @CustomerID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", customer.customerID);
-                myCommand.Parameters.AddWithValue("@CategoryId", customer.customerName);
-                myCommand.Parameters.AddWithValue("@UnitPrice", customer.customerCity);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", customer.telno);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", customer.address);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", customer.zipcode);
+                myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
+                myCommand.Parameters.AddWithValue("@CustomerCompany", customer.customerCompany);
+                myCommand.Parameters.AddWithValue("@CustomerName", customer.customerName);
+                myCommand.Parameters.AddWithValue("@CustomerCity", customer.customerCity);
+                myCommand.Parameters.AddWithValue("@CustomerProvince", customer.customerProvince);
+                myCommand.Parameters.AddWithValue("@CustomerTelPhone", customer.telno);
+                myCommand.Parameters.AddWithValue("@CustomerAddress", customer.address);
+                myCommand.Parameters.AddWithValue("@CustomerZipcode", customer.zipcode);
 
                 myConn.Open();
 
@@ -64,17 +71,19 @@ namespace TMSProject.Classes.Controller
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+                const string sqlStatement = @"  INSERT INTO customer (customerID, customerName, customerCity, customerProvince, telno, address, zipcode, customerCompany)
+	                                            VALUES (@CustomerID, @CustomerName, @CustomerCity, @CustomerProvince, @CustomerTelNo, @CustomerAddress, @CustomerZipcode, @CustomerCompany); ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", customer.customerID);
-                myCommand.Parameters.AddWithValue("@CategoryId", customer.customerName);
-                myCommand.Parameters.AddWithValue("@UnitPrice", customer.customerCity);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", customer.telno);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", customer.address);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", customer.zipcode);
+                myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
+                myCommand.Parameters.AddWithValue("@CustomerName", customer.customerName);
+                myCommand.Parameters.AddWithValue("@CustomerCity", customer.customerCity);
+                myCommand.Parameters.AddWithValue("@CustomerProvince", customer.customerProvince);
+                myCommand.Parameters.AddWithValue("@CustomerTelNo", customer.telno);
+                myCommand.Parameters.AddWithValue("@CustomerAddress", customer.address);
+                myCommand.Parameters.AddWithValue("@CustomerZipcode", customer.zipcode);
+                myCommand.Parameters.AddWithValue("@CustomerCompany", customer.customerCompany);
 
                 myConn.Open();
 
@@ -92,12 +101,11 @@ namespace TMSProject.Classes.Controller
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
-												DELETE FROM products WHERE ProductID = @ProductID; ";
+                const string sqlStatement = @"  DELETE FROM customer WHERE customerID = @CustomerID;";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", customer.customerID);
+                myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
 
                 myConn.Open();
 

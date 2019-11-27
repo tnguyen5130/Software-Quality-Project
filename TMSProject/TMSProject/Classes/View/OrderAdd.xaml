@@ -7,18 +7,7 @@
              mc:Ignorable="d" 
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
              d:DesignHeight="540" d:DesignWidth="1010">
-    <UserControl.Resources>
-        <ControlTemplate x:Key="TBTemplate" >
-            <TextBox Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
-                <TextBox.Resources>
-                    <Style TargetType="ContentControl">
-                        <Setter Property="Foreground" Value="CadetBlue"/>
-                    </Style>
-                </TextBox.Resources>
-            </TextBox>
-        </ControlTemplate>
-    </UserControl.Resources>
-   
+
     <Grid Background="#534bae" x:Name="GridOrder">
             <Border Margin="10,10,50.6,10" MinWidth="400" Background="White" VerticalAlignment="Center" Padding="30" CornerRadius="10" MaxWidth="800" Height="520">
             <Border.Effect>
@@ -26,18 +15,90 @@
             </Border.Effect>
             <StackPanel Margin="-4.4,-30.4,4.4,-19.6">
                 <Grid Margin="0 0 0 20"/>
-                <TextBlock Foreground="Blue" Text="Order ID:" FontSize="15" FontWeight="Bold" Margin="0,0,517,20"/>
-                <TextBlock Foreground="Blue" Text="Date:" FontSize="15" FontWeight="Bold" Margin="0,0,517,20"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Company"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Username"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Phone Number"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Address"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Postal Code"/>
-                <ComboBox Foreground="Black" materialDesign:HintAssist.Hint="City" Margin="0 5"/>
-                <ComboBox Foreground="Black" materialDesign:HintAssist.Hint="Province" Margin="0 5"/>
-                <Control Template="{StaticResource TBTemplate}" materialDesign:HintAssist.Hint="Postal Code"/>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Order ID:" Foreground="Blue" FontSize="15" FontWeight="Bold" />
+                    <TextBlock x:Name="txtOrderID" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Date:" Foreground="Blue" FontSize="15" FontWeight="Bold" />
+                    <TextBlock x:Name="txtDate" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
+                </StackPanel>
 
-
+                <!-- COMPANY TEXTBOX -->
+                <TextBox x:Name="txtCompany" materialDesign:HintAssist.Hint="Customer Company" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                    <TextBox.Resources>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Foreground" Value="CadetBlue"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                
+                <!-- FIRST NAME TEXT BOX -->
+                <TextBox x:Name="txtFirstName" materialDesign:HintAssist.Hint="Customer First Name" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                    <TextBox.Resources>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Foreground" Value="CadetBlue"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <!-- LAST NAME TEXT BOX -->
+                <TextBox x:Name="txtLastName" materialDesign:HintAssist.Hint="Customer Last Name" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                    <TextBox.Resources>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Foreground" Value="CadetBlue"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <!-- TELEPHONE TEXT BOX -->
+                <TextBox x:Name="txtTelPhone" materialDesign:HintAssist.Hint="Customer Telephone Number" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                    <TextBox.Resources>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Foreground" Value="CadetBlue"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <!-- ADDRESS TEXT BOX-->
+                <TextBox x:Name="txtAddress" materialDesign:HintAssist.Hint="Customer Address" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                    <TextBox.Resources>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Foreground" Value="CadetBlue"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <!-- POSTAL CODE TEXT BOX -->
+                <TextBox x:Name="txtPostalCode" materialDesign:HintAssist.Hint="Customer Postal Code" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                    <TextBox.Resources>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Foreground" Value="CadetBlue"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                
+                <!-- CITY COMBO BOX -->
+                <ComboBox x:Name="txtCity" Foreground="Black" materialDesign:HintAssist.Hint="City" Margin="0 5" SelectedValuePath="Content">
+                    <ComboBoxItem Content="Toronto"/>
+                    <ComboBoxItem Content="Waterloo" />
+                    <ComboBoxItem Content="Kitchener" />
+                    <ComboBoxItem Content="Ottawa" />
+                    <ComboBoxItem Content="London" />
+                    <ComboBoxItem Content="Hamilton" />
+                    <ComboBoxItem Content="Kingston" />
+                    <ComboBoxItem Content="Windsor" />
+                    <ComboBoxItem Content="Oshawa" />
+                    <ComboBoxItem Content="Belleville" />                    
+                </ComboBox>
+                <!-- PROVINCE COMBO BOX-->
+                <ComboBox x:Name="txtProvince" Foreground="Black" materialDesign:HintAssist.Hint="Province" Margin="0 5" SelectedValuePath="Content">
+                    <ComboBoxItem Content="Ontario(ON)" />
+                    <ComboBoxItem Content="British Columbia(BC)" />
+                    <ComboBoxItem Content="Alberta(AB)" />
+                    <ComboBoxItem Content="Saskatchewan(SK)" />
+                    <ComboBoxItem Content="Quebec(QC)" />
+                    <ComboBoxItem Content="Nova Scotia(NS)" />
+                    <ComboBoxItem Content="New Brunswick(NB)" />
+                    <ComboBoxItem Content="Manitoba(MB)" />
+                </ComboBox>
+               
                 <Button Content="Next" Margin="0 20" Click="btn_Order_Add"/>
             </StackPanel>
         </Border>

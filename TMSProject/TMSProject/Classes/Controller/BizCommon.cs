@@ -18,13 +18,17 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>Nhung Luong<i>
     public class BizCommon
     {
+        //public string newOrderID()
         /// \brief This method newOrder for user 
         /// \details <b>Details</b>
         /// This method will generate an new order
         /// \return  void
         public string newOrder()
         {
-            return null;
+            string value = String.Format("{0:D3}", GlobalSeq.orderSeq);
+            GlobalSeq.orderSeq = GlobalSeq.orderSeq + 1;
+            return "ORD" + DateTime.Now.ToString("yyyyMMdd") + value;
+            
         }
 
 
@@ -75,6 +79,12 @@ namespace TMSProject.Classes.Controller
         public string newBillingID()
         {
             return null;
+        }
+
+        public string newInvoiceID(int seq)
+        {
+            string value = String.Format("{0:D3}", seq);
+            return "INV" + value;
         }
     }
 }

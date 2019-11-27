@@ -25,6 +25,8 @@ namespace TMSProject.Classes.Model
         public string cityID { get; set; }
         public string cityName { get; set; }
 
+        public string command { get; set; }   
+
         /// <summary>
         /// Astring to get city
         /// </summary>
@@ -37,13 +39,15 @@ namespace TMSProject.Classes.Model
         /// \return  void
         public void Save()
         {
-            if (cityID != "")
+            bool flag = false;
+
+            if (command == "UPDATE")
             {
-                new CityBizDAO().UpdateCity(this);
+                flag = new CityBizDAO().UpdateCity(this);
             }
-            else
+            else if (command =="INSERT")
             {
-                //new CityBizDAO().InsertCity(this);
+                flag = new CityBizDAO().InsertCity(this);
             }
         }
 
@@ -67,7 +71,6 @@ namespace TMSProject.Classes.Model
             return cities[0];
         }
 
-
         /// \brief This method GetOrders for user 
         /// \details <b>Details</b>
         /// This method will get order
@@ -76,6 +79,19 @@ namespace TMSProject.Classes.Model
         {
             var cityList = new CityBizDAO().GetCities(pattern);
             return cityList;
+        }
+
+
+        public List<City> GetCityName(string pattern)
+        {
+            var cityList = new CityBizDAO().GetCityName(pattern);
+            return cityList;
+        }
+
+        public string newCityID(int seq)
+        {
+            string value = String.Format("{0:D3}", seq);
+            return "C" + value;
         }
     }
 }

@@ -34,6 +34,7 @@ namespace TMSProject.Classes.Model
         public string customerCompany { get; set; }
         public string customerProvince { get; set; }
         public string customerCity { get; set; }
+        public string customerProvince { get; set; }
         public string telno { get; set; }
         public string address { get; set; }
         public string zipcode { get; set; }
@@ -49,7 +50,7 @@ namespace TMSProject.Classes.Model
         /// \return  void
         public void Save()
         {
-            if (customerID != "")
+            if (customerID == "")
             {
                 new CustomerBizDAO().UpdateCustomer(this);
             }
@@ -88,6 +89,12 @@ namespace TMSProject.Classes.Model
         {
             var customerList = new CustomerBizDAO().GetCustomers(pattern);
             return customerList;
+        }
+
+        public string newCustomerID(int seq)
+        {
+            string value = String.Format("{0:D3}", seq);
+            return "cus" + DateTime.Now.ToString("yyyyMMddTHH:mm:ssZ") + value;
         }
     }
 }

@@ -29,34 +29,46 @@ namespace TMSProject.Classes.Controller
         ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-
         /// \brief This method UpdateOrder for user 
         /// \details <b>Details</b>
         /// This method will update order when finishing order
         /// \return  void
-        public void UpdateOrder(Order order)
+        public bool UpdateOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
-	                                            SET CategoryId = @CategoryId,
-                                                    UnitPrice = @UnitPrice,
-		                                            UnitsInStock = @UnitsInStock
-	                                            WHERE ProductID = @ProductID; ";
+                try
+                {   
+                    const string sqlStatement = @"  UPDATE ordering
+	                                            SET contractID = @contractID,
+                                                    orderDate = @orderDate,
+		                                            originalCityID = @originalCityID,
+                                                    desCityID = @desCityID,
+                                                    carrierID = @carrierID,
+                                                    orderStatus = @orderStatus
+	                                            WHERE orderID = @orderID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", order.orderID);
-                myCommand.Parameters.AddWithValue("@CategoryId", order.contractID);
-                myCommand.Parameters.AddWithValue("@UnitPrice", order.orderDate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.origincalCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.desCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.carrierID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.orderStatus);
+                myCommand.Parameters.AddWithValue("@contractID", order.contractID);
+                myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
+                myCommand.Parameters.AddWithValue("@originalCityID", order.origincalCityID);
+                myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
+                myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
+                myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
+                myCommand.Parameters.AddWithValue("@orderID", order.orderID);
 
                 myConn.Open();
 
                 myCommand.ExecuteNonQuery();
+                
+                return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
 
         }
@@ -65,25 +77,35 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will insert order when finishing order
         /// \return  void
-        public void InsertOrder(Order order)
+        public bool InsertOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+                try
+                {
+                    const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, orderDate, originalCityID, desCityID, carrierID, orderStatus)
+	                                                VALUES (@orderID, @contractID, @orderDate, @originalCityID, @desCityID, @carrierID, @orderStatus); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                myCommand.Parameters.AddWithValue("@ProductName", order.orderID);
-                myCommand.Parameters.AddWithValue("@SupplierID", order.contractID);
-                myCommand.Parameters.AddWithValue("@CategoryID", order.orderDate);
-                myCommand.Parameters.AddWithValue("@QuantityPerUnit", order.origincalCityID);
-                myCommand.Parameters.AddWithValue("@UnitPrice", order.desCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.orderStatus);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    
+                    myCommand.Parameters.AddWithValue("@orderID", order.orderID);
+                    myCommand.Parameters.AddWithValue("@contractID", order.contractID);
+                    myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
+                    myCommand.Parameters.AddWithValue("@originalCityID", order.origincalCityID);
+                    myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
+                    myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
+                    myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
                 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
 
         }
@@ -122,7 +144,6 @@ namespace TMSProject.Classes.Controller
                                             FROM ordering
                                             WHERE orderID = @OrderID, 
                                                   orderDate = @OrderDate ";
-
 
             using (var myConn = new MySqlConnection(connectionString))
             {

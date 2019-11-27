@@ -23,7 +23,6 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>Nhung Luong <i>
     public class TripBizDAO
     {
-        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
 
@@ -31,53 +30,69 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will update trip info when finishing order
         /// \return  void
-        public void UpdateTrip(Trip trip)
+        public bool UpdateTrip(Trip trip)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
+                try
+                {
+                    const string sqlStatement = @"  UPDATE products
 	                                            SET CategoryId = @CategoryId,
                                                     UnitPrice = @UnitPrice,
 		                                            UnitsInStock = @UnitsInStock
 	                                            WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", trip.tripID);
-                myCommand.Parameters.AddWithValue("@CategoryId", trip.orderID);
-                myCommand.Parameters.AddWithValue("@CategoryId", trip.tripStatus);
+                    myCommand.Parameters.AddWithValue("@ProductID", trip.tripID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", trip.orderID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", trip.tripStatus);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
-
         }
-
-
 
         /// \brief This method InsertTrip for user 
         /// \details <b>Details</b>
         /// This method will insert trip info when finishing order
         /// \return  void
-        public void InsertTrip(Trip trip)
+        public bool InsertTrip(Trip trip)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+                try
+                {
+                    const string sqlStatement = @"  INSERT INTO trip (tripID, orderID, startCity, endCity, tripStatus)
+	                                            VALUES (@tripID, @orderID, @startCity, @endCity, @tripStatus); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", trip.tripID);
-                myCommand.Parameters.AddWithValue("@CategoryId", trip.orderID);
-                myCommand.Parameters.AddWithValue("@CategoryId", trip.tripStatus);
+                    myCommand.Parameters.AddWithValue("@tripID", trip.tripID);
+                    myCommand.Parameters.AddWithValue("@orderID", trip.orderID);
+                    myCommand.Parameters.AddWithValue("@startCity", trip.startCity);
+                    myCommand.Parameters.AddWithValue("@endCity", trip.endCity);
+                    myCommand.Parameters.AddWithValue("@tripStatus", trip.tripStatus);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
-
         }
 
 
@@ -101,46 +116,81 @@ namespace TMSProject.Classes.Controller
                 myCommand.ExecuteNonQuery();
             }
         }
-
-
-
+      
         /// \brief This method GetTrip for user 
         /// \details <b>Details</b>
         /// This method will get trip info when finishing order
         /// \return  void
-        public List<Trip> GetTrips(string searchItem)
+        public List<Trip> GetTrips(string tripID)
         {
             const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
-
+                                                orderID, 
+                                                contractID, 
+                                                orderDate, 
+                                                originalCityID, 
+                                                desCityID, 
+                                                carrierID,
+                                                orderStatus, 
+                                                mileageID,
+                                                destinationCityID,
+                                                targetCityID,
+                                                distance, 
+                                                workingTime
+                                            FROM ordering
+		                                        INNER JOIN mileage ON ordering.originalCityID = mileage.destinationCityID
+                                            OR ordering.desCityID = mileage.destinationCityID
+                                            WHERE ordering.originalCityID = @startCityID 
+                                            AND ordering.desCityID = @endCityID; ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+                myCommand.Parameters.AddWithValue("@tripID", tripID);
+                
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var trips = DataTableToTripList(dataTable);
+
+                return trips;
+            }
+        }
+
+        public List<Trip> GetTrips(string startCityID, string endCityID)
+        {   
+            const string sqlStatement = @" SELECT 
+                                                orderID, 
+                                                contractID, 
+                                                orderDate, 
+                                                originalCityID, 
+                                                desCityID, 
+                                                carrierID,
+                                                orderStatus, 
+                                                mileageID,
+                                                startCityID,
+                                                endCityID,
+                                                distance, 
+                                                workingTime
+                                            FROM ordering
+		                                        INNER JOIN mileage ON ordering.originalCityID = mileage.startCityID
+                                            OR ordering.desCityID = mileage.endCityID
+                                            WHERE ordering.originalCityID = @startCityID 
+                                            AND ordering.desCityID = @endCityID; ";
+  
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@startCityID", startCityID);
+                myCommand.Parameters.AddWithValue("@endCityID", endCityID);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -170,11 +220,19 @@ namespace TMSProject.Classes.Controller
             foreach (DataRow row in table.Rows)
             {
                 trips.Add(new Trip
-                {
-                    tripID = row["tripID"].ToString(),
+                {   
                     orderID = row["orderID"].ToString(),
-                    tripStatus = row["tripStatus"].ToString(),
-
+                    contractID = row["contractID"].ToString(),
+                    orderDate = row["orderDate"].ToString(),
+                    originalCityID = row["originalCityID"].ToString(),
+                    desCityID = row["desCityID"].ToString(),
+                    carrierID = row["carrierID"].ToString(),
+                    orderStatus = row["orderStatus"].ToString(),
+                    mileageID = row["mileageID"].ToString(),
+                    startCityID = row["startCityID"].ToString(),
+                    endCityID = row["endCityID"].ToString(),
+                    distance = Convert.ToDouble(row["distance"]),
+                    workingTime = Convert.ToDouble(row["workingTime"]),
                 });
             }
 

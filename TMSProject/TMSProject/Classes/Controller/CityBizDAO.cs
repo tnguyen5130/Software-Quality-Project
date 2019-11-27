@@ -16,6 +16,7 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using System.Windows.Controls;
 
 namespace TMSProject.Classes.Controller
 {
@@ -23,33 +24,40 @@ namespace TMSProject.Classes.Controller
     /// \brief This class contains the City's information for a billing file when buyer make an order
     /// \author : <i>nhung Luong<i>
     public class CityBizDAO
-    {
-        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+    {       
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
-
 
         /// \brief This method UpdateCity for user 
         /// \details <b>Details</b>
         /// This method will update city for select ting start and end city
         /// \return  void
         public void UpdateCity(City city)
+
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
-	                                            SET CategoryId = @CategoryId,
-                                                    UnitPrice = @UnitPrice,
-		                                            UnitsInStock = @UnitsInStock
-	                                            WHERE ProductID = @ProductID; ";
+                try
+                {
+                    const string sqlStatement = @"  UPDATE city
+	                                            SET cityName = @cityName
+	                                            WHERE cityID = @cityID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", city.cityID);
-                myCommand.Parameters.AddWithValue("@CategoryId", city.cityName);
+                    myCommand.Parameters.AddWithValue("@cityName", city.cityName);
+                    myCommand.Parameters.AddWithValue("@cityID", city.cityID);
+
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
                 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
             }
 
         }
@@ -62,17 +70,26 @@ namespace TMSProject.Classes.Controller
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+                try
+                {
+                    const string sqlStatement = @"  INSERT INTO city (cityID, cityName)
+	                                            VALUES (@cityID, @cityName); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", city.cityID);
-                myCommand.Parameters.AddWithValue("@CategoryId", city.cityName);
-                
-                myConn.Open();
+                    myCommand.Parameters.AddWithValue("@cityID", city.cityID);
+                    myCommand.Parameters.AddWithValue("@cityName", city.cityName);
 
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
 
         }
@@ -99,8 +116,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
-
         /// \brief This method GetCities for user 
         /// \details <b>Details</b>
         /// This method will get city for select ting start and end city
@@ -108,30 +123,10 @@ namespace TMSProject.Classes.Controller
         public List<City> GetCities(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
-
+                                                cityId, 
+                                                cityName 
+                                            FROM city
+                                            WHERE cityName = @SearchItem; ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
@@ -155,7 +150,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /// \brief This method DataTableToCityList for user 
         /// \details <b>Details</b>
         /// This method will store city for select ting start and end city
@@ -176,5 +170,35 @@ namespace TMSProject.Classes.Controller
 
             return cities;
         }
+
+        public void getCityNameList(ComboBox box)
+        {
+
+            const string sqlStatement = @" SELECT 
+                                                cityName 
+                                            FROM city; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                myConn.Open();
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                MySqlDataReader dr = myCommand.ExecuteReader();             
+
+                while (dr.Read())
+                {
+                    City city = new City();
+                    city.cityName = dr.GetString("cityName");
+                    box.Items.Add(city.cityName);
+                }
+            }
+        }
+
     }
 }

@@ -35,6 +35,8 @@ namespace TMSProject.Classes.Model
         public string desCityID { get; set; }
         public string carrierID { get; set; }
         public string orderStatus { get; set; }
+        public string command { get; set; }
+
 
         public Order() { }
 
@@ -42,16 +44,20 @@ namespace TMSProject.Classes.Model
         /// \details <b>Details</b>
         /// This method will save order Info
         /// \return  void
-        public void Save()
+        public bool Save()
         {
-            if (orderID != "")
+            bool flag = false;
+            if (command == "UPDATE")
             {
-                new OrderBizDAO().UpdateOrder(this);
+                flag = new OrderBizDAO().UpdateOrder(this);
+
             }
-            else
+            else if(command =="INSERT")
             {
-                new OrderBizDAO().InsertOrder(this);
+                flag = new OrderBizDAO().InsertOrder(this);
             }
+
+            return flag;
         }
 
         /// \brief This method Delete
@@ -71,7 +77,15 @@ namespace TMSProject.Classes.Model
         public Order GetById(string orderID)
         {
             var orders = new OrderBizDAO().GetOrders(orderID);
-            return orders[0];
+            if (orders.Count == 0)
+            {
+                return null;
+            }
+            else
+            {
+                return orders[0];
+            }
+            
         }
 
 
@@ -91,10 +105,9 @@ namespace TMSProject.Classes.Model
         /// \details <b>Details</b>
         /// This method will generate order ID
         /// \return  void
-        public string generateOrderID(int seq)
-        {
-            // Naming ord + date + seq
-            return null;
+         public string generateOrderID(int seq,int time)
+        {            
+            return "ord"+DateTime.Now.ToString()+time;
         }
 
         public bool fieldsValidation()
