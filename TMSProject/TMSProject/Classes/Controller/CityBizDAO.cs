@@ -1,4 +1,12 @@
-﻿using System;
+﻿//* FILE			: CityBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,11 +20,19 @@ using System.Windows.Controls;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class CarrierBizDAO
+    /// \brief This class contains the City's information for a billing file when buyer make an order
+    /// \author : <i>nhung Luong<i>
     public class CityBizDAO
-    {  
+    {       
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-        public bool UpdateCity(City city)
+        /// \brief This method UpdateCity for user 
+        /// \details <b>Details</b>
+        /// This method will update city for select ting start and end city
+        /// \return  void
+        public void UpdateCity(City city)
+
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
@@ -46,7 +62,11 @@ namespace TMSProject.Classes.Controller
 
         }
 
-        public bool InsertCity(City city)
+        /// \brief This method InsertCarrier for user 
+        /// \details <b>Details</b>
+        /// This method will insert city for selecting start and end city
+        /// \return  void
+        public void InsertCarrier(City city)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
@@ -74,6 +94,11 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+        /// \brief This method DeleteCity for user 
+        /// \details <b>Details</b>
+        /// This method will delete city for selecting start and end city
+        /// \return  void
         public void DeleteCity(City city)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -91,7 +116,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        public List<City> GetCityName(string searchItem)
+        /// \brief This method GetCities for user 
+        /// \details <b>Details</b>
+        /// This method will get city for select ting start and end city
+        /// \return  void
+        public List<City> GetCities(string searchItem)
         {
             const string sqlStatement = @" SELECT 
                                                 cityId, 
@@ -121,36 +150,10 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        public List<City> GetCities(string searchItem)
-        {
-            const string sqlStatement = @" SELECT 
-                                                cityId, 
-                                                cityName 
-                                            FROM city
-                                            WHERE cityID = @SearchItem; "; 
-                                                
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-                myConn.Open();
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
-                {
-                    SelectCommand = myCommand
-                };
-
-                var dataTable = new DataTable();
-
-                myAdapter.Fill(dataTable);
-
-                var cities = DataTableToCityList(dataTable);
-
-                return cities;
-            }
-        }
-
+        /// \brief This method DataTableToCityList for user 
+        /// \details <b>Details</b>
+        /// This method will store city for select ting start and end city
+        /// \return  void
         private List<City> DataTableToCityList(DataTable table)
         {
             var cities = new List<City>();

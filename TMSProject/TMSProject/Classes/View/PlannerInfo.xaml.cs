@@ -13,6 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using TMSProject.Classes.Controller;
+using TMSProject.Classes.Model;
+
 namespace TMSProject.Classes.View
 {
 	/// <summary>
@@ -23,6 +26,21 @@ namespace TMSProject.Classes.View
 		public PlannerInfo()
 		{
 			InitializeComponent();
-		}
-	}
+            loadBillingInfo();
+        }
+
+        private void loadBillingInfo()
+        {
+            Order order = new Order();
+            var customer = new Customer().GetById(order.orderID);
+
+            NameTBlock.Text = customer.customerName;
+            CompanyTBlock.Text = customer.customerCompany;
+            PhoneTBlock.Text = customer.telno;
+            AddressTBlock.Text = customer.address;
+            CityTBlock.Text = customer.customerCity;
+            ProvinceTBlock.Text = customer.customerProvince;
+            PostalCodeTBlock.Text = customer.zipcode;
+        }
+    }
 }

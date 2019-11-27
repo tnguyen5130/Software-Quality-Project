@@ -1,4 +1,12 @@
-﻿using System;
+﻿//* FILE			: PlanInfoBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : PlanInfoBizDAO for the biiling infomation
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +19,18 @@ using System.Configuration;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class PlanInfoBizDAO
+    /// \brief This class contains the plan's information for a Order file when buyer make an order
+    /// \author : <i>Nhung Luong <i>
     public class PlanInfoBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
+        /// \brief This method UpdatePlanInfo for user 
+        /// \details <b>Details</b>
+        /// This method will update plan info when finishing order
+        /// \return  void
         public bool UpdatePlanInfo(PlanInfo plan)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -52,7 +67,10 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
+        /// \brief This method InsertPlanInfo for user 
+        /// \details <b>Details</b>
+        /// This method will insert plan info when finishing order
+        /// \return  void
         public bool InsertPlanInfo(PlanInfo plan)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -86,6 +104,11 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+        /// \brief This method DeletePlanInfo for user 
+        /// \details <b>Details</b>
+        /// This method will delete plan info when finishing order
+        /// \return  void
         public void DeletePlanInfo(PlanInfo plan)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -103,6 +126,10 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method GetPlanInfo for user 
+        /// \details <b>Details</b>
+        /// This method will get plan info when finishing order
+        /// \return  void
         public List<PlanInfo> GetPlanInfos(string orderID)
         {
             const string sqlStatement = @" SELECT 
@@ -141,6 +168,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method DataTableToPlanInfoList for user 
+        /// \details <b>Details</b>
+        /// This method will store plan info when finishing order
+        /// \return  void
         private List<PlanInfo> DataTableToPlanInfoList(DataTable table)
         {
             var plans = new List<PlanInfo>();

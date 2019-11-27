@@ -1,4 +1,12 @@
-﻿using System;
+﻿//* FILE			: CMPBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +19,20 @@ using System.Configuration;
 
 namespace TMSProject.Classes.Controller
 {
+
+    /// \class ContractBizDAO
+    /// \brief This class contains the contract's information for a billing file when buyer make an order
+    /// \author : <i>Nhung Luong<i>
     public class ContractBizDAO
     {   
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-        public bool UpdateContract(Contract contract)
+        /// \brief This method UpdateContract for user 
+        /// \details <b>Details</b>
+        /// This method will update contract database 
+        /// \return  void
+        public void UpdateContract(Contract contract)
+
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
@@ -49,6 +66,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method InsertContract for user 
+        /// \details <b>Details</b>
+        /// This method will insert contract database 
+        /// \return  void
         public bool InsertContract(Contract contract)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -79,6 +101,12 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+
+        /// \brief This method DeleteContract for user 
+        /// \details <b>Details</b>
+        /// This method will update CMP database 
+        /// \return  void
         public void DeleteContract(Contract contract)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -96,6 +124,10 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method GetContracts for user 
+        /// \details <b>Details</b>
+        /// This method will get the contract form database
+        /// \return  void
         public List<Contract> GetContracts(string contractID)
         {
             const string sqlStatement = @" SELECT 
@@ -129,6 +161,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method DataTableToContractList for user 
+        /// \details <b>Details</b>
+        /// This method will store cotract into contract list data
+        /// \return  void
         private List<Contract> DataTableToContractList(DataTable table)
         {
             var contracts = new List<Contract>();

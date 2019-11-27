@@ -1,4 +1,13 @@
-﻿using System;
+﻿//* FILE			: EmployeeBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : EmployeeBizDAO for the biiling infomation
+
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +20,18 @@ using System.Configuration;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class InvoiceBizDAO
+    /// \brief This class contains the invoice's information for a Invoice file when buyer make an order
+    /// \author : <i>Nhung Luong<i>
     public class InvoiceBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
+        /// \brief This method UpdateInvoice for user 
+        /// \details <b>Details</b>
+        /// This method will update invoice when finishing order
+        /// \return  void
         public void UpdateInvoice(Invoice invoice)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -41,7 +57,10 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
+        /// \brief This method InsertInvoice for user 
+        /// \details <b>Details</b>
+        /// This method will insert invoice when finishing order
+        /// \return  void
         public void InsertInvoice(Invoice invoice)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -64,6 +83,11 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+        /// \brief This method DeleteInvoice for user 
+        /// \details <b>Details</b>
+        /// This method will delete invoice when finishing order
+        /// \return  void
         public void DeleteInvoice(Invoice invoice)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -81,6 +105,10 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method GetInvoices for user 
+        /// \details <b>Details</b>
+        /// This method will get invoice when finishing order
+        /// \return  void
         public List<Invoice> GetInvoices(string searchItem)
         {
             const string sqlStatement = @" SELECT 
@@ -131,6 +159,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method DataTableToInvoiceList for user 
+        /// \details <b>Details</b>
+        /// This method will store invoice when finishing order
+        /// \return  void
         private List<Invoice> DataTableToInvoiceList(DataTable table)
         {
             var invoices = new List<Invoice>();

@@ -1,4 +1,10 @@
-﻿using System;
+﻿//* FILE			: CMPBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +17,19 @@ using TMSProject.DBConnect;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class CustomerBizDAO
+    /// \brief This class contains the contract's information for a customer file when buyer make an order
+    /// \author : <i>Nhung Luong<i>
     public class CustomerBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
+
+        /// \brief This method UpdateContract for user 
+        /// \details <b>Details</b>
+        /// This method will update contract database 
+        /// \return  void
         public void UpdateCustomer(Customer customer)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -49,7 +63,10 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
+        /// \brief This method InsertCustomer for user 
+        /// \details <b>Details</b>
+        /// This method will insert customer database 
+        /// \return  void
         public void InsertCustomer(Customer customer)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -75,6 +92,11 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+        /// \brief This method DeleteCustomer for user 
+        /// \details <b>Details</b>
+        /// This method will delete customer database 
+        /// \return  void
         public void DeleteCustomer(Customer customer)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -91,32 +113,18 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method GetCustomers for user 
+        /// \details <b>Details</b>
+        /// This method will get customer database 
+        /// \return  void
         public List<Customer> GetCustomers(string searchItem)
         {
-            const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
+            const string sqlStatement = @" SELECT customerName, customerCompany, telno, address, customerCity, customerProvince, zipcode
+                                           FROM customer 
+                                           INNER JOIN ordering
+                                           WHERE customer.customerID = ordering.customerID
+                                           AND ordering.orderID = @SearchItem; ";
 
 
             using (var myConn = new MySqlConnection(connectionString))
@@ -141,6 +149,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method DataTableToCustomerList for user 
+        /// \details <b>Details</b>
+        /// This method will store customer database 
+        /// \return  void
         private List<Customer> DataTableToCustomerList(DataTable table)
         {
             var customers = new List<Customer>();
@@ -149,12 +162,13 @@ namespace TMSProject.Classes.Controller
             {
                 customers.Add(new Customer
                 {
-                    customerID = row["customerID"].ToString(),
                     customerName = row["customerName"].ToString(),
-                    customerCity = row["customerCity"].ToString(),
+                    customerCompany = row["customerCompany"].ToString(),
                     telno = row["telno"].ToString(),
                     address = row["address"].ToString(),
-                    zipcode = row["zipcode"].ToString()
+                    customerCity = row["customerCity"].ToString(),
+                    customerProvince = row["customerProvince"].ToString(),
+                    zipcode = row["zipcode"].ToString()          
             });
             }
 

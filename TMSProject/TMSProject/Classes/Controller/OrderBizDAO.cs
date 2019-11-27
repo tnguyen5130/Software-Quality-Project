@@ -1,21 +1,38 @@
-﻿using System;
+﻿//* FILE			: OrderBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : OrderBizDAO for the biiling infomation
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMSProject.Classes.Model;
 using TMSProject.DBConnect;
+using TMSProject.Classes.View;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using System.Windows.Controls;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class InvoiceBizDAO
+    /// \brief This class contains the invoice's information for a Order file when buyer make an order
+    /// \author : <i>Nhung Luong <i>
     public class OrderBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
+        /// \brief This method UpdateOrder for user 
+        /// \details <b>Details</b>
+        /// This method will update order when finishing order
+        /// \return  void
         public bool UpdateOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -56,6 +73,10 @@ namespace TMSProject.Classes.Controller
 
         }
 
+        /// \brief This method InsertOrder for user 
+        /// \details <b>Details</b>
+        /// This method will insert order when finishing order
+        /// \return  void
         public bool InsertOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -89,6 +110,11 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+        /// \brief This method DeleteOrder for user 
+        /// \details <b>Details</b>
+        /// This method will delete order when finishing order
+        /// \return  void
         public void DeleteOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -106,26 +132,24 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+
+        /// \brief This method GetOrders for user 
+        /// \details <b>Details</b>
+        /// This method will get order when finishing order
+        /// \return  void
         public List<Order> GetOrders(string searchItem)
         {
-            const string sqlStatement = @" SELECT 
-                                                orderID, 
-                                                contractID, 
-                                                orderDate, 
-                                                originalCityID, 
-                                                desCityID, 
-                                                carrierID,
-                                                orderStatus
+            const string sqlStatement = @" SELECT orderID, orderDate                                                
                                             FROM ordering
-		                                        
-                                            WHERE orderID = @SearchItem ";
-
+                                            WHERE orderID = @OrderID, 
+                                                  orderDate = @OrderDate ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+                myCommand.Parameters.AddWithValue("@OrderID", searchItem);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -143,6 +167,10 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method DataTableToOrderList for user 
+        /// \details <b>Details</b>
+        /// This method will store order when finishing order
+        /// \return  void
         private List<Order> DataTableToOrderList(DataTable table)
         {
             var orders = new List<Order>();
@@ -152,16 +180,40 @@ namespace TMSProject.Classes.Controller
                 orders.Add(new Order
                 {
                     orderID = row["orderID"].ToString(),
-                    contractID = row["contractID"].ToString(),
                     orderDate = row["orderDate"].ToString(),
-                    origincalCityID = row["originalCityID"].ToString(),
-                    desCityID = row["desCityID"].ToString(),
-                    carrierID = row["carrierID"].ToString(),
-                    orderStatus = row["orderStatus"].ToString()
                 });
             }
 
             return orders;
+        }
+
+        public void loadOrderList(DataGrid grid)
+        {
+            const string sqlStatement = @" SELECT orderID, orderDate FROM ordering;";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                //myCommand.Parameters.AddWithValue("@OrderID", order.orderID);
+                //myCommand.Parameters.AddWithValue("@OrderDate", order.orderDate);
+
+                //myConn.Open();
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                DataTable dataTable = new DataTable("ordering");
+
+                myAdapter.Fill(dataTable);
+
+                //var orders = DataTableToOrderList(dataTable);
+
+                grid.ItemsSource = dataTable.DefaultView;             
+            }
         }
 
     }
