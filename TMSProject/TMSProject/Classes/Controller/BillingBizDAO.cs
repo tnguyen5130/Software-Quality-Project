@@ -13,6 +13,13 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using TMSProject.DBConnect;
 
+
+
+/// \namespace TMSProject.Classes.Controller
+/// \brief The purpose of this namespace is to create a handle billing menu option. 
+/// \details This namespace has 13 classes <b>Admin</b>, <b>Billing</b>, <b>Buyer</b>, <b>Carrier</b>, <b>City</b>, <b>Contract</b>
+/// <b>ContractMarketPlace</b>, <b>Customer</b>,<b>Employee</b>, <b>Invoice</b>, <b>Order</b>, <b>PlanInfo</b>, <b>Trip</b>, <b>Planner</b>
+/// \author : <i>Nhung Luong<i>
 namespace TMSProject.Classes.Controller
 {
     /*==========================================================================================================================*/
@@ -20,9 +27,13 @@ namespace TMSProject.Classes.Controller
     // Purpose      : contain all the name definitions and relative path of files
     // Description  : this class defines name of BillingBizDAO connect to database and update, insert and delete the billing
     /*==========================================================================================================================*/
+
+    /// \class BillingBizDAO
+    /// \brief This class contains the billing's information for a billing file when buyer make an order
+    /// \author : <i>Nhung Luong<i>
     public class BillingBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
 
@@ -33,6 +44,10 @@ namespace TMSProject.Classes.Controller
         * Outputs	: None																											
         * Returns	: None																										
         ===========================================================================================================================*/
+        /// \brief This method UpdateBilling for user 
+        /// \details <b>Details</b>
+        /// This method will update billing infomation when finishing an order
+        /// \return  void
         public void UpdateBilling(Billing billing)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -57,7 +72,7 @@ namespace TMSProject.Classes.Controller
             }
 
         }
-
+      
         /* =========================================================================================================================
         * Name		: InsertBilling																						
         * Purpose	: to INSERT the billing infor whenever create an new order 	
@@ -65,6 +80,11 @@ namespace TMSProject.Classes.Controller
         * Outputs	: None																											
         * Returns	: None																										
         ===========================================================================================================================*/
+
+        /// \brief This method InsertBilling for user
+        /// \details <b>Details</b>
+        /// This method will insert billing infomation when into order details and invoice
+        /// \return  void
         public void InsertBilling(Billing billing)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -87,7 +107,6 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
         /* =========================================================================================================================
         * Name		: DeleteBilling																						
         * Purpose	: to DELETE the billing infor whenever create an new order 	
@@ -95,6 +114,10 @@ namespace TMSProject.Classes.Controller
         * Outputs	: None																											
         * Returns	: None																										
         ===========================================================================================================================*/
+        /// \brief This method DeleteBilling for user
+        /// \details <b>Details</b>
+        /// This method will delete billing infomation when into order details and invoice
+        /// \return  void
         public void DeleteBilling(Billing billing)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -112,7 +135,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /* =========================================================================================================================
         * Name		: GetBillings																						
         * Purpose	: to GET the billing infor whenever create an new order 	
@@ -120,6 +142,10 @@ namespace TMSProject.Classes.Controller
         * Outputs	: None																											
         * Returns	: None																										
         ===========================================================================================================================*/
+        /// \brief This method GetBillings for user
+        /// \details <b>Details</b>
+        /// This method will get billing infomation when into order details and invoice
+        /// \return  void
         public List<Billing> GetBillings(string searchItem)
         {
             const string sqlStatement = @" SELECT 
@@ -171,7 +197,6 @@ namespace TMSProject.Classes.Controller
         }
 
 
-
         /* =========================================================================================================================
         * Name		: DataTableToBillingList																						
         * Purpose	: to STORE the billing infor whenever create an new order 	
@@ -179,6 +204,10 @@ namespace TMSProject.Classes.Controller
         * Outputs	: None																											
         * Returns	: None																										
         ===========================================================================================================================*/
+        /// \brief This method GetBillings for user
+        /// \details <b>Details</b>
+        /// This method will get billing infomation when into order details and invoice
+        /// \return  void
         private List<Billing> DataTableToBillingList(DataTable table)
         {
             var billings = new List<Billing>();

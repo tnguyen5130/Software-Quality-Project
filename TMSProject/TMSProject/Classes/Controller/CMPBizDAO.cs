@@ -1,4 +1,12 @@
-﻿using System;
+﻿//* FILE			: CMPBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +19,20 @@ using System.Configuration;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class CMPBizDAO
+    /// \brief This class contains the CMP's information for a billing file when buyer make an order
+    /// \author : <i>nhung Luong<i>
     public class CMPBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
+
+
+        /// \brief This method UpdateCMP for user 
+        /// \details <b>Details</b>
+        /// This method will update CMP database 
+        /// \return  void
         public void UpdateCMP(ContractMarketPlace cmp)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -44,6 +61,11 @@ namespace TMSProject.Classes.Controller
         }
 
 
+
+        /// \brief This method UpdateCity for user 
+        /// \details <b>Details</b>
+        /// This method will update city from CMP
+        /// \return  void
         public void InsertCMP(ContractMarketPlace cmp)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -68,6 +90,12 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+
+        /// \brief This method DeleteCMP for user 
+        /// \details <b>Details</b>
+        /// This method will delete CMP for selecting start and end city
+        /// \return  void
         public void DeleteCMP(ContractMarketPlace cmp)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -135,6 +163,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method DataTableToCMPList for user 
+        /// \details <b>Details</b>
+        /// This method will store CMP database
+        /// \return  void
         private List<ContractMarketPlace> DataTableToCMPList(DataTable table)
         {
             var orders = new List<ContractMarketPlace>();
