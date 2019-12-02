@@ -50,11 +50,7 @@ namespace TMSProject.Classes.View
 				case "ItemInvoice":
 					usc = new InvoiceWindow();
 					GridMain.Children.Add(usc);
-					break;
-				case "ItemInfo":
-					usc = new PlannerInfo();
-					GridMain.Children.Add(usc);
-					break;
+					break;				
 				case "ItemExit":
 					this.Close();
 					break;

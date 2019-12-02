@@ -23,15 +23,15 @@ namespace TMSProject.Classes.View
 	/// </summary>
 	public partial class PlannerInfo : UserControl
 	{
-		public PlannerInfo()
+		public PlannerInfo(Order order)
 		{
 			InitializeComponent();
-            loadBillingInfo();
+            loadBillingInfo(order);
         }
 
-        private void loadBillingInfo()
+        private void loadBillingInfo(Order order)
         {
-            Order order = new Order();
+  
             var customer = new Customer().GetById(order.orderID);
 
             NameTBlock.Text = customer.customerName;

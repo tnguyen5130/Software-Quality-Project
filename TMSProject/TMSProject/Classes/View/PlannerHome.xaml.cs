@@ -68,7 +68,7 @@ namespace TMSProject.Classes.View
                 Order order = new Order();
                 order.orderID = ItemSelect;
                 UserControl usc = null;
-                usc = new PlannerInfo();
+                usc = new PlannerInfo(order);
                 GridMain.Children.Add(usc);
             }
         }
