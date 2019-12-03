@@ -1,0 +1,43 @@
+﻿<UserControl x:Class="TMSProject.Classes.View.CMPWindow"
+              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TMSProject.Classes.View"
+             mc:Ignorable="d" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes" 
+             d:DesignHeight="540" d:DesignWidth="1010">
+
+    <Grid Background="#534bae" x:Name="GridCMP">
+        <DataGrid
+            x:Name="CMPList"
+            SelectionMode="Single"    
+            ColumnWidth="*"
+            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            Margin="10,23,447.6,69"
+            AutoGenerateColumns="True"
+            CanUserSortColumns="True"
+            CanUserAddRows="False" SelectionChanged="CMPList_SelectionChanged"/>
+        <Grid Background="AntiqueWhite" Height="440" Margin="589,23,84.6,77">
+            <TextBox Name="txtClientName" Foreground="Black" HorizontalAlignment="Left" TextWrapping="Wrap" Width="133" Margin="99,17,0,400"/>
+            <TextBox Name="txtJobType" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,61,0,0"/>
+            <TextBox Name="txtQuantity" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,115,0,0"/>
+            <TextBox Name="txtOrigin" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,177,0,0"/>
+            <TextBox Name="txtDestination" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,240,0,0"/>
+            <TextBox Name="txtVanType" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,300,0,0"/>
+            <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Client Name" Height="23" Margin="10,17,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+            <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Job Type" Height="23" Margin="10,61,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+            <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Quantity" Height="23" Margin="10,115,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+            <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Origin" Height="23" Margin="10,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+            <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Destination" Height="23" Margin="10,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+            <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Van Type" Height="23" Margin="10,301,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
+            <TextBox Foreground="Black" HorizontalAlignment="Left" Text="End Date of Contract" Height="23" Margin="54,342,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112"/>
+            <DatePicker Name="txtEndDate" Foreground="Black" HorizontalAlignment="Left" Margin="21,379,0,0" VerticalAlignment="Top" Width="175"/>
+        </Grid>
+        <Button
+                Name="btn_Next"
+                Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                ToolTip="MaterialDesignFlatDarkButton" Height="50" Margin="102,405,681.6,85" Click="btn_Next_Click">Okay
+        </Button>
+    </Grid>
+</UserControl>

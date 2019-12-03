@@ -88,7 +88,15 @@ namespace TMSProject.Classes.Model
             
         }
 
-
+        /// \brief This method GetLastId
+        /// \details <b>Details</b>
+        /// This method will get last order ID
+        /// \return  string
+        public string GetLastId()
+        {
+            var orderID = new OrderBizDAO().GetLastOrderID(this);
+            return orderID;
+        }
 
         /// \brief This method GetOrders
         /// \details <b>Details</b>
@@ -101,18 +109,23 @@ namespace TMSProject.Classes.Model
         }
 
 
-        /// \brief This method generateOrderID
+        /// \brief This method newOrderID
         /// \details <b>Details</b>
         /// This method will generate order ID
-        /// \return  void
-         public string generateOrderID(int seq,int time)
-        {            
-            return "ord"+DateTime.Now.ToString()+time;
+        /// \return  string
+        public string NewOrderID(int seq)
+         {
+            string value = String.Format("{0:D3}", seq);
+            return "ORD" + DateTime.Now.ToString("MMddyyyy") + value;
         }
 
-        public bool fieldsValidation()
-        {
-            return false;
-        }
+        /// \brief This method newOrderDate
+        /// \details <b>Details</b>
+        /// This method will generate order Date
+        /// \return  string
+        public string NewOrderDate()
+         {
+            return DateTime.Now.ToString("yyyy-MM-dd");
+         }
     }
 }

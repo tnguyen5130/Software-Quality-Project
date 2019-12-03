@@ -82,10 +82,10 @@ namespace TMSProject.Classes.Controller
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@ProductID", contract.contractID);
-                    myCommand.Parameters.AddWithValue("@CategoryId", contract.initiateBy);
-                    myCommand.Parameters.AddWithValue("@UnitPrice", contract.startDate);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", contract.endDate);
+                    myCommand.Parameters.AddWithValue("@contractID", contract.contractID);
+                    myCommand.Parameters.AddWithValue("@initiateBy", contract.initiateBy);
+                    myCommand.Parameters.AddWithValue("@startDate", contract.startDate);
+                    myCommand.Parameters.AddWithValue("@endDate", contract.endDate);
                     myCommand.Parameters.AddWithValue("@UnitsInStock", contract.completeStatus);
 
                     myConn.Open();
@@ -101,7 +101,26 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method GetLastOrderID for user 
+        /// \details <b>Details</b>
+        /// This method will get the last order id to check whether DB contains it
+        /// \return  void
+        public string GetLastContractID(Contract contract)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT contractID FROM contract ORDER BY contractID DESC LIMIT 1; ";
 
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
 
         /// \brief This method DeleteContract for user 
         /// \details <b>Details</b>

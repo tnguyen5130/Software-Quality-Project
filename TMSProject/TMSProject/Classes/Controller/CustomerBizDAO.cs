@@ -113,6 +113,27 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method GetCustomers for user 
+        /// \details <b>Details</b>
+        /// This method will get customer database 
+        /// \return  void
+        public string GetLastCustomerName(Customer customer)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT customerName FROM customer ORDER BY customerID DESC LIMIT 1; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
 
         /// \brief This method GetCustomers for user 
         /// \details <b>Details</b>

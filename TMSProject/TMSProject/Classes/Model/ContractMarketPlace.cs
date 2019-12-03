@@ -36,6 +36,7 @@ namespace TMSProject.Classes.Model
         public string origin { get; set; }
         public string destination { get; set; }
         public string vanType { get; set; }
+        public string command { get; set; }
 
         public ContractMarketPlace() { }
 
@@ -46,11 +47,11 @@ namespace TMSProject.Classes.Model
         /// \return  void
         public void Save()
         {
-            if (customerID != "")
+            if (command == "UPDATE")
             {
                 new CMPBizDAO().UpdateCMP(this);
             }
-            else
+            else if (command == "INSERT")
             {
                 new CMPBizDAO().InsertCMP(this);
             }
@@ -79,7 +80,17 @@ namespace TMSProject.Classes.Model
             return cmps[0];
         }
 
+        public string GetLastCusID()
+        {
+            var customer = new CMPBizDAO().GetLastCustomerId(this);
+            return customer;
+        }
 
+        public string NewCustomerID(int seq)
+        {
+            string value = String.Format("{0:D3}", seq);
+            return "CUS" + DateTime.Now.ToString("MMddyyyy") + value;
+        }
 
         /// \brief This method GetCMPs
         /// \details <b>Details</b>

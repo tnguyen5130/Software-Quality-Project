@@ -110,6 +110,26 @@ namespace TMSProject.Classes.Controller
 
         }
 
+        /// \brief This method GetLastOrderID for user 
+        /// \details <b>Details</b>
+        /// This method will get the last order id to check whether DB contains it
+        /// \return  void
+        public string GetLastOrderID(Order order)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT orderID FROM ordering ORDER BY orderID DESC LIMIT 1; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
 
         /// \brief This method DeleteOrder for user 
         /// \details <b>Details</b>
@@ -123,8 +143,7 @@ namespace TMSProject.Classes.Controller
 												DELETE FROM products WHERE ProductID = @ProductID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                myCommand.Parameters.AddWithValue("@ProductID", order.orderID);
+                
 
                 myConn.Open();
 
@@ -187,6 +206,10 @@ namespace TMSProject.Classes.Controller
             return orders;
         }
 
+        /// \brief This method loadOrderList for user 
+        /// \details <b>Details</b>
+        /// This method will get order list that has orderID and orderDate into DataGrid table
+        /// \return  void
         public void loadOrderList(DataGrid grid)
         {
             const string sqlStatement = @" SELECT orderID, orderDate FROM ordering;";
@@ -195,12 +218,7 @@ namespace TMSProject.Classes.Controller
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                //myCommand.Parameters.AddWithValue("@OrderID", order.orderID);
-                //myCommand.Parameters.AddWithValue("@OrderDate", order.orderDate);
 
-                //myConn.Open();
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
                 {
                     SelectCommand = myCommand
@@ -209,8 +227,6 @@ namespace TMSProject.Classes.Controller
                 DataTable dataTable = new DataTable("ordering");
 
                 myAdapter.Fill(dataTable);
-
-                //var orders = DataTableToOrderList(dataTable);
 
                 grid.ItemsSource = dataTable.DefaultView;             
             }
