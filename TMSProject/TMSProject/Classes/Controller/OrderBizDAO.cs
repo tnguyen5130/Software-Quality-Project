@@ -52,7 +52,7 @@ namespace TMSProject.Classes.Controller
 
                 myCommand.Parameters.AddWithValue("@contractID", order.contractID);
                 myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
-                myCommand.Parameters.AddWithValue("@originalCityID", order.origincalCityID);
+                myCommand.Parameters.AddWithValue("@originalCityID", order.originalCityID);
                 myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
                 myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
                 myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
@@ -91,7 +91,7 @@ namespace TMSProject.Classes.Controller
                     myCommand.Parameters.AddWithValue("@orderID", order.orderID);
                     myCommand.Parameters.AddWithValue("@contractID", order.contractID);
                     myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
-                    myCommand.Parameters.AddWithValue("@originalCityID", order.origincalCityID);
+                    myCommand.Parameters.AddWithValue("@originalCityID", order.originalCityID);
                     myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
                     myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
                     myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
@@ -108,6 +108,46 @@ namespace TMSProject.Classes.Controller
                 }
             }
 
+        }
+
+        public string GetOriginCityIDbyName(string cityName)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT ordering.originalCityID FROM ordering 
+                                                INNER JOIN city 
+                                                ON ordering.originalCityID = city.cityID AND city.cityName = @cityName; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@cityName", cityName);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
+        public string GetDestinateCityIDbyName(string cityName)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT ordering.desCityID FROM ordering 
+                                                INNER JOIN city 
+                                                ON ordering.originalCityID = city.cityID AND city.cityName = @cityName; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@cityName", cityName);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
         }
 
         /// \brief This method GetLastOrderID for user 
@@ -206,11 +246,11 @@ namespace TMSProject.Classes.Controller
             return orders;
         }
 
-        /// \brief This method loadOrderList for user 
+        /// \brief This method LoadOrderList for user 
         /// \details <b>Details</b>
         /// This method will get order list that has orderID and orderDate into DataGrid table
         /// \return  void
-        public void loadOrderList(DataGrid grid)
+        public void LoadOrderList(DataGrid grid)
         {
             const string sqlStatement = @" SELECT orderID, orderDate FROM ordering;";
 

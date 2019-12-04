@@ -86,7 +86,7 @@ namespace TMSProject.Classes.Controller
                     myCommand.Parameters.AddWithValue("@initiateBy", contract.initiateBy);
                     myCommand.Parameters.AddWithValue("@startDate", contract.startDate);
                     myCommand.Parameters.AddWithValue("@endDate", contract.endDate);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", contract.completeStatus);
+                    myCommand.Parameters.AddWithValue("@completeStatus", contract.completeStatus);
 
                     myConn.Open();
 

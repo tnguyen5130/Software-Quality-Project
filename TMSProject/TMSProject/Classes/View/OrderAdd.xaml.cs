@@ -27,26 +27,27 @@ namespace TMSProject.Classes.View
         //Sequence number
         int ordSeq = 1;
         string tempBuffer = "";
+        Order order;
 
         public OrderAdd(string cusName, string cusID)
 		{
 			InitializeComponent();
             
-            Order order = new Order();
+            order = new Order();
             // Generate new order
             // Check if orderID exist or not
-            if (order.orderID != order.GetLastId())
+            if (order.orderID != order.GetLastId() && order.orderID != null || order.GetLastId() == null)
             {
                 order.orderID = order.NewOrderID(ordSeq);
             }
-            else if (order.orderID == order.GetLastId())
+            else if (order.orderID == order.GetLastId() || order.orderID == null)
             {
                 order.command = "INSERT";
                 string buffer = order.GetLastId();
                 // Get the last character in the last OrderID
-                char last = buffer[buffer.Length - 3];
+                string last = buffer.Substring(buffer.Length - 3);
                 // Convert it into INT
-                int temp = (int)last;
+                int temp = Convert.ToInt32(last);
                 // Add by 1
                 temp += 1;
                 //Delete the last character of the buffer
@@ -144,8 +145,7 @@ namespace TMSProject.Classes.View
                 customer.address = txtAddress.Text;
                 // Save customer ID into database 
                 customer.customerID = tempBuffer;
-
-                customer.Save();
+                customer.command = "INSERT";                
 
                 if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                 {
@@ -155,8 +155,9 @@ namespace TMSProject.Classes.View
                 else
                 {
                     //do yes stuff
+                    customer.Save();
                     UserControl usc = null;
-                    usc = new ShippingInfo();
+                    usc = new ShippingInfo(txtOrderID.Text, txtOrderDate.Text);
                     GridOrder.Children.Add(usc);
                 }                
             }            

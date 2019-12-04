@@ -24,15 +24,19 @@ namespace TMSProject.Classes.Model
         /// <summary>
         /// A string to get orderID 
         /// A string to get contractID
-        /// A string to get origincalCityID
+        /// A string to get originalCityID
         /// A string to get customerID
         /// A string to get completeStatus
         /// </summary>
         public string orderID { get; set; }
         public string contractID { get; set; }
+        public string customerID { get; set; }
         public string orderDate { get; set; }
-        public string origincalCityID { get; set; }
+        public string originalCityID { get; set; }
         public string desCityID { get; set; }
+        public string quantity { get; set; }
+        public int jobType { get; set; }
+        public int vanType { get; set; }
         public string carrierID { get; set; }
         public string orderStatus { get; set; }
         public string command { get; set; }
@@ -86,6 +90,18 @@ namespace TMSProject.Classes.Model
                 return orders[0];
             }
             
+        }
+
+        public string GetOriginalID(string cityName)
+        {
+            var originCityID = new OrderBizDAO().GetOriginCityIDbyName(cityName);
+            return originCityID;
+        }
+
+        public string GetDestinateID(string cityName)
+        {
+            var destinateCityID = new OrderBizDAO().GetDestinateCityIDbyName(cityName);
+            return destinateCityID;
         }
 
         /// \brief This method GetLastId

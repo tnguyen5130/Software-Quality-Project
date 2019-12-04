@@ -25,6 +25,9 @@ namespace TMSProject.Classes.View
     {
         // Sequence number
         int seq = 1;
+        //do yes stuff
+        Contract contract;
+        ContractMarketPlace cmp;
         public CMPWindow()
         {
             InitializeComponent();
@@ -79,25 +82,23 @@ namespace TMSProject.Classes.View
             }
             else
             {
-                //do yes stuff
-                Contract contract = new Contract();
-
+                contract = new Contract();
                 contract.startDate = contract.NewContractDate();
-                contract.completeStatus = "START";
+                contract.completeStatus = "UNPAID";
 
-                if (contract.contractID != contract.GetLastId())
+                if (contract.contractID != contract.GetLastId() && contract.contractID != null || contract.GetLastId() == null)
                 {
                     contract.command = "INSERT";
                     contract.contractID = contract.NewContractID(seq);
                 }
-                else if (contract.contractID == contract.GetLastId())
+                else if (contract.contractID == contract.GetLastId() || contract.contractID == null)
                 {
                     contract.command = "INSERT";
                     string buffer = contract.GetLastId();
                     // Get the last character in the last OrderID
-                    char last = buffer[buffer.Length - 3];
+                    string last = buffer.Substring(buffer.Length - 3);
                     // Convert it into INT
-                    int temp = (int)last;
+                    int temp = Convert.ToInt32(last);
                     // Add by 1
                     temp += 1;
                     //Delete the last character of the buffer
@@ -126,32 +127,51 @@ namespace TMSProject.Classes.View
                 }
 
                 // Save data into CMP
-                ContractMarketPlace cmp = new ContractMarketPlace();
+                cmp = new ContractMarketPlace();
                 cmp.contractID = contract.contractID;
                 cmp.jobType = txtJobType.Text;
                 cmp.quantity = Convert.ToInt32(txtQuantity.Text);
                 cmp.origin = txtOrigin.Text;
                 cmp.destination = txtDestination.Text;
                 cmp.vanType = txtVanType.Text;
-                if (cmp.customerID != cmp.GetLastCusID())
+                if (cmp.customerID != cmp.GetLastCusID() && cmp.customerID != null || cmp.GetLastCusID() == null)
                 {
                     cmp.customerID = cmp.NewCustomerID(seq);
                     cmp.command = "INSERT";
                 }                
-                if (cmp.customerID == cmp.GetLastCusID())
+                if (cmp.customerID == cmp.GetLastCusID() || cmp.customerID == null)
                 {
                     cmp.command = "INSERT";
                     string buffer = cmp.GetLastCusID();
                     // Get the last character in the last OrderID
-                    char last = buffer[buffer.Length - 3];
+                    string last = buffer.Substring(buffer.Length - 3);
                     // Convert it into INT
-                    int temp = (int)last;
+                    int temp = Convert.ToInt32(last);
                     // Add by 1
                     temp += 1;
                     //Delete the last character of the buffer
                     string newBuffer = RemoveLastChar(buffer);
                     // Add with new temp
                     cmp.customerID = newBuffer + String.Format("{0:D3}", temp);
+                }
+
+                //Convert value of JobType, Quantity and VanType
+                if (cmp.jobType == "0")
+                {
+                    cmp.jobType = "FTL";
+                }
+                else if (cmp.jobType == "1")
+                {
+                    cmp.jobType = "LTL";
+                }
+
+                if (cmp.vanType == "0")
+                {
+                    cmp.vanType = "R";
+                }
+                else if (cmp.vanType == "1")
+                {
+                    cmp.vanType = "F";
                 }
 
                 // Save to Database

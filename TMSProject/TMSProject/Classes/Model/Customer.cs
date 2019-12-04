@@ -85,6 +85,12 @@ namespace TMSProject.Classes.Model
             return customer;
         }
 
+        public string GetLastCusID()
+        {
+            var customer = new CustomerBizDAO().GetLastCustomerID(this);
+            return customer;
+        }
+
         /// \brief This method GetCustomers
         /// \details <b>Details</b>
         /// This method will get customer info

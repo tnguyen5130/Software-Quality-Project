@@ -36,7 +36,7 @@ namespace TMSProject.Classes.View
         private void loadTableData()
         {
             OrderBizDAO orderBiz = new OrderBizDAO();
-            orderBiz.loadOrderList(OrderList);
+            orderBiz.LoadOrderList(OrderList);
         }
 
         private void Row_DoubleClick(object sender, MouseButtonEventArgs e)

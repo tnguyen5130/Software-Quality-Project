@@ -22,10 +22,13 @@ namespace TMSProject.Classes.View
 	/// </summary>
 	public partial class ShippingInfo : UserControl
 	{
-		public ShippingInfo()
+		public ShippingInfo(string OrderID, string OrderDate)
 		{
 			InitializeComponent();
             fillFromToComboBox();
+
+            txtOrderID.Text = OrderID;
+            txtOrderDate.Text = OrderDate;
 		}
 
         private void fillFromToComboBox()
@@ -37,7 +40,50 @@ namespace TMSProject.Classes.View
 
 		public void btn_OK(object sender, RoutedEventArgs e)
 		{
+            Order order = new Order();
+            // OrderID
+            order.orderID = txtOrderID.Text;
+            // ContractID
+            Contract contract = new Contract();
+            order.contractID = contract.GetLastId();
+            // Customer ID
+            Customer customer = new Customer();            
+            order.customerID = customer.GetLastCusID(); 
+            // Order Date
+            order.orderDate = txtOrderDate.Text;
+            // Original City ID
+            order.originalCityID = boxFrom.SelectedItem.ToString();
+            // Destination CIty ID
+            order.desCityID = boxTo.SelectedItem.ToString();
+            order.command = "INSERT";
+            // Order Status
+            order.orderStatus = "PENDING";
+            // Quantity
+            order.quantity = txtPallet.Text;
+            // Job Type
+            if (boxFTL.IsChecked ?? false)
+            {
+                order.jobType = 0;
+            }
+            else if (boxLTL.IsChecked ?? false)
+            {
+                order.jobType = 1;
+            }
+            else
+            {
+                MessageBox.Show("No Job Type Selection!!!");
+            }
 
+            if (MessageBox.Show("Confirm the Order?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                //do no stuff
+
+            }
+            else
+            {
+                // Save to DB
+                order.Save();
+            }
 		}
 	}
 }

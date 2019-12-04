@@ -135,7 +135,7 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        /// \brief This method loadOrderList for user 
+        /// \brief This method LoadOrderList for user 
         /// \details <b>Details</b>
         /// This method will get order list that has orderID and orderDate into DataGrid table
         /// \return  void
