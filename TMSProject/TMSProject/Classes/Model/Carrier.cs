@@ -30,7 +30,7 @@ namespace TMSProject.Classes.Model
         /// A string to get ltlRate
         /// Astring to get feeferCharge
         /// </summary>
-        public string carrierID { get; set; } 
+        public string carrierID { get; set; }
         public string depotCity { get; set; }
         public string carrierName { get; set; }
         public double ftlAvail { get; set; }
@@ -38,6 +38,12 @@ namespace TMSProject.Classes.Model
         public double ftlRate { get; set; }
         public double ltlRate { get; set; }
         public double reeferCharge { get; set; }
+
+        public string command { get; set; }
+        public string orderID { get; set; }
+        public int jobType { get; set; }
+        public int quantity { get; set; }
+        public int vanType { get; set; }
 
         public Carrier() { }
 
