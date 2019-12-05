@@ -90,7 +90,7 @@ namespace TMSProject.Classes.View
                 // Order Status
                 order.orderStatus = "PENDING";
                 // Quantity
-                order.quantity = txtPallet.Text;
+                order.quantity = Convert.ToInt32(txtPallet.Text);
                 // CarrierID
                 Carrier carrier = new Carrier();
                 if (order.carrierID != carrier.GetLastCarrierID() && order.carrierID != null || carrier.GetLastCarrierID() == null)

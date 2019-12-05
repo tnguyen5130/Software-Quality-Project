@@ -34,7 +34,7 @@ namespace TMSProject.Classes.Model
         public string orderDate { get; set; }
         public string originalCityID { get; set; }
         public string desCityID { get; set; }
-        public string quantity { get; set; }
+        public int quantity { get; set; }
         public int jobType { get; set; }
         public int vanType { get; set; }
         public string carrierID { get; set; }
