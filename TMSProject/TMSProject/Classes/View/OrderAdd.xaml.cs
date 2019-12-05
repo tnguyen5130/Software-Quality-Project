@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using TMSProject.Classes.Model;
 using TMSProject.Classes.Controller;
 using System.Text.RegularExpressions;
+using MySql.Data.MySqlClient;
 
 namespace TMSProject.Classes.View
 {
@@ -24,17 +25,65 @@ namespace TMSProject.Classes.View
 	public partial class OrderAdd : UserControl
 	{
         //Sequence number
-        int seq = 1;
-        public OrderAdd()
+        int ordSeq = 1;
+        string tempBuffer = "";
+        // Object
+        Order order;
+
+        public OrderAdd(string cusName, string cusID)
 		{
 			InitializeComponent();
-		}
+            
+            order = new Order();
+            // Generate new order
+            // Check if orderID exist or not, if not generate new OrderID
+            if (order.orderID != order.GetLastId() && order.orderID != null || order.GetLastId() == null)
+            {
+                order.orderID = order.NewOrderID(ordSeq);
+            }
+            else if (order.orderID == order.GetLastId() || order.orderID == null)
+            {
+                // Get last orderID to string
+                string buffer = order.GetLastId();
+                // Get the last character in the last OrderID
+                string last = buffer.Substring(buffer.Length - 3);
+                // Convert it into INT
+                int temp = Convert.ToInt32(last);
+                // Add by 1
+                temp += 1;
+                //Delete the last character of the buffer
+                string newBuffer = RemoveLastChar(buffer);
+                // Add with new temp
+                order.orderID = newBuffer + String.Format("{0:D3}", temp);
+            }
+            // Print to Screen
+            order.orderDate = order.NewOrderDate();
+            txtOrderID.Text = order.orderID;
+            txtOrderDate.Text = order.orderDate;
 
+            // Assign customerID & customer Name
+            tempBuffer = cusID;
+            txtName.Text = cusName;
+        }
+
+        /// \brief This method RemoveLastChar for ID 
+        /// \details <b>Details</b>
+        /// This method will remove the last three character of a string
+        /// \return  string
+        private string RemoveLastChar(string str)
+        {
+            return str.Substring(0, str.Length - 3);
+        }
+
+        /// \brief This method validationOrderAdd  
+        /// \details <b>Details</b>
+        /// This method will do some validation for customer details
+        /// \return  string
         private bool validationOrderAdd()
         {
             bool retCode = true;
             // Check if edit field is blank
-            if (txtCompany.Text == null && txtFirstName.Text == null && txtLastName.Text == null && txtTelPhone.Text == "" && txtCity.Text == null &&
+            if (txtCompany.Text == null && txtName.Text == null && txtTelPhone.Text == "" && txtCity.Text == null &&
                 txtCity.SelectedValue.ToString() == null && txtProvince.SelectedValue.ToString() == null && txtPostalCode.Text == null && txtAddress.Text == null)
             {
                 MessageBox.Show("Some Fields can not be blank");
@@ -46,14 +95,9 @@ namespace TMSProject.Classes.View
                 MessageBox.Show("Invalid Company Name, try (ex: DHL)");
                 retCode = false;
             }
-            else if (Regex.IsMatch(txtFirstName.Text, @"^[0-9]*$"))
+            else if (Regex.IsMatch(txtName.Text, @"^[0-9]*$"))
             {
                 MessageBox.Show("Invalid first name, try(ex: John)");
-                retCode = false;
-            }
-            else if (Regex.IsMatch(txtLastName.Text, @"^[0-9]*$"))
-            {
-                MessageBox.Show("Invalid last name name, try(ex: Smith)");
                 retCode = false;
             }
             else if (!Regex.IsMatch(txtTelPhone.Text, @"^[0-9]*$"))
@@ -85,44 +129,46 @@ namespace TMSProject.Classes.View
         }
 
 		public void btn_Order_Add(object sender, RoutedEventArgs e)
-		{
-            Order order = new Order();
-            // get the orderID & orderDate and show it
-            txtOrderID.Text = order.orderID;
-            txtDate.Text = order.orderDate;
-
+		{           
             if (validationOrderAdd())
             {
                 // Get customer information
                 Customer customer = new Customer();
+                // Name
+                customer.customerName = customer.GetLastCusName();                
+                customer.customerName = txtName.Text;
+                // Company
                 customer.customerCompany = txtCompany.Text;
-                customer.customerName = txtFirstName.Text + " " + txtLastName.Text;
+                // City
                 customer.customerCity = txtCity.SelectedValue.ToString();
+                // Province
                 customer.customerProvince = txtProvince.SelectedValue.ToString();
+                // Phone Number
                 customer.telno = txtTelPhone.Text;
+                // Postal Code
                 customer.zipcode = txtPostalCode.Text;
+                // Address
                 customer.address = txtAddress.Text;
                 // Save customer ID into database 
-                customer.customerID = customer.newCustomerID(seq);
-
-                customer.Save();
-
-                seq += 1;
+                customer.customerID = tempBuffer;
+                // Command
+                customer.command = "INSERT";                
 
                 if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                 {
                     //do no stuff
-
                 }
                 else
                 {
                     //do yes stuff
+                    customer.Save();
+                    // Navigation to Shipping Info to change order details
                     UserControl usc = null;
-                    usc = new ShippingInfo();
+                    usc = new ShippingInfo(txtOrderID.Text, txtOrderDate.Text);
                     GridOrder.Children.Add(usc);
-                }
-                
+                }                
             }            
 		}
+
 	}
 }
