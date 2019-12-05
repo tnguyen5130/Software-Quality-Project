@@ -1,8 +1,8 @@
-﻿//* FILE			: Carrier.cs
+﻿//* FILE			: Contract.cs
 //* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
 //* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Project Slinger
 //* FIRST VERSON	: Nov 11, 2019
-//* DESCRIPTION		: The file defines a class  : buyer for the login page
+//* DESCRIPTION		: The file defines a class  : contract
 
 
 
@@ -82,7 +82,7 @@ namespace TMSProject.Classes.Model
             return DateTime.Now.ToString("yyyy-MM-dd");
         }
 
-        /// \brief This method getLastId
+        /// \brief This method GetLastId
         /// \details <b>Details</b>
         /// This method will get last contract ID
         /// \return  string

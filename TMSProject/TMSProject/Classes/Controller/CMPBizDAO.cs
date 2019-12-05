@@ -25,7 +25,13 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>nhung Luong<i>
     public class CMPBizDAO
     {
+        /// <summary>
+        /// Remote DB connectionString
+        /// </summary>
         private string connectionString = "server=" + CMPConfigs.dbServer + ";user id=" + CMPConfigs.dbUID + ";password=" + CMPConfigs.dbPassword + ";database=" + CMPConfigs.dbDatabase + ";SslMode=none";
+        /// <summary>
+        /// Local DB connectionString
+        /// </summary>
         private string connectionStringLocal = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
 
@@ -63,9 +69,9 @@ namespace TMSProject.Classes.Controller
 
         }
 
-        /// \brief This method GetCustomers for user 
+        /// \brief This method GetLastCustomerId for user 
         /// \details <b>Details</b>
-        /// This method will get customer database 
+        /// This method will get GetLastCustomerId from database 
         /// \return  void
         public string GetLastCustomerId(ContractMarketPlace cmp)
         {
@@ -84,9 +90,9 @@ namespace TMSProject.Classes.Controller
             return value;
         }
 
-        /// \brief This method UpdateCity for user 
+        /// \brief This method InsertCMP for user 
         /// \details <b>Details</b>
-        /// This method will update city from CMP
+        /// This method will insert data into CMP
         /// \return  void
         public void InsertCMP(ContractMarketPlace cmp)
         {
@@ -112,22 +118,20 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
-
         /// \brief This method DeleteCMP for user 
         /// \details <b>Details</b>
-        /// This method will delete CMP for selecting start and end city
+        /// This method will delete CMP for selecting customerID and contractID
         /// \return  void
         public void DeleteCMP(ContractMarketPlace cmp)
         {
             using (var myConn = new MySqlConnection(connectionStringLocal))
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
-												DELETE FROM products WHERE ProductID = @ProductID; ";
+                const string sqlStatement = @"  DELETE FROM contract_market_place WHERE customerID = @customerID AND contractID = @contractID;";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", cmp.customerID);
+                myCommand.Parameters.AddWithValue("@customerID", cmp.customerID);
+                myCommand.Parameters.AddWithValue("@contractID", cmp.contractID);
 
                 myConn.Open();
 
@@ -161,6 +165,10 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method GetCMPs for user 
+        /// \details <b>Details</b>
+        /// This method will get CMP list that is based on searchItem
+        /// \return List<ContractMarketPlace>
         public List<ContractMarketPlace> GetCMPs(string searchItem)
         {
             const string sqlStatement = @" SELECT 
@@ -211,7 +219,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /// \brief This method DataTableToCMPList for user 
         /// \details <b>Details</b>
         /// This method will store CMP database
@@ -236,5 +243,5 @@ namespace TMSProject.Classes.Controller
 
             return orders;
         }
-    }
-}
+    } // end of class
+} // end of namespace

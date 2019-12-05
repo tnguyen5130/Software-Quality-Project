@@ -27,6 +27,7 @@ namespace TMSProject.Classes.View
         //Sequence number
         int ordSeq = 1;
         string tempBuffer = "";
+        // Object
         Order order;
 
         public OrderAdd(string cusName, string cusID)
@@ -35,14 +36,14 @@ namespace TMSProject.Classes.View
             
             order = new Order();
             // Generate new order
-            // Check if orderID exist or not
+            // Check if orderID exist or not, if not generate new OrderID
             if (order.orderID != order.GetLastId() && order.orderID != null || order.GetLastId() == null)
             {
                 order.orderID = order.NewOrderID(ordSeq);
             }
             else if (order.orderID == order.GetLastId() || order.orderID == null)
             {
-                order.command = "INSERT";
+                // Get last orderID to string
                 string buffer = order.GetLastId();
                 // Get the last character in the last OrderID
                 string last = buffer.Substring(buffer.Length - 3);
@@ -55,7 +56,7 @@ namespace TMSProject.Classes.View
                 // Add with new temp
                 order.orderID = newBuffer + String.Format("{0:D3}", temp);
             }
-
+            // Print to Screen
             order.orderDate = order.NewOrderDate();
             txtOrderID.Text = order.orderID;
             txtOrderDate.Text = order.orderDate;
@@ -67,7 +68,7 @@ namespace TMSProject.Classes.View
 
         /// \brief This method RemoveLastChar for ID 
         /// \details <b>Details</b>
-        /// This method will remove the last character of a string
+        /// This method will remove the last three character of a string
         /// \return  string
         private string RemoveLastChar(string str)
         {
@@ -127,35 +128,41 @@ namespace TMSProject.Classes.View
             return retCode;
         }
 
-
 		public void btn_Order_Add(object sender, RoutedEventArgs e)
 		{           
-
             if (validationOrderAdd())
             {
                 // Get customer information
                 Customer customer = new Customer();
-                customer.customerName = customer.GetLastCusName();
-                customer.customerCompany = txtCompany.Text;
+                // Name
+                customer.customerName = customer.GetLastCusName();                
                 customer.customerName = txtName.Text;
+                // Company
+                customer.customerCompany = txtCompany.Text;
+                // City
                 customer.customerCity = txtCity.SelectedValue.ToString();
+                // Province
                 customer.customerProvince = txtProvince.SelectedValue.ToString();
+                // Phone Number
                 customer.telno = txtTelPhone.Text;
+                // Postal Code
                 customer.zipcode = txtPostalCode.Text;
+                // Address
                 customer.address = txtAddress.Text;
                 // Save customer ID into database 
                 customer.customerID = tempBuffer;
+                // Command
                 customer.command = "INSERT";                
 
                 if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                 {
                     //do no stuff
-
                 }
                 else
                 {
                     //do yes stuff
                     customer.Save();
+                    // Navigation to Shipping Info to change order details
                     UserControl usc = null;
                     usc = new ShippingInfo(txtOrderID.Text, txtOrderDate.Text);
                     GridOrder.Children.Add(usc);

@@ -21,12 +21,11 @@ using System.Windows.Controls;
 
 namespace TMSProject.Classes.Controller
 {
-    /// \class InvoiceBizDAO
-    /// \brief This class contains the invoice's information for a Order file when buyer make an order
+    /// \class OrderBizDAO
+    /// \brief This class contains the order's information for a Order file when buyer make an order
     /// \author : <i>Nhung Luong <i>
     public class OrderBizDAO
     {
-        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         /// \brief This method UpdateOrder for user 
@@ -110,6 +109,10 @@ namespace TMSProject.Classes.Controller
 
         }
 
+        /// \brief This method GetOriginCityIDbyName for user 
+        /// \details <b>Details</b>
+        /// This method will get original city ID 
+        /// \return  string
         public string GetOriginCityIDbyName(string cityName)
         {
             string value = "";
@@ -130,6 +133,10 @@ namespace TMSProject.Classes.Controller
             return value;
         }
 
+        /// \brief This method GetDestinateCityIDbyName for user 
+        /// \details <b>Details</b>
+        /// This method will get the destination city ID
+        /// \return  void
         public string GetDestinateCityIDbyName(string cityName)
         {
             string value = "";
@@ -153,7 +160,7 @@ namespace TMSProject.Classes.Controller
         /// \brief This method GetLastOrderID for user 
         /// \details <b>Details</b>
         /// This method will get the last order id to check whether DB contains it
-        /// \return  void
+        /// \return string
         public string GetLastOrderID(Order order)
         {
             string value = "";
@@ -191,7 +198,31 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method LoadOrderList for user 
+        /// \details <b>Details</b>
+        /// This method will get order list that has orderID and orderDate into DataGrid table
+        /// \return  void
+        public void LoadOrderList(DataGrid grid)
+        {
+            const string sqlStatement = @" SELECT orderID, orderDate FROM ordering;";
 
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                DataTable dataTable = new DataTable("ordering");
+
+                myAdapter.Fill(dataTable);
+
+                grid.ItemsSource = dataTable.DefaultView;
+            }
+        }
 
         /// \brief This method GetOrders for user 
         /// \details <b>Details</b>
@@ -244,33 +275,7 @@ namespace TMSProject.Classes.Controller
             }
 
             return orders;
-        }
+        }        
 
-        /// \brief This method LoadOrderList for user 
-        /// \details <b>Details</b>
-        /// This method will get order list that has orderID and orderDate into DataGrid table
-        /// \return  void
-        public void LoadOrderList(DataGrid grid)
-        {
-            const string sqlStatement = @" SELECT orderID, orderDate FROM ordering;";
-
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                var myAdapter = new MySqlDataAdapter
-                {
-                    SelectCommand = myCommand
-                };
-
-                DataTable dataTable = new DataTable("ordering");
-
-                myAdapter.Fill(dataTable);
-
-                grid.ItemsSource = dataTable.DefaultView;             
-            }
-        }
-
-    }
-}
+    } // End of class
+} // End of namespace

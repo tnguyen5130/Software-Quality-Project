@@ -17,7 +17,7 @@ using TMSProject.Classes.Controller;
 namespace TMSProject.Classes.Model
 {
     /// \class Order
-    /// \brief This class contains the Invoice Info
+    /// \brief This class contains the Order Info
     /// \author : <i>Yonchul Choi <i>
     public class Order
     {
@@ -73,7 +73,6 @@ namespace TMSProject.Classes.Model
             new OrderBizDAO().DeleteOrder(this);
         }
 
-
         /// \brief This method GetById
         /// \details <b>Details</b>
         /// This method will get  order ID
@@ -92,12 +91,20 @@ namespace TMSProject.Classes.Model
             
         }
 
+        /// \brief This method GetOriginalID
+        /// \details <b>Details</b>
+        /// This method will get original city ID based on name
+        /// \return  string
         public string GetOriginalID(string cityName)
         {
             var originCityID = new OrderBizDAO().GetOriginCityIDbyName(cityName);
             return originCityID;
         }
 
+        /// \brief This method GetDestinateID
+        /// \details <b>Details</b>
+        /// This method will get destination city ID based on name
+        /// \return  string
         public string GetDestinateID(string cityName)
         {
             var destinateCityID = new OrderBizDAO().GetDestinateCityIDbyName(cityName);
@@ -124,13 +131,12 @@ namespace TMSProject.Classes.Model
             return orderList;
         }
 
-
         /// \brief This method newOrderID
         /// \details <b>Details</b>
         /// This method will generate order ID
         /// \return  string
         public string NewOrderID(int seq)
-         {
+        {
             string value = String.Format("{0:D3}", seq);
             return "ORD" + DateTime.Now.ToString("MMddyyyy") + value;
         }

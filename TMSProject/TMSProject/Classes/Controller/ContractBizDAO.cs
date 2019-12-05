@@ -1,8 +1,8 @@
-﻿//* FILE			: CMPBizDAO.cs
+﻿//* FILE			: ContractBizDAO.cs
 //* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
 //* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
 //* FIRST VERSON	: Nov 11, 2019
-//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
+//* DESCRIPTION		: The file defines a class  : CityBizDAO for the billing infomation
 
 
 
@@ -66,7 +66,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /// \brief This method InsertContract for user 
         /// \details <b>Details</b>
         /// This method will insert contract database 
@@ -101,9 +100,9 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        /// \brief This method GetLastOrderID for user 
+        /// \brief This method GetLastContractID for user 
         /// \details <b>Details</b>
-        /// This method will get the last order id to check whether DB contains it
+        /// This method will get the last contract id to check whether DB contains it
         /// \return  void
         public string GetLastContractID(Contract contract)
         {
@@ -180,7 +179,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /// \brief This method DataTableToContractList for user 
         /// \details <b>Details</b>
         /// This method will store cotract into contract list data
@@ -203,5 +201,5 @@ namespace TMSProject.Classes.Controller
 
             return contracts;
         }
-    }
-}
+    } // End of class
+} // End of namespace 

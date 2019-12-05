@@ -1,8 +1,8 @@
-﻿//* FILE			: CMPBizDAO.cs
+﻿//* FILE			: CustomerBizDAO.cs
 //* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
 //* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
 //* FIRST VERSON	: Nov 11, 2019
-//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
+//* DESCRIPTION		: The file defines a class  : CustomerBizDAO for the biiling infomation
 
 using System;
 using System.Collections.Generic;
@@ -22,13 +22,11 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>Nhung Luong<i>
     public class CustomerBizDAO
     {
-        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
-
-
-        /// \brief This method UpdateContract for user 
+        
+        /// \brief This method UpdateCustomer for user 
         /// \details <b>Details</b>
-        /// This method will update contract database 
+        /// This method will update customer database 
         /// \return  void
         public void UpdateCustomer(Customer customer)
         {
@@ -92,7 +90,6 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
         /// \brief This method DeleteCustomer for user 
         /// \details <b>Details</b>
         /// This method will delete customer database 
@@ -113,9 +110,9 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        /// \brief This method GetCustomers for user 
+        /// \brief This method GetLastCustomerName for user 
         /// \details <b>Details</b>
-        /// This method will get customer database 
+        /// This method will get last customer's name database 
         /// \return  void
         public string GetLastCustomerName(Customer customer)
         {
@@ -134,9 +131,9 @@ namespace TMSProject.Classes.Controller
             return value;
         }
 
-        /// \brief This method GetCustomers for user 
+        /// \brief This method GetLastCustomerID for user 
         /// \details <b>Details</b>
-        /// This method will get customer database 
+        /// This method will get last customer's ID database 
         /// \return  void
         public string GetLastCustomerID(Customer customer)
         {
@@ -154,7 +151,6 @@ namespace TMSProject.Classes.Controller
             }
             return value;
         }
-
 
         /// \brief This method GetCustomers for user 
         /// \details <b>Details</b>
@@ -191,7 +187,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /// \brief This method DataTableToCustomerList for user 
         /// \details <b>Details</b>
         /// This method will store customer database 
@@ -216,5 +211,5 @@ namespace TMSProject.Classes.Controller
 
             return customers;
         }
-    }
-}
+    } // End of class
+} // end of namespace

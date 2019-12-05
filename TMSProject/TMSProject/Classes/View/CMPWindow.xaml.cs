@@ -25,9 +25,10 @@ namespace TMSProject.Classes.View
     {
         // Sequence number
         int seq = 1;
-        //do yes stuff
+        // Object
         Contract contract;
         ContractMarketPlace cmp;
+
         public CMPWindow()
         {
             InitializeComponent();
@@ -47,7 +48,7 @@ namespace TMSProject.Classes.View
 
         /// \brief This method RemoveLastChar for ID 
         /// \details <b>Details</b>
-        /// This method will remove the last character of a string
+        /// This method will remove the last three character of a string
         /// \return  string
         private string RemoveLastChar(string str)
         {
@@ -78,22 +79,20 @@ namespace TMSProject.Classes.View
             if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
             {
                 //do no stuff
-
             }
             else
             {
                 contract = new Contract();
                 contract.startDate = contract.NewContractDate();
                 contract.completeStatus = "UNPAID";
+                contract.command = "INSERT";
 
                 if (contract.contractID != contract.GetLastId() && contract.contractID != null || contract.GetLastId() == null)
-                {
-                    contract.command = "INSERT";
+                {                    
                     contract.contractID = contract.NewContractID(seq);
                 }
                 else if (contract.contractID == contract.GetLastId() || contract.contractID == null)
                 {
-                    contract.command = "INSERT";
                     string buffer = contract.GetLastId();
                     // Get the last character in the last OrderID
                     string last = buffer.Substring(buffer.Length - 3);
@@ -105,10 +104,6 @@ namespace TMSProject.Classes.View
                     string newBuffer = RemoveLastChar(buffer);
                     // Add with new temp
                     contract.contractID = newBuffer + String.Format("{0:D3}", temp);
-                }
-                else
-                {
-                    contract.command = "INSERT";
                 }
 
                 // Check if client name is missing
@@ -178,6 +173,7 @@ namespace TMSProject.Classes.View
                 contract.Save();
                 cmp.Save();
 
+                // Navigation To Add CustomerDetails
                 UserControl usc = null;
                 usc = new OrderAdd(txtClientName.Text, cmp.customerID);
                 GridCMP.Children.Add(usc);

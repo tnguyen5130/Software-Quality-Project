@@ -67,6 +67,11 @@ namespace TMSProject.Classes.Model
             new CarrierBizDAO().DeleteCarrier(this);
         }
 
+        public string GetLastCarrierID()
+        {
+            var carrier = new CarrierBizDAO().GetLastCarrierID();
+            return carrier;
+        }
 
         /// \brief This method GetById  
         /// \details <b>Details</b>
@@ -78,6 +83,15 @@ namespace TMSProject.Classes.Model
             return carriers[0];
         }
 
+        /// \brief This method NewCarrierID
+        /// \details <b>Details</b>
+        /// This method will generate carrier ID
+        /// \return  string
+        public string NewCarrierID(int seq)
+        {
+            string value = String.Format("{0:D3}", seq);
+            return "CARR" + DateTime.Now.ToString("MMddyyyy") + value;
+        }
 
         /// \brief This method GetCarriers carrier 
         /// \details <b>Details</b>
