@@ -44,14 +44,7 @@ namespace TMSProject.Classes.View
 
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
             {
-                case "LogFiles":
-                    usc = new LogFilesWindow();
-                    GridMain.Children.Add(usc);
-                    break;
-                case "Tables":
-                    usc = new TablesWindow();
-                    GridMain.Children.Add(usc);
-                    break;
+               
                 case "Carrier":
                     usc = new CarrierWindow();
                     GridMain.Children.Add(usc);
