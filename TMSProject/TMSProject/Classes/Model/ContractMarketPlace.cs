@@ -92,7 +92,7 @@ namespace TMSProject.Classes.Model
         public string NewCustomerID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
-            return "CUS" + DateTime.Now.ToString("MMddyyyy") + value;
+            return "CUS" + value;
         }
 
         /// \brief This method GetCMPs

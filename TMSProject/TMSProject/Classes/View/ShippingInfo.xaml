@@ -31,8 +31,8 @@
                             <TextBlock x:Name="txtOrderID" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
                         </StackPanel>
                         <ComboBox x:Name="boxFrom" Foreground="Black" materialDesign:HintAssist.Hint="From" Margin="2,5,-2.2,5"/>
-                        <DatePicker Name="txtDateFrom" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>
-                        <TextBlock Text="Carrier">
+                        <!--<DatePicker Name="txtDateFrom" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>-->
+                        <TextBlock Text="Carrier" Foreground="Black">
                             <TextBlock.Resources>
                                 <Style TargetType="ContentControl">
                                     <Setter Property="Foreground" Value="Black"/>
@@ -42,7 +42,7 @@
                         <StackPanel>
                             <CheckBox x:Name="boxFTL" Foreground="Black" Margin="10">FTL</CheckBox>
                         </StackPanel>
-                        <TextBox x:Name="txtVanType" Foreground="Black" materialDesign:HintAssist.Hint="Van Type" Margin="0,5,-0.4,5">
+                        <TextBox x:Name="txtVanType" Foreground="Black" materialDesign:HintAssist.Hint="Van Type( E.g: 0 or 1)" Margin="0,5,-0.4,5">
                             <TextBox.Resources>
                                 <Style TargetType="{x:Type ContentControl}">
                                     <Setter Property="Foreground" Value="Black"/>
@@ -59,7 +59,7 @@
                             <TextBlock x:Name="txtOrderDate" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
                         </StackPanel>
                         <ComboBox x:Name="boxTo" Foreground="Black" materialDesign:HintAssist.Hint="To" Margin="0 5"/>
-                        <DatePicker x:Name="boxDateTo" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>
+                        <!--<DatePicker x:Name="boxDateTo" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>-->
                         <TextBlock Text="Carrier">
                             <TextBlock.Resources>
                                 <Style TargetType="ContentControl">
@@ -70,7 +70,7 @@
                         <StackPanel>
                             <CheckBox x:Name="boxLTL" Margin="10" Foreground="Black">LTL</CheckBox>
                         </StackPanel>
-                        <TextBox x:Name="txtPallet" Foreground="Black" materialDesign:HintAssist.Hint="Pallet" Margin="0,5,-0.4,5">
+                        <TextBox x:Name="txtPallet" Foreground="Black" materialDesign:HintAssist.Hint="Pallet(lbs)" Margin="0,5,-0.4,5">
                             <TextBox.Resources>
                                 <Style TargetType="{x:Type ContentControl}">
                                     <Setter Property="Foreground" Value="Black"/>

@@ -73,8 +73,6 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
-
         /// \brief This method InsertCarrier for user 
         /// \details <b>Details</b>
         /// This method will insert carrier for making order
@@ -113,8 +111,6 @@ namespace TMSProject.Classes.Controller
             }
 
         }
-
-
 
         /// \brief This method DeleteCarrier for user 
         /// \details <b>Details</b>
@@ -203,8 +199,6 @@ namespace TMSProject.Classes.Controller
                 return carriers;
             }
         }
-
-
 
         /// \brief This method DataTableToCarrierList for user 
         /// \details <b>Details</b>

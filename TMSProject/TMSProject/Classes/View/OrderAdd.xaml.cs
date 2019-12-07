@@ -24,8 +24,6 @@ namespace TMSProject.Classes.View
 	/// </summary>
 	public partial class OrderAdd : UserControl
 	{
-        //Sequence number
-        int ordSeq = 1;
         string tempBuffer = "";
         // Object
         Order order;
@@ -33,13 +31,14 @@ namespace TMSProject.Classes.View
         public OrderAdd(string cusName, string cusID)
 		{
 			InitializeComponent();
-            
-            order = new Order();
+
             // Generate new order
+            order = new Order();
+            
             // Check if orderID exist or not, if not generate new OrderID
             if (order.orderID != order.GetLastId() && order.orderID != null || order.GetLastId() == null)
             {
-                order.orderID = order.NewOrderID(ordSeq);
+                order.orderID = order.NewOrderID(1);
             }
             else if (order.orderID == order.GetLastId() || order.orderID == null)
             {
@@ -56,7 +55,7 @@ namespace TMSProject.Classes.View
                 // Add with new temp
                 order.orderID = newBuffer + String.Format("{0:D3}", temp);
             }
-            // Print to Screen
+            // Print to Screen (OrderID and OrderDate)
             order.orderDate = order.NewOrderDate();
             txtOrderID.Text = order.orderID;
             txtOrderDate.Text = order.orderDate;
@@ -128,6 +127,10 @@ namespace TMSProject.Classes.View
             return retCode;
         }
 
+        /// \brief This method btn_Order_Add 
+        /// \details <b>Details</b>
+        /// This method will be a trigger for adding new customer details
+        /// \return  string
 		public void btn_Order_Add(object sender, RoutedEventArgs e)
 		{           
             if (validationOrderAdd())

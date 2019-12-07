@@ -70,7 +70,7 @@ namespace TMSProject.Classes.Model
         public string NewContractID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
-            return "CON" + DateTime.Now.ToString("MMddyyyy") + value;
+            return "CON" + value;
         }
 
         /// \brief This method NewContractDate

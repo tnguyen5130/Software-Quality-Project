@@ -69,6 +69,15 @@ namespace TMSProject.Classes.View
                 MessageBox.Show("No Job Type Selection!!!");
             }
 
+            if (txtVanType.Text == "")
+            {
+                MessageBox.Show("Please insert van type");
+            }
+            else if (txtPallet.Text == "")
+            {
+                MessageBox.Show("Please insert pallet");
+            }
+
             if ((boxFTL.IsChecked ?? false) || (boxLTL.IsChecked ?? false))
             {
                 // OrderID

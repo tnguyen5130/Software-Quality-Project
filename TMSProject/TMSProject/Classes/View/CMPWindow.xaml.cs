@@ -23,8 +23,6 @@ namespace TMSProject.Classes.View
     /// </summary>
     public partial class CMPWindow : UserControl
     {
-        // Sequence number
-        int seq = 1;
         // Object
         Contract contract;
         ContractMarketPlace cmp;
@@ -74,6 +72,10 @@ namespace TMSProject.Classes.View
             }          
         }
 
+        /// \brief This method btn_Next_Click 
+        /// \details <b>Details</b>
+        /// This method will set up DB for get data from CMP table and insert into local DB
+        /// \return  void
         private void btn_Next_Click(object sender, RoutedEventArgs e)
         {  
             if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
@@ -81,103 +83,124 @@ namespace TMSProject.Classes.View
                 //do no stuff
             }
             else
-            {
-                contract = new Contract();
-                contract.startDate = contract.NewContractDate();
-                contract.completeStatus = "UNPAID";
-                contract.command = "INSERT";
-
-                if (contract.contractID != contract.GetLastId() && contract.contractID != null || contract.GetLastId() == null)
-                {                    
-                    contract.contractID = contract.NewContractID(seq);
-                }
-                else if (contract.contractID == contract.GetLastId() || contract.contractID == null)
-                {
-                    string buffer = contract.GetLastId();
-                    // Get the last character in the last OrderID
-                    string last = buffer.Substring(buffer.Length - 3);
-                    // Convert it into INT
-                    int temp = Convert.ToInt32(last);
-                    // Add by 1
-                    temp += 1;
-                    //Delete the last character of the buffer
-                    string newBuffer = RemoveLastChar(buffer);
-                    // Add with new temp
-                    contract.contractID = newBuffer + String.Format("{0:D3}", temp);
-                }
-
-                // Check if client name is missing
-                if (txtClientName.Text != null)
-                {
-                    contract.initiateBy = txtClientName.Text;
-                }
+            {             
+                // if missing, show warning
                 if (txtEndDate.SelectedDate == null)
                 {
                     MessageBox.Show("You must choose the End Date for the Contract");
                 }
                 else
                 {
+                    contract = new Contract();
+                    // Contract Start Date
+                    contract.startDate = contract.NewContractDate();
+                    // Contract completeStatus
+                    contract.completeStatus = "UNPAID";
+                    // Contract command
+                    contract.command = "INSERT";
+                    // Check if the contractID is exist, if not create a new contractID
+                    if (contract.contractID != contract.GetLastId() && contract.contractID != null || contract.GetLastId() == null)
+                    {
+                        contract.contractID = contract.NewContractID(1);
+                    }
+                    // If exist, get the last contract ID and increase it by 1
+                    else if (contract.contractID == contract.GetLastId() || contract.contractID == null)
+                    {
+                        string buffer = contract.GetLastId();
+                        // Get the last character in the last OrderID
+                        string last = buffer.Substring(buffer.Length - 3);
+                        // Convert it into INT
+                        int temp = Convert.ToInt32(last);
+                        // Add by 1
+                        temp += 1;
+                        //Delete the last character of the buffer
+                        string newBuffer = RemoveLastChar(buffer);
+                        // Add with new temp
+                        contract.contractID = newBuffer + String.Format("{0:D3}", temp);
+                    }
                     // Get the Date for the End Date
                     contract.endDate = txtEndDate.SelectedDate.Value.Date.ToString("yyyy-MM-dd");
-                }
 
-                // Save data into CMP
-                cmp = new ContractMarketPlace();
-                cmp.contractID = contract.contractID;
-                cmp.jobType = txtJobType.Text;
-                cmp.quantity = Convert.ToInt32(txtQuantity.Text);
-                cmp.origin = txtOrigin.Text;
-                cmp.destination = txtDestination.Text;
-                cmp.vanType = txtVanType.Text;
-                if (cmp.customerID != cmp.GetLastCusID() && cmp.customerID != null || cmp.GetLastCusID() == null)
-                {
-                    cmp.customerID = cmp.NewCustomerID(seq);
+                    // Check if client name is missing
+                    if (txtClientName.Text != null)
+                    {
+                        contract.initiateBy = txtClientName.Text;
+                    }
+
+                    // Save data into CMP in local DB
+                    cmp = new ContractMarketPlace();
+
+                    // CMP contractID
+                    cmp.contractID = contract.contractID;
+
+                    // CMP jobType
+                    cmp.jobType = txtJobType.Text;
+
+                    //Convert value of JobType 
+                    if (cmp.jobType == "0")
+                    {
+                        cmp.jobType = "FTL";
+                    }
+                    else if (cmp.jobType == "1")
+                    {
+                        cmp.jobType = "LTL";
+                    }
+
+                    // CMP Quantity
+                    cmp.quantity = Convert.ToInt32(txtQuantity.Text);
+
+                    // CMP Origin
+                    cmp.origin = txtOrigin.Text;
+
+                    // CMP Destination
+                    cmp.destination = txtDestination.Text;
+                    // CMP VanType
+                    cmp.vanType = txtVanType.Text;
+                    if (cmp.vanType == "0")
+                    {
+                        cmp.vanType = "R";
+                    }
+                    else if (cmp.vanType == "1")
+                    {
+                        cmp.vanType = "F";
+                    }
+
+                    // CMP CustomerID
+                    if (cmp.customerID != cmp.GetLastCusID() && cmp.customerID != null || cmp.GetLastCusID() == null)
+                    {
+                        cmp.customerID = cmp.NewCustomerID(1);
+                    }
+                    if (cmp.customerID == cmp.GetLastCusID() || cmp.customerID == null)
+                    {
+                        string buffer = cmp.GetLastCusID();
+                        // Get the last character in the last OrderID
+                        string last = buffer.Substring(buffer.Length - 3);
+                        // Convert it into INT
+                        int temp = Convert.ToInt32(last);
+                        // Add by 1
+                        temp += 1;
+                        //Delete the last character of the buffer
+                        string newBuffer = RemoveLastChar(buffer);
+                        // Add with new temp
+                        cmp.customerID = newBuffer + String.Format("{0:D3}", temp);
+                    }
+
+                    // CMP Command 
                     cmp.command = "INSERT";
-                }                
-                if (cmp.customerID == cmp.GetLastCusID() || cmp.customerID == null)
-                {
-                    cmp.command = "INSERT";
-                    string buffer = cmp.GetLastCusID();
-                    // Get the last character in the last OrderID
-                    string last = buffer.Substring(buffer.Length - 3);
-                    // Convert it into INT
-                    int temp = Convert.ToInt32(last);
-                    // Add by 1
-                    temp += 1;
-                    //Delete the last character of the buffer
-                    string newBuffer = RemoveLastChar(buffer);
-                    // Add with new temp
-                    cmp.customerID = newBuffer + String.Format("{0:D3}", temp);
-                }
 
-                //Convert value of JobType, Quantity and VanType
-                if (cmp.jobType == "0")
-                {
-                    cmp.jobType = "FTL";
-                }
-                else if (cmp.jobType == "1")
-                {
-                    cmp.jobType = "LTL";
-                }
+                    // Save to Database (Contract and CMP Table)                    
+                    cmp.Save();
+                    contract.Save();
 
-                if (cmp.vanType == "0")
-                {
-                    cmp.vanType = "R";
-                }
-                else if (cmp.vanType == "1")
-                {
-                    cmp.vanType = "F";
-                }
+                    // Navigation To Add CustomerDetails
+                    UserControl usc = null;
+                    usc = new OrderAdd(txtClientName.Text, cmp.customerID);
+                    GridCMP.Children.Add(usc);
 
-                // Save to Database
-                contract.Save();
-                cmp.Save();
-
-                // Navigation To Add CustomerDetails
-                UserControl usc = null;
-                usc = new OrderAdd(txtClientName.Text, cmp.customerID);
-                GridCMP.Children.Add(usc);
+                }               
             }
         }
+
+
     }
 }
