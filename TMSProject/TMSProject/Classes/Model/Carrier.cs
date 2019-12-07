@@ -30,7 +30,7 @@ namespace TMSProject.Classes.Model
         /// A string to get ltlRate
         /// Astring to get feeferCharge
         /// </summary>
-        public string carrierID { get; set; } 
+        public string carrierID { get; set; }
         public string depotCity { get; set; }
         public string carrierName { get; set; }
         public double ftlAvail { get; set; }
@@ -39,22 +39,31 @@ namespace TMSProject.Classes.Model
         public double ltlRate { get; set; }
         public double reeferCharge { get; set; }
 
+        public string command { get; set; }
+        public string orderID { get; set; }
+        public int jobType { get; set; }
+        public int quantity { get; set; }
+        public int vanType { get; set; }
+
         public Carrier() { }
 
         /// \brief This method Save carrier 
         /// \details <b>Details</b>
         /// This method will save carrier
         /// \return  void
-        public void Save()
+        public bool Save()
         {
-            if (carrierID != "")
+            bool flag = false;
+            if (command == "UPDATE")
             {
-                new CarrierBizDAO().UpdateCarrier(this);
+                flag = new CarrierBizDAO().UpdateCarrier(this);
             }
             else
             {
-                new CarrierBizDAO().InsertCarrier(this);
+                flag = new CarrierBizDAO().InsertCarrier(this);
             }
+
+            return flag;
         }
 
 
@@ -86,6 +95,12 @@ namespace TMSProject.Classes.Model
         public List<Carrier> GetCarriers(string pattern)
         {
             var contractsList = new CarrierBizDAO().GetCarriers(pattern);
+            return contractsList;
+        }
+
+        public List<Carrier> GetAvailabilty(string orderID, string carrierID)
+        {
+            var contractsList = new CarrierBizDAO().GetAvailabilty(orderID, carrierID);
             return contractsList;
         }
     }

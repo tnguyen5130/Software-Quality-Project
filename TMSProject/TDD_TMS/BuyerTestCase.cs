@@ -76,7 +76,7 @@ namespace TDD_TMS
             order.orderDate = "20191120";
 
             //check city
-            order.origincalCityID = "C004";
+            order.originalCityID = "C004";
             //check city
             order.desCityID = "C002";
             //buyer should set the value(carrierID) --> default CA00000000000

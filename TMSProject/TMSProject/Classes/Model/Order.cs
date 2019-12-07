@@ -30,13 +30,20 @@ namespace TMSProject.Classes.Model
         /// </summary>
         public string orderID { get; set; }
         public string contractID { get; set; }
+        public string customerID { get; set; }
         public string orderDate { get; set; }
-        public string origincalCityID { get; set; }
+        public int jobType { get; set; }
+        public int quantity { get; set; }
+        public int vanType { get; set; }
+        public string originalCityID { get; set; }
         public string desCityID { get; set; }
         public string carrierID { get; set; }
         public string orderStatus { get; set; }
         public string command { get; set; }
 
+        public string customerName { get; set; }
+        public string startCityName { get; set; }
+        public string endCityName { get; set; }
 
         public Order() { }
 
@@ -100,12 +107,29 @@ namespace TMSProject.Classes.Model
             return orderList;
         }
 
+        public List<Order> GetOrderDetail(string startCity, string endCity)
+        {
+            var orderList = new OrderBizDAO().GetOrderDetail(startCity, endCity);
+            return orderList;
+        }
+
+        public List<Order> GetOrderWithID(string orderID)
+        {
+            var orderList = new OrderBizDAO().GetOrderWithID(orderID);
+            return orderList;
+        }
+
+        public List<Order> GetOrderDetailWithID(string orderID)
+        {
+            var orderList = new OrderBizDAO().GetOrderDetailWithID(orderID);
+            return orderList;
+        }
 
         /// \brief This method generateOrderID
         /// \details <b>Details</b>
         /// This method will generate order ID
         /// \return  void
-         public string generateOrderID(int seq,int time)
+        public string generateOrderID(int seq,int time)
         {            
             return "ord"+DateTime.Now.ToString()+time;
         }

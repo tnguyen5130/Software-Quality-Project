@@ -18,75 +18,75 @@ using TMSProject.Classes.Controller;
 
 namespace TMSProject.Classes.Model
 {
-    /// \class Invoice
-    /// \brief This class contains the Invoice Info
-    /// \author : <i>Yonchul Choi <i>
     public class Invoice
     {
-        /// <summary>
-        /// A string to get invoiceID 
-        /// A string to get billingID
-        /// A string to get contractID
-        /// A string to get customerID
-        /// A string to get completeStatus
-        /// </summary>
         public string invoiceID { get; set; }
         public string billingID { get; set; }
         public string contractID { get; set; }
         public string customerID { get; set; }
         public string completeStatus { get; set; }
+        public string command { get; set; }
+
+        //extended properties
+        public string orderID { get; set; }
+        public string customerName { get; set; }
+        public string orderDate { get; set; }
+        public string customerCity { get; set; }
+        public string telno { get; set; }
+        public string address { get; set; }
+        public string zipcode { get; set; }
+        public string customerCompany { get; set; }
+        public string customerProvince { get; set; }
+        public string startCityName { get; set; }
+        public string endCityName { get; set; }
+        public int jobType { get; set; }
 
         public Invoice() { }
 
-
-        /// \brief This method Save
-        /// \details <b>Details</b>
-        /// This method will save invoice Info
-        /// \return  void
-        public void Save()
+        public bool Save()
         {
-            if (invoiceID != "")
+            bool flag = false;
+            if (command == "UPDATE")
             {
-                new InvoiceBizDAO().UpdateInvoice(this);
+                flag = new InvoiceBizDAO().UpdateInvoice(this);
             }
             else
             {
-                new InvoiceBizDAO().InsertInvoice(this);
+                flag = new InvoiceBizDAO().InsertInvoice(this);
             }
+
+            return flag;
         }
 
-
-        /// \brief This method Delete
-        /// \details <b>Details</b>
-        /// This method will save invoice Info
-        /// \return  void
         public void Delete()
         {
             new InvoiceBizDAO().DeleteInvoice(this);
         }
 
-        public Invoice GetById(string invoiceID)
+        public Invoice GetById(string billingID, string orderID)
         {
-            var invoices = new InvoiceBizDAO().GetInvoices(invoiceID);
+            var invoices = new InvoiceBizDAO().GetInvoices(invoiceID, orderID);
             return invoices[0];
         }
 
-
-        /// \brief This method Save
-        /// \details <b>Details</b>
-        /// This method will save employee Info
-        /// \return  void
-        public List<Invoice> GetInvoices(string pattern)
+        public List<Invoice> GetInvoices(string billingID, string orderID)
         {
-            var invoiceList = new InvoiceBizDAO().GetInvoices(pattern);
+            var invoiceList = new InvoiceBizDAO().GetInvoices(billingID, orderID);
             return invoiceList;
         }
 
+        public List<Invoice> ViewInvoices(string billingID, string orderID)
+        {
+            var invoiceList = new InvoiceBizDAO().ViewInvoices(billingID, orderID);
+            return invoiceList;
+        }
 
-        /// \brief This method generateBillingID
-        /// \details <b>Details</b>
-        /// This method will save generate Billing ID Info
-        /// \return  void
+        public List<Invoice> GetInvoiceID(string invoiceID)
+        {
+            var invoiceList = new InvoiceBizDAO().GetInvoiceID(invoiceID);
+            return invoiceList;
+        }
+
         public string generateBillingID(int seq)
         {
             // Naming INVO + billingID
@@ -94,3 +94,4 @@ namespace TMSProject.Classes.Model
         }
     }
 }
+

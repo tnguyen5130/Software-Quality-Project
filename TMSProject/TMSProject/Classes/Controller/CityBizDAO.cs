@@ -116,6 +116,36 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        public List<City> GetCityName(string searchItem)
+        {
+            const string sqlStatement = @" SELECT 
+                                                cityId, 
+                                                cityName 
+                                            FROM city
+                                            WHERE cityName = @SearchItem; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var cities = DataTableToCityList(dataTable);
+
+                return cities;
+            }
+        }
+
         /// \brief This method GetCities for user 
         /// \details <b>Details</b>
         /// This method will get city for select ting start and end city

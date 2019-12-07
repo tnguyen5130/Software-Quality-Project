@@ -6,13 +6,14 @@
              xmlns:local="clr-namespace:TMSProject.Classes.View"
              mc:Ignorable="d"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
-             d:DesignHeight="540" d:DesignWidth="1010">
+             d:DesignHeight="1000" d:DesignWidth="1010">
     <Grid x:Name="GridMain" Background="White" Margin="0,0,-0.4,0">
-        <ScrollViewer>
+        <ScrollViewer HorizontalAlignment="Left" Width="1010" Margin="5,2,-4.6,-2">
             <Grid>
                 <Button HorizontalAlignment="Right" Margin="10" Click="Button_Click" VerticalAlignment="Top">
                     <materialDesign:PackIcon Kind="Printer"/>
                 </Button>
+
                 <Grid x:Name="print">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="120"/>
@@ -22,7 +23,14 @@
 
                     <StackPanel Orientation="Horizontal" Margin="30" Grid.Row="0">
                         <TextBlock Text="INVOICE" VerticalAlignment="Center" FontSize="35" FontWeight="Bold" Foreground="PaleVioletRed"/>
+
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="30,90,82,385" Grid.Row="0" Grid.RowSpan="2">
+                        <TextBlock Text="Invoice No:" FontSize="20" Margin="5,5,5,10" Foreground="Black"/>
+                        <TextBox Foreground="Black" Name="txtInputInvoice" TextWrapping="Wrap" FontSize="20" Text="" Width="162" Margin="0,0,0,10"/>
+                        <Button Content="Invoice Retrieve" Height="Auto" Width="142" x:Name="Invoice_Retrieve_Button" Click="Invoice_Retreive_Click"/>
+                    </StackPanel>
+
                     <StackPanel Grid.Row="1" HorizontalAlignment="Stretch" Margin="20">
                         <Grid HorizontalAlignment="Stretch">
                             <Grid.ColumnDefinitions>
@@ -30,69 +38,72 @@
                                 <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0" Margin="10">
-                                <TextBlock Text="Customer Name" FontSize="20" Margin="5" Foreground="Black"/>
+                                <TextBlock Text="Order Information" FontSize="20" Margin="5" Foreground="Black"/>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Date Issued:" FontSize="12" Margin="5" Foreground="Black"/>
-                                    <TextBlock Text="" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                    <TextBlock Text="Order Date:" FontSize="12" Margin="5" Foreground="Black"/>
+                                    <TextBlock Name="txtOrderDate" Width="150" Foreground="Black" Text="" FontSize="12" Margin="5" FontWeight="DemiBold" Height="20">
+                                        <TextBlock.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform/>
+                                                <SkewTransform/>
+                                                <RotateTransform Angle="0.094"/>
+                                                <TranslateTransform/>
+                                            </TransformGroup>
+                                        </TextBlock.RenderTransform>
+                                    </TextBlock>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Order ID:" FontSize="12" Margin="5" Foreground="Black"/>
+                                    <TextBlock Name="txtOrderID" Width="150" Text="" Foreground="Black" FontSize="12" Margin="5" FontWeight="DemiBold"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock Text="Invoice No:" FontSize="12" Margin="5" Foreground="Black"/>
-                                    <TextBlock Text="" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                    <TextBlock Name="txtInvoiceNo" Width="150" Text="" Foreground="Black" FontSize="12" Margin="5" FontWeight="DemiBold"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Address:" FontSize="12" Margin="5" Foreground="Black"/>
-                                    <TextBlock Text="" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                    <TextBlock Text="Shipping Route:" FontSize="12" Margin="5" Foreground="Black"/>
+                                    <TextBlock Name="txtStartEndCities" Foreground="Black" Width="250" Text="" FontSize="12" Margin="5" FontWeight="DemiBold"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="Zip Code:" FontSize="12" Margin="5" Foreground="Black"/>
-                                    <TextBlock Text="" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                    <TextBlock Text="Carrier Type:" FontSize="12" Margin="5" Foreground="Black"/>
+                                    <TextBlock Name="txtJobType" Text="" Foreground="Black" Width="150" FontSize="12" Margin="5" FontWeight="DemiBold"/>
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="1" Margin="10">
-                                <TextBlock Text="Your Name" FontSize="12" Margin="5" HorizontalAlignment="Right" Foreground="Black"/>
-                                <TextBlock Text="Your Adress" FontSize="12" Margin="5" HorizontalAlignment="Right" Foreground="Black"/>
-                                <TextBlock Text="Town, City," FontSize="12" Margin="5" HorizontalAlignment="Right" Foreground="Black"/>
-                                <TextBlock Text="Postcode" FontSize="12" Margin="5" HorizontalAlignment="Right" Foreground="Black"/>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Customer Information" FontSize="20" Margin="5" Foreground="Black"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Your Name" FontSize="12" Margin="5" HorizontalAlignment="Left" Foreground="Black"/>
+                                    <TextBlock Name="txtCustomerName" Foreground="Black" Text="" Width="200" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Your Company Name" FontSize="12" Margin="5" HorizontalAlignment="Left" Foreground="Black"/>
+                                    <TextBlock Name="txtCompanyName" Foreground="Black" Text="" Width="200" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Your Address" FontSize="12" Margin="5" HorizontalAlignment="Left" Foreground="Black"/>
+                                    <TextBlock Name="txtAddress" Foreground="Black" Text="" Width="200" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="Town, City, PRovince" FontSize="12" Margin="5" HorizontalAlignment="Left" Foreground="Black"/>
+                                    <TextBlock Name="txtLocation" Foreground="Black" Text="" Width="200" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="PostalCode" FontSize="12" Margin="5" HorizontalAlignment="Left" Foreground="Black"/>
+                                    <TextBlock Name="txtPostalCode" Foreground="Black" Text="" Width="200" FontSize="12" Margin="5" FontWeight="DemiBold"/>
+                                </StackPanel>
                             </StackPanel>
                         </Grid>
 
                         <Grid Margin="10 30 10 0">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Text="PALLET" Grid.Column="0" FontSize="12" FontWeight="ExtraLight" Foreground="Black"/>
-                            <TextBlock Text="DESCRIPTION" Grid.Column="1" FontSize="12" FontWeight="ExtraLight" Foreground="Black"/>
-                            <TextBlock Text="DEMENSION" Grid.Column="2" FontSize="12" FontWeight="ExtraLight" Foreground="Black"/>
-                            <TextBlock Text="WEIGHT" Grid.Column="3" FontSize="12" FontWeight="ExtraLight" HorizontalAlignment="Center" Foreground="Black"/>
-                            <TextBlock Text="CARRIER" Grid.Column="4" FontSize="12" FontWeight="ExtraLight" HorizontalAlignment="Center" Foreground="Black"/>
-                            <TextBlock Text="SUBTOTAL" Grid.Column="5" FontSize="12" FontWeight="ExtraLight" HorizontalAlignment="Right" Foreground="Black"/>
+                            <DataGrid AutoGenerateColumns="true" HorizontalAlignment="Left" Height="190" VerticalAlignment="Top" Width="933" Background="LightGreen" Name="billingDataGrid" IsReadOnly="False" Margin="0,0,0,-20" >
+                                <DataGrid.RowStyle>
+                                    <Style TargetType="{x:Type DataGridRow}"/>
+                                </DataGrid.RowStyle>
+                            </DataGrid>
                         </Grid>
                         <Rectangle Fill="Black" Height="1" Margin="5 2" Opacity="0.5"/>
-                        <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-                            <ListViewItem>
-                                <Grid HorizontalAlignment="Stretch" Margin="2" Width="480">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="2*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                        <ColumnDefinition Width="1*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <TextBlock  Grid.Column="0" Foreground="Black"/>
-                                    <TextBlock  Grid.Column="1" HorizontalAlignment="Center" Foreground="Black"/>
-                                    <TextBlock  Grid.Column="2" HorizontalAlignment="Center" Foreground="Black"/>
-                                    <TextBlock  Grid.Column="3" HorizontalAlignment="Center" Foreground="#FF62013C"/>
-                                    <TextBlock  Grid.Column="4" HorizontalAlignment="Center" Foreground="Black"/>
-                                    <TextBlock  Grid.Column="5" HorizontalAlignment="Center" Foreground="Black"/>
-                                </Grid>
-                            </ListViewItem>
-                        </ListView>
                     </StackPanel>
 
                     <StackPanel Grid.Row="2" Margin="20 0">
@@ -127,11 +138,11 @@
                                 <TextBlock Text="18 Jul '19" FontSize="25" Margin="5" Foreground="Black"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
-                                <TextBlock Text="$ 1,590.00" FontSize="25" Margin="5" HorizontalAlignment="Right" Foreground="#FF62013C" FontWeight="Bold"/>
+                                <TextBlock Name="invoiceTotalAmount" Text="0" FontSize="25" Margin="5" HorizontalAlignment="Right" Foreground="#FF62013C" FontWeight="Bold"/>
                             </StackPanel>
                         </Grid>
                         <Rectangle Fill="Black" Height="1" Margin="5" Opacity="0.5"/>
-                       
+
                     </StackPanel>
                 </Grid>
             </Grid>

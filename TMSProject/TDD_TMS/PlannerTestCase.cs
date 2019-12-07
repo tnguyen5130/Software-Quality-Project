@@ -21,7 +21,7 @@ namespace TDD_TMS
             compareOrder.orderID = "ORD20191119001";
             compareOrder.contractID = "CONT2019111908001";
             compareOrder.orderDate = "20191120";
-            compareOrder.origincalCityID = "C004";
+            compareOrder.originalCityID = "C004";
             compareOrder.desCityID = "C002";
             compareOrder.carrierID = "CA20190101001";
             compareOrder.orderStatus = "A";
@@ -29,7 +29,7 @@ namespace TDD_TMS
             var selectedOrder = order.GetOrders(order.orderID);
 
             if ((compareOrder.orderID == selectedOrder[0].orderID) && (compareOrder.contractID == selectedOrder[0].contractID) &&
-                (compareOrder.orderDate == selectedOrder[0].orderDate) && (compareOrder.origincalCityID == selectedOrder[0].origincalCityID) &&
+                (compareOrder.orderDate == selectedOrder[0].orderDate) && (compareOrder.originalCityID == selectedOrder[0].originalCityID) &&
                 (compareOrder.desCityID == selectedOrder[0].desCityID) && (compareOrder.carrierID == selectedOrder[0].carrierID) &&
                 (compareOrder.orderStatus == selectedOrder[0].orderStatus))
             {
@@ -66,7 +66,7 @@ namespace TDD_TMS
                 //assign data from table
                 order.contractID = orderResult[0].contractID;
                 order.orderDate = orderResult[0].orderDate;
-                order.origincalCityID = orderResult[0].origincalCityID;
+                order.originalCityID = orderResult[0].originalCityID;
                 order.desCityID = orderResult[0].desCityID;
                 order.orderStatus = orderResult[0].orderStatus;
             }
@@ -110,7 +110,7 @@ namespace TDD_TMS
             Trip trip = new Trip();
             //order.orderID = "ORD20191120001";
             
-            var viewTrips = trip.GetTrips(startCityID, endCityID);
+            var viewTrips = trip.GetTripsST(startCityID, endCityID);
             
             String[] tripID = new String[4];
             tripID[0] = "C00120191120001";
@@ -157,7 +157,7 @@ namespace TDD_TMS
 
             //Planinfo 
             PlanInfo plan = new PlanInfo();
-            var planResult = plan.GetPlanInfos(order.orderID);
+            var planResult = plan.GetPlanInfo(order.orderID);
 
             //set Order.carrierID with selected carrierID
             if(planResult[0] != null)

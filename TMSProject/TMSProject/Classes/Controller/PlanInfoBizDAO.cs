@@ -57,12 +57,12 @@ namespace TMSProject.Classes.Controller
                     myCommand.ExecuteNonQuery();
                     return true;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     return false;
                 }
-                
+
             }
 
         }
@@ -82,7 +82,7 @@ namespace TMSProject.Classes.Controller
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
+                    myCommand.Parameters.AddWithValue("@planID", plan.planID);
                     myCommand.Parameters.AddWithValue("@orderID", plan.orderID);
                     myCommand.Parameters.AddWithValue("@startCityID", plan.startCityID);
                     myCommand.Parameters.AddWithValue("@endCityID", plan.endCityID);
@@ -94,12 +94,12 @@ namespace TMSProject.Classes.Controller
                     myCommand.ExecuteNonQuery();
                     return true;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     return false;
                 }
-                
+
             }
 
         }
@@ -142,7 +142,7 @@ namespace TMSProject.Classes.Controller
                                             INNER JOIN 
                                                 mileage on trip.startCity = mileage.startCityID and trip.endCity = mileage.endCityID
                                             INNER JOIN 
-                                                ordering on trip.orderID = ordering.orderID group by trip.orderID
+                                                ordering on trip.orderID = ordering.orderID
                                             WHERE trip.orderID = @orderID
                                             GROUP BY trip.orderID; ";
 
@@ -168,6 +168,39 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        public List<PlanInfo> GetPlanID(string orderID)
+        {
+            const string sqlStatement = @" SELECT 
+                                                planID, 
+                                                orderID, 
+                                                distance, 
+                                                workingTime, 
+                                                startCityID, 
+                                                endCityID 
+                                            FROM planinfo
+                                            WHERE orderID = @orderID; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var plans = DataTableToPlanIDList(dataTable);
+
+                return plans;
+            }
+        }
 
         /// \brief This method DataTableToPlanInfoList for user 
         /// \details <b>Details</b>
@@ -181,12 +214,36 @@ namespace TMSProject.Classes.Controller
             {
                 plans.Add(new PlanInfo
                 {
-                    planID = row["orderID"].ToString(),
+                    orderID = row["orderID"].ToString(),
                     distance = Convert.ToDouble(row["distance"]),
                     workingTime = Convert.ToDouble(row["workingTime"]),
                     startCityID = row["originalCityID"].ToString(),
                     endCityID = row["desCityID"].ToString(),
-            });
+                });
+            }
+
+            return plans;
+        }
+
+        /// \brief This method DataTableToPlanInfoList for user 
+        /// \details <b>Details</b>
+        /// This method will store plan info when finishing order
+        /// \return  void
+        private List<PlanInfo> DataTableToPlanIDList(DataTable table)
+        {
+            var plans = new List<PlanInfo>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                plans.Add(new PlanInfo
+                {
+                    planID = row["planID"].ToString(),
+                    orderID = row["orderID"].ToString(),
+                    distance = Convert.ToDouble(row["distance"]),
+                    workingTime = Convert.ToDouble(row["workingTime"]),
+                    startCityID = row["startCityID"].ToString(),
+                    endCityID = row["endCityID"].ToString()
+                });
             }
 
             return plans;
