@@ -32,43 +32,31 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will update carrier when finishing order
         /// \return  void
-        public bool UpdateCarrier(Carrier carrier)
+        public void UpdateCarrier(Carrier carrier)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                try
-                {
-                    const string sqlStatement = @"  UPDATE carrier
-	                                            SET depotCity = @depotCity,
-                                                    carrierName = @carrierName,
-		                                            ftlAvail = @ftlAvail, 
-                                                    ltlAvail = @ltlAvail, 
-                                                    ftlRate = @ftlRate, 
-                                                    ltlRate = @ltlRate,
-                                                    carrierID = @carrierID 
+                const string sqlStatement = @"  UPDATE carrier
+	                                            SET CategoryId = @CategoryId,
+                                                    UnitPrice = @UnitPrice,
+		                                            UnitsInStock = @UnitsInStock
+
 	                                            WHERE carrierID = @carrierID; ";
 
-                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@depotCity", carrier.depotCity);
-                    myCommand.Parameters.AddWithValue("@carrierName", carrier.carrierName);
-                    myCommand.Parameters.AddWithValue("@ftlAvail", carrier.ftlAvail);
-                    myCommand.Parameters.AddWithValue("@ltlAvail", carrier.ltlAvail);
-                    myCommand.Parameters.AddWithValue("@ftlRate", carrier.ftlRate);
-                    myCommand.Parameters.AddWithValue("@ltlRate", carrier.ltlRate);
-                    myCommand.Parameters.AddWithValue("@reeferCharge", carrier.carrierID);
-                    myCommand.Parameters.AddWithValue("@carrierID", carrier.carrierID);
+                myCommand.Parameters.AddWithValue("@CategoryId", carrier.depotCity);
+                myCommand.Parameters.AddWithValue("@UnitPrice", carrier.carrierName);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlAvail);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlAvail);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlRate);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlRate);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.reeferCharge);
+                myCommand.Parameters.AddWithValue("@ProductID", carrier.carrierID);
 
-                    myConn.Open();
+                myConn.Open();
 
-                    myCommand.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return false;
-                }
+                myCommand.ExecuteNonQuery();
             }
 
         }
@@ -79,37 +67,28 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will insert carrier for making order
         /// \return  void
-        public bool InsertCarrier(Carrier carrier)
+        public void InsertCarrier(Carrier carrier)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                try
-                {
-                    const string sqlStatement = @"  INSERT INTO products (carrierID, depotCity, carrierName, ftlAvail, ltlAvail, ftlRate, ltlRate, reeferCharge)
-	                                            VALUES (@carrierID, @depotCity, @carrierName, @ftlAvail, @ltlAvail, @ftlRate, @ltlRate, @reeferCharge); ";
+                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
+	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
 
-                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@ProductID", carrier.carrierID);
-                    myCommand.Parameters.AddWithValue("@CategoryId", carrier.depotCity);
-                    myCommand.Parameters.AddWithValue("@UnitPrice", carrier.carrierName);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlAvail);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlAvail);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlRate);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlRate);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.reeferCharge);
+                myCommand.Parameters.AddWithValue("@ProductID", carrier.carrierID);
+                myCommand.Parameters.AddWithValue("@CategoryId", carrier.depotCity);
+                myCommand.Parameters.AddWithValue("@UnitPrice", carrier.carrierName);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlAvail);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlAvail);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlRate);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlRate);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.reeferCharge);
 
 
-                    myConn.Open();
+                myConn.Open();
 
-                    myCommand.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return false;
-                }
+                myCommand.ExecuteNonQuery();
             }
 
         }
@@ -162,31 +141,27 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will get a nee carrier
         /// \return  void
-        public List<Carrier> GetAvailabilty(string orderID, string carrierID)
+        public List<Carrier> GetCarriers(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                planinfo.orderID, 
-                                                ordering.carrierID, 
-                                                jobType, 
-                                                quantity, 
-                                                vanType, 
+                                                carrierID, 
+                                                depotCity, 
+                                                carrierName, 
                                                 ftlAvail, 
                                                 ltlAvail, 
-                                                reeferCharge 
-                                            FROM planinfo 
-			                                INNER JOIN 
-                                                ordering on planinfo.orderID = ordering.orderID
-                                            INNER JOIN 
-                                                carrier on ordering.carrierID = carrier.carrierID
-                                            WHERE planinfo.orderID = @orderID 
-                                            AND carrier.carrierID = @carrierID  ; ";
+                                                ftlRate,
+                                                ltlRate, 
+                                                reeferCharge,
+                                                cityName
+                                            FROM carrier
+                                            INNER JOIN city on carrier.depotCity = city.cityID
+                                            WHERE city.cityName = @SearchItem ; ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@orderID", orderID);
-                myCommand.Parameters.AddWithValue("@carrierID", carrierID);
+                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -198,7 +173,7 @@ namespace TMSProject.Classes.Controller
 
                 myAdapter.Fill(dataTable);
 
-                var carriers = DataTableToAvailabilityList(dataTable);
+                var carriers = DataTableToCarrierList(dataTable);
 
                 return carriers;
             }
@@ -226,29 +201,7 @@ namespace TMSProject.Classes.Controller
                     ftlRate = Convert.ToDouble(row["ftlRate"]),
                     ltlRate = Convert.ToDouble(row["ltlRate"]),
                     reeferCharge = Convert.ToDouble(row["reeferCharge"])
-                });
-            }
-
-            return carriers;
-        }
-
-        private List<Carrier> DataTableToAvailabilityList(DataTable table)
-        {
-            var carriers = new List<Carrier>();
-
-            foreach (DataRow row in table.Rows)
-            {
-                carriers.Add(new Carrier
-                {
-                    orderID = row["orderID"].ToString(),
-                    carrierID = row["carrierID"].ToString(),
-                    jobType = Convert.ToInt32(row["jobType"]),
-                    quantity = Convert.ToInt32(row["quantity"]),
-                    vanType = Convert.ToInt32(row["vanType"]),
-                    ftlAvail = Convert.ToDouble(row["ftlAvail"]),
-                    ltlAvail = Convert.ToDouble(row["ltlAvail"]),
-                    reeferCharge = Convert.ToDouble(row["reeferCharge"])
-                });
+            });
             }
 
             return carriers;

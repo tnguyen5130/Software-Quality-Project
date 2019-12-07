@@ -6,6 +6,7 @@
 
 
 
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,80 +20,74 @@ using System.Configuration;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class InvoiceBizDAO
+    /// \brief This class contains the invoice's information for a Invoice file when buyer make an order
+    /// \author : <i>Nhung Luong<i>
     public class InvoiceBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-        public bool UpdateInvoice(Invoice invoice)
-        {
-            try
-            {
-                using (var myConn = new MySqlConnection(connectionString))
-                {
-                    const string sqlStatement = @"  UPDATE invoice
-	                                            SET billingID = @billingID,
-                                                    contractID = @contractID,
-		                                            customerID = @customerID, 
-                                                    completeStatus = @completeStatus, 
-	                                            WHERE invoiceID = @invoiceID; ";
-
-                    var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                    myCommand.Parameters.AddWithValue("@billingID", invoice.billingID);
-                    myCommand.Parameters.AddWithValue("@contractID", invoice.contractID);
-                    myCommand.Parameters.AddWithValue("@customerID", invoice.customerID);
-                    myCommand.Parameters.AddWithValue("@completeStatus", invoice.completeStatus);
-                    myCommand.Parameters.AddWithValue("@invoiceID", invoice.invoiceID);
-
-                    myConn.Open();
-
-                    myCommand.ExecuteNonQuery();
-                    return true;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
-
-
-        }
-
-
-        public bool InsertInvoice(Invoice invoice)
+        /// \brief This method UpdateInvoice for user 
+        /// \details <b>Details</b>
+        /// This method will update invoice when finishing order
+        /// \return  void
+        public void UpdateInvoice(Invoice invoice)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                try
-                {
-                    const string sqlStatement = @"  INSERT INTO invoice (invoiceID, billingID, contractID, customerID, completeStatus)
-	                                            VALUES (@invoiceID, @billingID, @contractID, @customerID, @completeStatus); ";
+                const string sqlStatement = @"  UPDATE products
+	                                            SET CategoryId = @CategoryId,
+                                                    UnitPrice = @UnitPrice,
+		                                            UnitsInStock = @UnitsInStock
+	                                            WHERE ProductID = @ProductID; ";
 
-                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@invoiceID", invoice.invoiceID);
-                    myCommand.Parameters.AddWithValue("@billingID", invoice.billingID);
-                    myCommand.Parameters.AddWithValue("@contractID", invoice.contractID);
-                    myCommand.Parameters.AddWithValue("@customerID", invoice.customerID);
-                    myCommand.Parameters.AddWithValue("@completeStatus", invoice.completeStatus);
+                myCommand.Parameters.AddWithValue("@ProductID", invoice.invoiceID);
+                myCommand.Parameters.AddWithValue("@CategoryId", invoice.billingID);
+                myCommand.Parameters.AddWithValue("@UnitPrice", invoice.contractID);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", invoice.customerID);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", invoice.completeStatus);
+          
+                myConn.Open();
 
-                    myConn.Open();
-
-                    myCommand.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return false;
-                }
-
+                myCommand.ExecuteNonQuery();
             }
 
         }
 
+        /// \brief This method InsertInvoice for user 
+        /// \details <b>Details</b>
+        /// This method will insert invoice when finishing order
+        /// \return  void
+        public void InsertInvoice(Invoice invoice)
+        {
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
+	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myCommand.Parameters.AddWithValue("@ProductID", invoice.invoiceID);
+                myCommand.Parameters.AddWithValue("@CategoryId", invoice.billingID);
+                myCommand.Parameters.AddWithValue("@UnitPrice", invoice.contractID);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", invoice.customerID);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", invoice.completeStatus);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+            }
+
+        }
+
+
+        /// \brief This method DeleteInvoice for user 
+        /// \details <b>Details</b>
+        /// This method will delete invoice when finishing order
+        /// \return  void
         public void DeleteInvoice(Invoice invoice)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -110,24 +105,43 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        public List<Invoice> GetInvoices(string billingID, string orderID)
+        /// \brief This method GetInvoices for user 
+        /// \details <b>Details</b>
+        /// This method will get invoice when finishing order
+        /// \return  void
+        public List<Invoice> GetInvoices(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                billingID, 
-                                                contractID, 
-                                                ordering.customerID,
-                                                orderStatus 
-                                            FROM billing 
-		                                    INNER JOIN 
-                                                ordering on billing.orderID = ordering.orderID
-                                            WHERE billingID = @billingID AND ordering.orderID = @orderID; ";
+                                                ProductId, 
+                                                ProductName, 
+                                                QuantityPerUnit, 
+                                                UnitPrice, 
+                                                UnitsInStock, 
+                                                QuantityPerUnit,
+                                                UnitsOnOrder, 
+                                                ReorderLevel,
+                                                categories.CategoryId,
+                                                CategoryName,
+                                                Description, 
+                                                suppliers.SupplierId,
+                                                CompanyName
+                                            FROM products
+		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
+                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
+                                            WHERE Discontinued <> 1 
+                                                AND ( ProductId = @SearchItem 
+                                                        OR ProductName = @SearchItem
+		                                                OR CategoryName = @SearchItem 
+                                                        OR CompanyName = @SearchItem
+		                                                OR @SearchItem = '')
+                                            ORDER BY ProductName; ";
+
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@billingID", billingID);
-                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -145,6 +159,11 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+        /// \brief This method DataTableToInvoiceList for user 
+        /// \details <b>Details</b>
+        /// This method will store invoice when finishing order
+        /// \return  void
         private List<Invoice> DataTableToInvoiceList(DataTable table)
         {
             var invoices = new List<Invoice>();
@@ -153,15 +172,15 @@ namespace TMSProject.Classes.Controller
             {
                 invoices.Add(new Invoice
                 {
+                    invoiceID = row["invoiceID"].ToString(),
                     billingID = row["billingID"].ToString(),
                     contractID = row["contractID"].ToString(),
                     customerID = row["customerID"].ToString(),
-                    completeStatus = row["orderStatus"].ToString()
-                });
+                    completeStatus = row["completeStatus"].ToString()
+            });
             }
 
             return invoices;
         }
     }
 }
-

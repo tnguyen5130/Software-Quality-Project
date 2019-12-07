@@ -32,11 +32,11 @@ namespace TMSProject.Classes.Model
         public string contractID { get; set; }
         public string customerID { get; set; }
         public string orderDate { get; set; }
-        public int jobType { get; set; }
-        public int quantity { get; set; }
-        public int vanType { get; set; }
-        public string origincalCityID { get; set; }
+        public string originalCityID { get; set; }
         public string desCityID { get; set; }
+        public int quantity { get; set; }
+        public int jobType { get; set; }
+        public int vanType { get; set; }
         public string carrierID { get; set; }
         public string orderStatus { get; set; }
         public string command { get; set; }

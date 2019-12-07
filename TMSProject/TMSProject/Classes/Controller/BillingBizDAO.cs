@@ -48,40 +48,31 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will update billing infomation when finishing an order
         /// \return  void
-        public bool UpdateBilling(Billing billing)
+        public void UpdateBilling(Billing billing)
         {
-            try
+            using (var myConn = new MySqlConnection(connectionString))
             {
-                using (var myConn = new MySqlConnection(connectionString))
-                {
-                    const string sqlStatement = @"  UPDATE billing
-	                                            SET orderID = @orderID,
-                                                    planID = @planID,
-		                                            customerID = @customerID, 
-		                                            totalAmount = @totalAmount
-	                                            WHERE billingID = @billingID; ";
+                const string sqlStatement = @"  UPDATE products
+	                                            SET CategoryId = @CategoryId,
+                                                    UnitPrice = @UnitPrice,
+		                                            UnitsInStock = @UnitsInStock
+	                                            WHERE ProductID = @ProductID; ";
 
-                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@CategoryId", billing.orderID);
-                    myCommand.Parameters.AddWithValue("@UnitPrice", billing.planID);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", billing.customerID);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", billing.totalAmount);
-                    myCommand.Parameters.AddWithValue("@ProductID", billing.billingID);
+                myCommand.Parameters.AddWithValue("@ProductID", billing.billingID);
+                myCommand.Parameters.AddWithValue("@CategoryId", billing.orderID);
+                myCommand.Parameters.AddWithValue("@UnitPrice", billing.planID);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", billing.customerID);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", billing.totalAmount);
+                
+                myConn.Open();
 
-                    myConn.Open();
-
-                    myCommand.ExecuteNonQuery();
-                    return true;
-                }
+                myCommand.ExecuteNonQuery();
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return false;
-            }
+
         }
-
+      
         /* =========================================================================================================================
         * Name		: InsertBilling																						
         * Purpose	: to INSERT the billing infor whenever create an new order 	
@@ -94,34 +85,26 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will insert billing infomation when into order details and invoice
         /// \return  void
-        public bool InsertBilling(Billing billing)
+        public void InsertBilling(Billing billing)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                try
-                {
-                    const string sqlStatement = @"  INSERT INTO billing (billingID, orderID, planID, customerID, totalAmount)
-	                                            VALUES (@billingID, @orderID, @planID, @customerID, @totalAmount); ";
+                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
+	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
 
-                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@billingID", billing.billingID);
-                    myCommand.Parameters.AddWithValue("@orderID", billing.orderID);
-                    myCommand.Parameters.AddWithValue("@planID", billing.planID);
-                    myCommand.Parameters.AddWithValue("@customerID", billing.customerID);
-                    myCommand.Parameters.AddWithValue("@totalAmount", billing.totalAmount);
+                myCommand.Parameters.AddWithValue("@ProductID", billing.billingID);
+                myCommand.Parameters.AddWithValue("@CategoryId", billing.orderID);
+                myCommand.Parameters.AddWithValue("@UnitPrice", billing.planID);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", billing.customerID);
+                myCommand.Parameters.AddWithValue("@UnitsInStock", billing.totalAmount);
 
-                    myConn.Open();
+                myConn.Open();
 
-                    myCommand.ExecuteNonQuery();
-                    return true;
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    return false;
-                }
+                myCommand.ExecuteNonQuery();
             }
+
         }
 
         /* =========================================================================================================================
@@ -163,34 +146,39 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will get billing infomation when into order details and invoice
         /// \return  void
-        public List<Billing> GetBillings(string planID, string orderID)
+        public List<Billing> GetBillings(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                planID, 
-                                                planinfo.orderID, 
-                                                customerID,
-                                                workingTime, 
-                                                distance, 
-                                                jobType, 
-                                                quantity, 
-                                                vanType, 
-                                                ftlRate, 
-                                                ltlRate, 
-                                                reeferCharge
-                                            FROM planinfo 
-	                                        INNER JOIN 
-                                                ordering on planinfo.orderID = ordering.orderID
-                                            INNER JOIN 
-                                                carrier on ordering.carrierID = carrier.carrierID 
-                                            WHERE ordering.orderID = @orderID
-                                            AND planID = @planID; ";
+                                                ProductId, 
+                                                ProductName, 
+                                                QuantityPerUnit, 
+                                                UnitPrice, 
+                                                UnitsInStock, 
+                                                QuantityPerUnit,
+                                                UnitsOnOrder, 
+                                                ReorderLevel,
+                                                categories.CategoryId,
+                                                CategoryName,
+                                                Description, 
+                                                suppliers.SupplierId,
+                                                CompanyName
+                                            FROM products
+		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
+                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
+                                            WHERE Discontinued <> 1 
+                                                AND ( ProductId = @SearchItem 
+                                                        OR ProductName = @SearchItem
+		                                                OR CategoryName = @SearchItem 
+                                                        OR CompanyName = @SearchItem
+		                                                OR @SearchItem = '')
+                                            ORDER BY ProductName; ";
+
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@planID", planID);
-                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -228,20 +216,13 @@ namespace TMSProject.Classes.Controller
             {
                 billings.Add(new Billing
                 {
-                    //billingID = row["billingID"].ToString(),
+                    billingID = row["billingID"].ToString(),
                     orderID = row["orderID"].ToString(),
                     planID = row["planID"].ToString(),
                     customerID = row["customerID"].ToString(),
-                    workingTime = Convert.ToDouble(row["workingTime"]),
-                    distance = Convert.ToDouble(row["distance"]),
-                    jobType = Convert.ToInt32(row["jobType"]),
-                    quantity = Convert.ToInt32(row["quantity"]),
-                    vanType = Convert.ToInt32(row["vanType"]),
-                    ftlRate = Convert.ToDouble(row["ftlRate"]),
-                    ltlRate = Convert.ToDouble(row["ltlRate"]),
-                    reeferCharge = Convert.ToDouble(row["reeferCharge"]),
-
-                });
+                    totalAmount = Convert.ToDouble(row["totalAmount"])
+                   
+            });
             }
 
             return billings;

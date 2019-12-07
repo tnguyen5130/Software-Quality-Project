@@ -57,12 +57,12 @@ namespace TMSProject.Classes.Controller
                     myCommand.ExecuteNonQuery();
                     return true;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     return false;
                 }
-
+                
             }
 
         }
@@ -82,7 +82,7 @@ namespace TMSProject.Classes.Controller
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@planID", plan.planID);
+                    myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
                     myCommand.Parameters.AddWithValue("@orderID", plan.orderID);
                     myCommand.Parameters.AddWithValue("@startCityID", plan.startCityID);
                     myCommand.Parameters.AddWithValue("@endCityID", plan.endCityID);
@@ -94,12 +94,12 @@ namespace TMSProject.Classes.Controller
                     myCommand.ExecuteNonQuery();
                     return true;
                 }
-                catch (Exception ex)
+                catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
                     return false;
                 }
-
+                
             }
 
         }
@@ -142,7 +142,7 @@ namespace TMSProject.Classes.Controller
                                             INNER JOIN 
                                                 mileage on trip.startCity = mileage.startCityID and trip.endCity = mileage.endCityID
                                             INNER JOIN 
-                                                ordering on trip.orderID = ordering.orderID
+                                                ordering on trip.orderID = ordering.orderID group by trip.orderID
                                             WHERE trip.orderID = @orderID
                                             GROUP BY trip.orderID; ";
 
@@ -181,12 +181,12 @@ namespace TMSProject.Classes.Controller
             {
                 plans.Add(new PlanInfo
                 {
-                    orderID = row["orderID"].ToString(),
+                    planID = row["orderID"].ToString(),
                     distance = Convert.ToDouble(row["distance"]),
                     workingTime = Convert.ToDouble(row["workingTime"]),
                     startCityID = row["originalCityID"].ToString(),
                     endCityID = row["desCityID"].ToString(),
-                });
+            });
             }
 
             return plans;
