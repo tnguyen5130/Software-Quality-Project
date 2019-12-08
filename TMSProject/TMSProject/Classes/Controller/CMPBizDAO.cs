@@ -90,6 +90,31 @@ namespace TMSProject.Classes.Controller
             return value;
         }
 
+        /// \brief This method GetCustomerIDbyName for user 
+        /// \details <b>Details</b>
+        /// This method will get the customer ID to check the existing customer from CMP
+        /// \return  void
+        public string GetContractIDbyCustomerName(string customerName)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT contract_market_place.contractID FROM contract_market_place 
+                                                INNER JOIN customer ON contract_market_place.customerID = customer.customerID 
+                                                WHERE customerName = @customerName; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myCommand.Parameters.AddWithValue("@customerName", customerName);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
         /// \brief This method InsertCMP for user 
         /// \details <b>Details</b>
         /// This method will insert data into CMP
@@ -233,11 +258,11 @@ namespace TMSProject.Classes.Controller
                 {
                     customerID = row["customerID"].ToString(),
                     contractID = row["contractID"].ToString(),
-                    jobType = row["jobType"].ToString(),
+                    jobType = Convert.ToInt32(row["jobType"]),
                     quantity = Convert.ToInt32(row["quantity"]),
                     origin = row["origin"].ToString(),
                     destination = row["destination"].ToString(),
-                    vanType = row["vanType"].ToString()
+                    vanType = Convert.ToInt32(row["vanType"])
                 });
             }
 

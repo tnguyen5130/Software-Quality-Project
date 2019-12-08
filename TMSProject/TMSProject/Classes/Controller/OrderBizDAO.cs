@@ -76,14 +76,18 @@ namespace TMSProject.Classes.Controller
             {
                 try
                 {
-                    const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, orderDate, originalCityID, desCityID, carrierID, orderStatus)
+                    const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, customerID, orderDate, jobType, quantity, vanType, originalCityID, desCityID, carrierID, orderStatus)
 	                                                VALUES (@orderID, @contractID, @orderDate, @originalCityID, @desCityID, @carrierID, @orderStatus); ";
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
                     
                     myCommand.Parameters.AddWithValue("@orderID", order.orderID);
                     myCommand.Parameters.AddWithValue("@contractID", order.contractID);
+                    myCommand.Parameters.AddWithValue("@customerID", order.customerID);
                     myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
+                    myCommand.Parameters.AddWithValue("@jobType", order.jobType);
+                    myCommand.Parameters.AddWithValue("@quantity", order.quantity);
+                    myCommand.Parameters.AddWithValue("@vanType", order.vanType);
                     myCommand.Parameters.AddWithValue("@originalCityID", order.originalCityID);
                     myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
                     myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
@@ -215,7 +219,7 @@ namespace TMSProject.Classes.Controller
 
                 myAdapter.Fill(dataTable);
 
-                grid.ItemsSource = dataTable.DefaultView;
+                grid.ItemsSource = dataTable.DefaultView;                
             }
         }
 

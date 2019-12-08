@@ -122,7 +122,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Classes\View\OrderAdd.xaml">
+    <Page Include="Classes\View\CustomerAdd.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -202,8 +202,8 @@
     <Compile Include="Classes\View\Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\View\OrderAdd.xaml.cs">
-      <DependentUpon>OrderAdd.xaml</DependentUpon>
+    <Compile Include="Classes\View\CustomerAdd.xaml.cs">
+      <DependentUpon>CustomerAdd.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\View\OrderDetail.xaml.cs">
       <DependentUpon>OrderDetail.xaml</DependentUpon>

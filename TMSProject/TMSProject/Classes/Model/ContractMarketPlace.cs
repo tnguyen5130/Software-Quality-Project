@@ -31,11 +31,11 @@ namespace TMSProject.Classes.Model
         /// </summary>
         public string customerID { get; set; }
         public string contractID { get; set; }
-        public string jobType { get; set; }
+        public int jobType { get; set; }
         public int quantity { get; set; }
         public string origin { get; set; }
         public string destination { get; set; }
-        public string vanType { get; set; }
+        public int vanType { get; set; }
         public string command { get; set; }
 
         public ContractMarketPlace() { }
@@ -85,6 +85,16 @@ namespace TMSProject.Classes.Model
             return customer;
         }
 
+        /// \brief This method GetContractIDbyCustomerName
+        /// \details <b>Details</b>
+        /// This method will get the contractID by customerName
+        /// \return string
+        public string GetContractIDbyCustomerName(string customerName)
+        {
+            var customer = new CMPBizDAO().GetContractIDbyCustomerName(customerName);
+            return customer;
+        }
+
         /// \brief This method NewCustomerID
         /// \details <b>Details</b>
         /// This method will create new customerID
@@ -92,7 +102,7 @@ namespace TMSProject.Classes.Model
         public string NewCustomerID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
-            return "CUS" + value;
+            return "CUS" + DateTime.Now.ToString("yyyyMMdd") + value;
         }
 
         /// \brief This method GetCMPs

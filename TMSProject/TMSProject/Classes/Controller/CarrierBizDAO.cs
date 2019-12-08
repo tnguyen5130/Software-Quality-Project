@@ -207,28 +207,24 @@ namespace TMSProject.Classes.Controller
         public List<Carrier> GetCarriers(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                planinfo.orderID, 
-                                                ordering.carrierID, 
-                                                jobType, 
-                                                quantity, 
-                                                vanType, 
+                                                carrierID, 
+                                                depotCity, 
+                                                carrierName, 
                                                 ftlAvail, 
                                                 ltlAvail, 
-                                                reeferCharge 
-                                            FROM planinfo 
-			                                INNER JOIN 
-                                                ordering on planinfo.orderID = ordering.orderID
-                                            INNER JOIN 
-                                                carrier on ordering.carrierID = carrier.carrierID
-                                            WHERE planinfo.orderID = @orderID 
-                                            AND carrier.carrierID = @carrierID  ; ";
+                                                ftlRate,
+                                                ltlRate, 
+                                                reeferCharge,
+                                                cityName
+                                            FROM carrier
+                                            INNER JOIN city on carrier.depotCity = city.cityID
+                                            WHERE city.cityName = @SearchItem ; ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@orderID", orderID);
-                myCommand.Parameters.AddWithValue("@carrierID", carrierID);
+                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -240,7 +236,7 @@ namespace TMSProject.Classes.Controller
 
                 myAdapter.Fill(dataTable);
 
-                var carriers = DataTableToAvailabilityList(dataTable);
+                var carriers = DataTableToCarrierList(dataTable);
 
                 return carriers;
             }

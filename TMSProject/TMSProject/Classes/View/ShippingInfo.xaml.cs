@@ -22,14 +22,46 @@ namespace TMSProject.Classes.View
 	/// </summary>
 	public partial class ShippingInfo : UserControl
 	{
-		public ShippingInfo(string OrderID, string OrderDate)
+        string currentStatus = "";
+        string currentCustomerName = "";
+        public ShippingInfo(string OrderID, string OrderDate,string customerName, string origin, string destination, string quantity, string jobType, string vanType)
 		{
 			InitializeComponent();
-            fillFromToComboBox();
-            // Print to screen
-            txtOrderID.Text = OrderID;
-            txtOrderDate.Text = OrderDate;
-		}
+            currentCustomerName = customerName;
+            // Choose between change the order details or not
+            if (MessageBox.Show("EDIT ORDER DETAILS?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            {
+                //do no stuff
+                currentStatus = "EXIST";
+                txtOrderID.Text = OrderID;
+                txtOrderDate.Text = OrderDate;
+                boxFrom.Visibility = Visibility.Hidden;
+                boxTo.Visibility = Visibility.Hidden;
+                txtOriginalCity.Text = origin;
+                txtDestinationCity.Text = destination;
+                if (jobType == "0")
+                {
+                    boxFTL.IsChecked = true;
+                    boxLTL.Visibility = Visibility.Hidden;
+                }
+                else if (jobType == "1")
+                {
+                    boxLTL.IsChecked = true;
+                    boxFTL.Visibility = Visibility.Hidden;
+                }
+                txtVanType.Text = vanType;
+                txtPallet.Text = quantity;
+            }
+            else
+            {
+                currentStatus = "CHANGE";
+                // do yes stuff
+                fillFromToComboBox();
+                // Print to screen
+                txtOrderID.Text = OrderID;
+                txtOrderDate.Text = OrderDate;
+            }
+        }
 
         /// \brief This method fillFromToComboBox
         /// \details <b>Details</b>
@@ -52,54 +84,117 @@ namespace TMSProject.Classes.View
             return str.Substring(0, str.Length - 3);
         }
 
-        public void btn_OK(object sender, RoutedEventArgs e)
+        public void btn_Send_Order(object sender, RoutedEventArgs e)
 		{
-            Order order = new Order();
-            // Job Type
-            if (boxFTL.IsChecked ?? false)
+            if (currentStatus == "CHANGE")
             {
-                order.jobType = 0;
-            }
-            else if (boxLTL.IsChecked ?? false)
-            {
-                order.jobType = 1;
-            }
-            else
-            {
-                MessageBox.Show("No Job Type Selection!!!");
-            }
+                Order order = new Order();
+                // Job Type
+                if (boxFTL.IsChecked ?? false)
+                {
+                    order.jobType = 0;
+                }
+                else if (boxLTL.IsChecked ?? false)
+                {
+                    order.jobType = 1;
+                }
+                else
+                {
+                    MessageBox.Show("No Job Type Selection!!!");
+                }
 
-            if (txtVanType.Text == "")
-            {
-                MessageBox.Show("Please insert van type");
-            }
-            else if (txtPallet.Text == "")
-            {
-                MessageBox.Show("Please insert pallet");
-            }
+                if (txtVanType.Text == "")
+                {
+                    MessageBox.Show("Please insert van type");
+                }
+                else if (txtPallet.Text == "")
+                {
+                    MessageBox.Show("Please insert pallet");
+                }
 
-            if ((boxFTL.IsChecked ?? false) || (boxLTL.IsChecked ?? false))
+                if ((boxFTL.IsChecked ?? false) || (boxLTL.IsChecked ?? false))
+                {
+                    // OrderID
+                    order.orderID = txtOrderID.Text;
+                    // ContractID
+                    Contract contract = new Contract();
+                    order.contractID = contract.GetLastId();
+                    // Customer ID
+                    Customer customer = new Customer();
+                    order.customerID = customer.GetLastCusID();
+                    // Quantity
+                    order.quantity = Convert.ToInt32(txtPallet.Text);
+                    // Van Type
+                    order.vanType = Convert.ToInt32(txtVanType.Text);
+                    // Order Date
+                    order.orderDate = txtOrderDate.Text;
+                    // Original City ID            
+                    order.originalCityID = order.GetOriginalID(boxFrom.SelectedItem.ToString());
+                    // Destination City ID
+                    order.desCityID = order.GetDestinateID(boxTo.SelectedItem.ToString());
+                    // Command
+                    order.command = "INSERT";
+                    // Order Status
+                    order.orderStatus = "FINISHED";                    
+                    // CarrierID
+                    Carrier carrier = new Carrier();
+                    if (order.carrierID != carrier.GetLastCarrierID() && order.carrierID != null || carrier.GetLastCarrierID() == null)
+                    {
+                        order.carrierID = carrier.NewCarrierID(1);
+                    }
+                    else if (order.carrierID == carrier.GetLastCarrierID() || order.carrierID == null)
+                    {
+                        string buffer = carrier.GetLastCarrierID();
+                        // Get the last character in the last OrderID
+                        string last = buffer.Substring(buffer.Length - 3);
+                        // Convert it into INT
+                        int temp = Convert.ToInt32(last);
+                        // Add by 1
+                        temp += 1;
+                        //Delete the last character of the buffer
+                        string newBuffer = RemoveLastChar(buffer);
+                        // Add with new temp
+                        order.carrierID = newBuffer + String.Format("{0:D3}", temp);
+                    }
+
+                    if (MessageBox.Show("Confirm the Order?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                    {
+                        //do no stuff
+
+                    }
+                    else
+                    {
+                        // Save to DB
+                        order.Save();
+                        MessageBox.Show("Order Successful\nOrder Details:\nOrderID:" + order.orderID + "\nOrder Date: " + order.orderDate + "\nFrom: " + boxFrom.SelectedItem.ToString() + "\nTo: " + boxTo.SelectedItem.ToString());
+                    }
+                }
+            }
+            else if (currentStatus == "EXIST")
             {
+                Order order = new Order();
                 // OrderID
                 order.orderID = txtOrderID.Text;
                 // ContractID
-                Contract contract = new Contract();
-                order.contractID = contract.GetLastId();
+                ContractMarketPlace cmp = new ContractMarketPlace();
+                order.contractID = cmp.GetContractIDbyCustomerName(currentCustomerName);
                 // Customer ID
                 Customer customer = new Customer();
-                order.customerID = customer.GetLastCusID();
+                order.customerID = customer.GetCustomerIDbyName(currentCustomerName);
+                // Quantity
+                order.quantity = Convert.ToInt32(txtPallet.Text);
+                // Van Type
+                order.vanType = Convert.ToInt32(txtVanType.Text);
                 // Order Date
                 order.orderDate = txtOrderDate.Text;
                 // Original City ID            
-                order.originalCityID = order.GetOriginalID(boxFrom.SelectedItem.ToString());
+                order.originalCityID = txtOriginalCity.Text;
                 // Destination City ID
-                order.desCityID = order.GetDestinateID(boxTo.SelectedItem.ToString());
+                order.desCityID = txtDestinationCity.Text;
                 // Command
                 order.command = "INSERT";
                 // Order Status
-                order.orderStatus = "PENDING";
-                // Quantity
-                order.quantity = Convert.ToInt32(txtPallet.Text);
+                order.orderStatus = "FINISHED";
                 // CarrierID
                 Carrier carrier = new Carrier();
                 if (order.carrierID != carrier.GetLastCarrierID() && order.carrierID != null || carrier.GetLastCarrierID() == null)
@@ -132,7 +227,7 @@ namespace TMSProject.Classes.View
                     order.Save();
                     MessageBox.Show("Order Successful\nOrder Details:\nOrderID:" + order.orderID + "\nOrder Date: " + order.orderDate + "\nFrom: " + boxFrom.SelectedItem.ToString() + "\nTo: " + boxTo.SelectedItem.ToString());
                 }
-            }            
+            }
 		}
 
 	}

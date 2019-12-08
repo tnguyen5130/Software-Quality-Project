@@ -82,6 +82,27 @@ namespace TMSProject.Classes.Model
             return carrier;
         }
 
+        /// \brief This method GetById  
+        /// \details <b>Details</b>
+        /// This method will get carrier by ID
+        /// \return  void
+        public Carrier GetById(string contractID)
+        {
+            var carriers = new CarrierBizDAO().GetCarriers(contractID);
+            return carriers[0];
+        }
+
+
+        /// \brief This method GetCarriers carrier 
+        /// \details <b>Details</b>
+        /// This method will get carriers
+        /// \return  void
+        public List<Carrier> GetCarriers(string pattern)
+        {
+            var contractsList = new CarrierBizDAO().GetCarriers(pattern);
+            return contractsList;
+        }
+
         /// \brief This method NewCarrierID
         /// \details <b>Details</b>
         /// This method will generate carrier ID

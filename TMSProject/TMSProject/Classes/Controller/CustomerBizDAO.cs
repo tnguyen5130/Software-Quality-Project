@@ -33,9 +33,8 @@ namespace TMSProject.Classes.Controller
             using (var myConn = new MySqlConnection(connectionString))
             {
                 const string sqlStatement = @"  UPDATE customer
-	                                            SET customerID = @CustomerID,
-                                                    customerCompany = @CustomerCompany,
-                                                    customerName = @CustomerName,
+	                                            SET 
+                                                    customerCompany = @CustomerCompany,                                                    
                                                     customerCity = @CustomerCity,
                                                     customerProvince = @CustomerProvince,
 		                                            telno = @CustomerTelPhone,
@@ -47,7 +46,6 @@ namespace TMSProject.Classes.Controller
 
                 myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
                 myCommand.Parameters.AddWithValue("@CustomerCompany", customer.customerCompany);
-                myCommand.Parameters.AddWithValue("@CustomerName", customer.customerName);
                 myCommand.Parameters.AddWithValue("@CustomerCity", customer.customerCity);
                 myCommand.Parameters.AddWithValue("@CustomerProvince", customer.customerProvince);
                 myCommand.Parameters.AddWithValue("@CustomerTelPhone", customer.telno);
@@ -131,6 +129,31 @@ namespace TMSProject.Classes.Controller
             return value;
         }
 
+        /// \brief This method GetCustomerIDbyName for user 
+        /// \details <b>Details</b>
+        /// This method will get the customer ID to check the existing customer from CMP
+        /// \return  void
+        public string GetCustomerIDbyName(string customerName)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT customer.customerID FROM customer 
+                                                INNER JOIN contract_market_place ON contract_market_place.customerID = customer.customerID 
+                                                WHERE customerName = @customerName; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myCommand.Parameters.AddWithValue("@customerName", customerName);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
         /// \brief This method GetLastCustomerID for user 
         /// \details <b>Details</b>
         /// This method will get last customer's ID database 
@@ -163,6 +186,39 @@ namespace TMSProject.Classes.Controller
                                            INNER JOIN ordering
                                            WHERE customer.customerID = ordering.customerID
                                            AND ordering.orderID = @SearchItem; ";
+
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var customers = DataTableToCustomerList(dataTable);
+
+                return customers;
+            }
+        }
+
+        /// \brief This method GetCustomers for user 
+        /// \details <b>Details</b>
+        /// This method will get customer database 
+        /// \return  void
+        public List<Customer> GetCustomersDetailsOnly(string searchItem)
+        {
+            const string sqlStatement = @" SELECT customerName, customerCompany, telno, address, customerCity, customerProvince, zipcode
+                                           FROM customer
+                                           WHERE customer.customerName = @SearchItem; ";
 
 
             using (var myConn = new MySqlConnection(connectionString))

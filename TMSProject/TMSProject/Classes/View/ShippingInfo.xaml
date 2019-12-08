@@ -31,6 +31,10 @@
                             <TextBlock x:Name="txtOrderID" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
                         </StackPanel>
                         <ComboBox x:Name="boxFrom" Foreground="Black" materialDesign:HintAssist.Hint="From" Margin="2,5,-2.2,5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Original City:" />
+                            <TextBlock x:Name="txtOriginalCity" Foreground="Black" FontStyle="Normal" FontWeight="Black" Width="Auto"/>
+                        </StackPanel>
                         <!--<DatePicker Name="txtDateFrom" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>-->
                         <TextBlock Text="Carrier" Foreground="Black">
                             <TextBlock.Resources>
@@ -59,6 +63,10 @@
                             <TextBlock x:Name="txtOrderDate" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
                         </StackPanel>
                         <ComboBox x:Name="boxTo" Foreground="Black" materialDesign:HintAssist.Hint="To" Margin="0 5"/>
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Destination City:" />
+                            <TextBlock x:Name="txtDestinationCity" Width="Auto" Foreground="Black" FontStyle="Normal" FontWeight="Black" />
+                        </StackPanel>
                         <!--<DatePicker x:Name="boxDateTo" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>-->
                         <TextBlock Text="Carrier">
                             <TextBlock.Resources>
@@ -82,7 +90,7 @@
                         </TextBox>
                     </StackPanel>
                 </Grid>
-                <Button Content="SEND ORDER" Click="btn_OK" Margin="206,20,271,20" Height="64"/>
+                <Button Content="SEND ORDER" Click="btn_Send_Order" Margin="206,20,271,20" Height="64"/>
             </StackPanel>
         </Border>
 

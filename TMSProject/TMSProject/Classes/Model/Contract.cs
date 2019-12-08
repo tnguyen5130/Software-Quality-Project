@@ -63,6 +63,26 @@ namespace TMSProject.Classes.Model
             new ContractBizDAO().DeleteContract(this);
         }
 
+        /// \brief This method Save
+        /// \details <b>Details</b>
+        /// This method will save plan info
+        /// \return  void
+        public Contract GetById(string contractID)
+        {
+            var contracts = new ContractBizDAO().GetContracts(contractID);
+            return contracts[0];
+        }
+
+        /// \brief This method Save
+        /// \details <b>Details</b>
+        /// This method will save plan info
+        /// \return  void
+        public List<Contract> GetContracts(string pattern)
+        {
+            var contractsList = new ContractBizDAO().GetContracts(pattern);
+            return contractsList;
+        }
+
         /// \brief This method NewContractID
         /// \details <b>Details</b>
         /// This method will generate contractID
@@ -70,7 +90,7 @@ namespace TMSProject.Classes.Model
         public string NewContractID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
-            return "CON" + value;
+            return "CONT" + DateTime.Now.ToString("yyyyMMdd") + value;
         }
 
         /// \brief This method NewContractDate

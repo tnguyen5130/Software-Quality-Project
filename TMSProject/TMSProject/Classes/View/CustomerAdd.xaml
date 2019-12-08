@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="TMSProject.Classes.View.OrderAdd"
+﻿<UserControl x:Class="TMSProject.Classes.View.CustomerAdd"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -34,7 +34,7 @@
                 </TextBox>
                 
                 <!-- FIRST NAME TEXT BOX -->
-                <TextBox x:Name="txtName" materialDesign:HintAssist.Hint="Customer Name" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                <TextBox x:Name="txtName" IsReadOnly="True" materialDesign:HintAssist.Hint="Customer Name" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
                     <TextBox.Resources>
                         <Style TargetType="ContentControl">
                             <Setter Property="Foreground" Value="CadetBlue"/>
@@ -90,8 +90,9 @@
                     <ComboBoxItem Content="New Brunswick(NB)" />
                     <ComboBoxItem Content="Manitoba(MB)" />
                 </ComboBox>
-               
-                <Button Content="Next" Margin="0 20" Click="btn_Order_Add"/>
+
+                <Button x:Name="btnUpdateCustomer" Visibility="Hidden" Content="UPDATE CUSTOMER" Margin="0 10" Click="btnUpdateCustomer_Click" />
+                <Button Content="Next" Margin="0 0" Click="btn_To_ShippingInfo"/>
             </StackPanel>
         </Border>
     </Grid>

@@ -79,6 +79,16 @@ namespace TMSProject.Classes.Model
             return customers[0];
         }
 
+        /// \brief This method GetLastCustomerName for user 
+        /// \details <b>Details</b>
+        /// This method will get last customer's name database 
+        /// \return  void
+        public string GetCustomerIDbyName(string customerName)
+        {
+            var id = new CustomerBizDAO().GetCustomerIDbyName(customerName);
+            return id;
+        }
+
         /// \brief This method GetLastCusName
         /// \details <b>Details</b>
         /// This method will get the last customer's name
@@ -106,6 +116,16 @@ namespace TMSProject.Classes.Model
         public List<Customer> GetCustomers(string pattern)
         {
             var customerList = new CustomerBizDAO().GetCustomers(pattern);
+            return customerList;
+        }
+
+        /// \brief This method GetCustomers
+        /// \details <b>Details</b>
+        /// This method will get customer info
+        /// \return List<Customer>
+        public List<Customer> GetCustomerDetailsOnly(string pattern)
+        {
+            var customerList = new CustomerBizDAO().GetCustomersDetailsOnly(pattern);
             return customerList;
         }
 

@@ -22,17 +22,25 @@ namespace TMSProject.Classes.View
 	/// <summary>
 	/// Interaction logic for OrderAdd.xaml
 	/// </summary>
-	public partial class OrderAdd : UserControl
+	public partial class CustomerAdd : UserControl
 	{
         string tempBuffer = "";
+        string currentStatus = "";
+        string cmpOrigin = "";
+        string cmpDestination = "";
+        string cmpQuantity = "";
+        string cmpJobType = "";
+        string cmpVanType = "";
+
         // Object
         Order order;
+        Customer customer;
 
-        public OrderAdd(string cusName, string cusID)
+        public CustomerAdd(string cusName, string cusID, string origin, string destination, string quantity, string jobType, string vanType, string status)
 		{
 			InitializeComponent();
 
-            // Generate new order
+            // Generate new orderID and OrderDate
             order = new Order();
             
             // Check if orderID exist or not, if not generate new OrderID
@@ -61,8 +69,34 @@ namespace TMSProject.Classes.View
             txtOrderDate.Text = order.orderDate;
 
             // Assign customerID & customer Name
-            tempBuffer = cusID;
-            txtName.Text = cusName;
+            if (status == "NEW")
+            {
+                tempBuffer = cusID;
+                txtName.Text = cusName;
+            }            
+
+            // Check if status is EXIST - existing customer
+            // Or NEW - new customer
+            if (status == "EXIST")
+            {
+                // Append to each one
+                List<Customer> listOfCustomer = new List<Customer>();
+                listOfCustomer = customer.GetCustomerDetailsOnly(cusName);
+                txtAddress.Text = listOfCustomer[0].address;
+                txtCity.Text = listOfCustomer[0].customerCity;
+                txtPostalCode.Text = listOfCustomer[0].zipcode;
+                txtProvince.Text = listOfCustomer[0].customerProvince;
+                txtTelPhone.Text = listOfCustomer[0].telno;
+                txtCompany.Text = listOfCustomer[0].customerCompany;
+                btnUpdateCustomer.Visibility = Visibility.Visible;
+                cmpOrigin = origin;
+                cmpDestination = destination;
+                cmpQuantity = quantity;
+                cmpJobType = jobType;
+                cmpVanType = vanType;
+            }
+            // Get the current status
+            currentStatus = status;
         }
 
         /// \brief This method RemoveLastChar for ID 
@@ -131,15 +165,71 @@ namespace TMSProject.Classes.View
         /// \details <b>Details</b>
         /// This method will be a trigger for adding new customer details
         /// \return  string
-		public void btn_Order_Add(object sender, RoutedEventArgs e)
+		public void btn_To_ShippingInfo(object sender, RoutedEventArgs e)
 		{           
+            if (currentStatus == "EXIST")
+            {
+                if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                {
+                    //do no stuff
+                }
+                else
+                {
+                    // Navigation to Shipping Info to change order details
+                    UserControl usc = null;
+                    usc = new ShippingInfo(txtOrderID.Text, txtOrderDate.Text, txtName.Text, cmpOrigin, cmpDestination, cmpQuantity, cmpJobType, cmpVanType);
+                    GridOrder.Children.Add(usc);
+                }
+            }
+            else if (currentStatus == "NEW")
+            {
+                if (validationOrderAdd())
+                {
+                    // Get customer information
+                    customer = new Customer();
+                    // Name
+                    //customer.customerName = customer.GetLastCusName();                
+                    customer.customerName = txtName.Text;
+                    // Company
+                    customer.customerCompany = txtCompany.Text;
+                    // City
+                    customer.customerCity = txtCity.SelectedValue.ToString();
+                    // Province
+                    customer.customerProvince = txtProvince.SelectedValue.ToString();
+                    // Phone Number
+                    customer.telno = txtTelPhone.Text;
+                    // Postal Code
+                    customer.zipcode = txtPostalCode.Text;
+                    // Address
+                    customer.address = txtAddress.Text;
+                    // Save customer ID into database 
+                    customer.customerID = tempBuffer;
+                    // Command
+                    customer.command = "INSERT";
+
+                    if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+                    {
+                        //do no stuff
+                    }
+                    else
+                    {
+                        //do yes stuff
+                        customer.Save();
+                        // Navigation to Shipping Info to change order details
+                        UserControl usc = null;
+                        usc = new ShippingInfo(txtOrderID.Text, txtOrderDate.Text, txtName.Text, cmpOrigin, cmpDestination, cmpQuantity, cmpJobType, cmpVanType);
+                        GridOrder.Children.Add(usc);
+                    }
+                }
+            }
+		}
+
+        private void btnUpdateCustomer_Click(object sender, RoutedEventArgs e)
+        {
             if (validationOrderAdd())
             {
                 // Get customer information
-                Customer customer = new Customer();
-                // Name
-                customer.customerName = customer.GetLastCusName();                
-                customer.customerName = txtName.Text;
+                customer = new Customer();
                 // Company
                 customer.customerCompany = txtCompany.Text;
                 // City
@@ -152,10 +242,8 @@ namespace TMSProject.Classes.View
                 customer.zipcode = txtPostalCode.Text;
                 // Address
                 customer.address = txtAddress.Text;
-                // Save customer ID into database 
-                customer.customerID = tempBuffer;
                 // Command
-                customer.command = "INSERT";                
+                customer.command = "UPDATE";
 
                 if (MessageBox.Show("Are you sure to continue?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                 {
@@ -165,13 +253,9 @@ namespace TMSProject.Classes.View
                 {
                     //do yes stuff
                     customer.Save();
-                    // Navigation to Shipping Info to change order details
-                    UserControl usc = null;
-                    usc = new ShippingInfo(txtOrderID.Text, txtOrderDate.Text);
-                    GridOrder.Children.Add(usc);
-                }                
-            }            
-		}
-
-	}
+                    MessageBox.Show("Updated Successful");
+                }
+            }         
+        }
+    }
 }
