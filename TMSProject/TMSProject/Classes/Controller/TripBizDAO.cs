@@ -78,8 +78,8 @@ namespace TMSProject.Classes.Controller
 
                     myCommand.Parameters.AddWithValue("@tripID", trip.tripID);
                     myCommand.Parameters.AddWithValue("@orderID", trip.orderID);
-                    myCommand.Parameters.AddWithValue("@startCity", trip.startCity);
-                    myCommand.Parameters.AddWithValue("@endCity", trip.endCity);
+                    myCommand.Parameters.AddWithValue("@startCity", trip.startCityID);
+                    myCommand.Parameters.AddWithValue("@endCity", trip.endCityID);
                     myCommand.Parameters.AddWithValue("@tripStatus", trip.tripStatus);
 
                     myConn.Open();
@@ -121,6 +121,7 @@ namespace TMSProject.Classes.Controller
         /// \details <b>Details</b>
         /// This method will get trip info when finishing order
         /// \return  void
+        
         public List<Trip> GetTrips(string tripID)
         {
             const string sqlStatement = @" SELECT 
@@ -163,9 +164,10 @@ namespace TMSProject.Classes.Controller
                 return trips;
             }
         }
+      
 
         public List<Trip> GetTrips(string startCityID, string endCityID)
-        {   
+        {
             const string sqlStatement = @" SELECT 
                                                 orderID, 
                                                 contractID, 
@@ -176,12 +178,16 @@ namespace TMSProject.Classes.Controller
                                                 orderStatus, 
                                                 mileageID,
                                                 startCityID,
+                                                u1.cityName as startCityName, 
                                                 endCityID,
+                                                u2.cityName as endCityName, 
                                                 distance, 
                                                 workingTime
                                             FROM ordering
 		                                        INNER JOIN mileage ON ordering.originalCityID = mileage.startCityID
                                             OR ordering.desCityID = mileage.endCityID
+                                            INNER JOIN city u1 ON mileage.startCityID = u1.cityID 
+                                            INNER JOIN city u2 ON mileage.endCityID = u2.cityID 
                                             WHERE ordering.originalCityID = @startCityID 
                                             AND ordering.desCityID = @endCityID; ";
   
@@ -206,6 +212,110 @@ namespace TMSProject.Classes.Controller
 
                 return trips;
             }
+        }
+
+        public List<Trip> GetTripBilling(string orderID)
+        {
+            const string sqlStatement = @" SELECT 
+                                                startCity, endCity, carrierID from trip
+                                           INNER JOIN ordering on trip.orderID = ordering.orderID where trip.orderID = @orderID; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var trips = DataTableToTripBillingList(dataTable);
+
+                return trips;
+            }
+        }
+
+        public List<Trip> GetTripID()
+        {
+            const string sqlStatement = @" SELECT CONCAT_WS('', 'TRIP', '', DATE_FORMAT(curdate(), '%Y%m%d'), LPAD(COUNT(*) + 1, 4, '0')) AS tripID
+                                            FROM trip; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var trips = DataTableToTripIDList(dataTable);
+
+                return trips;
+            }
+        }
+
+        public List<Trip> GetShowTripsForBillings(string orderID, string carrierID)
+        {
+            const string sqlStatement = @" SELECT 
+                                                tripID, startCity, u1.cityName as startCityName, endCity, u2.cityName as endCityName, 
+                                                tripStatus, distance, workingTime, jobtype, quantity, vantype, ftlRate, ltlRate from trip 
+                                           inner join mileage on trip.startCity = mileage.startCityID and trip.endCity = mileage.endCityID 
+                                           inner join ordering on trip.orderID = ordering.orderID 
+                                           inner join carrier on ordering.carrierID = carrier.carrierID 
+                                           INNER JOIN city u1 ON trip.startCity = u1.cityID 
+                                           INNER JOIN city u2 ON trip.endCity = u2.cityID 
+                                           WHERE trip.orderID = @orderID and ordering.carrierID = @carrierID; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                myCommand.Parameters.AddWithValue("@carrierID", carrierID);
+                
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var trips = DataTableToBillingList(dataTable);
+
+                return trips;
+            }
+        }
+
+        private List<Trip> DataTableToTripIDList(DataTable table)
+        {
+            var trips = new List<Trip>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                trips.Add(new Trip
+                {
+                    tripID = row["tripID"].ToString()
+                });
+            }
+
+            return trips;
         }
 
 
@@ -233,6 +343,53 @@ namespace TMSProject.Classes.Controller
                     endCityID = row["endCityID"].ToString(),
                     distance = Convert.ToDouble(row["distance"]),
                     workingTime = Convert.ToDouble(row["workingTime"]),
+                    startCityName = row["startCityName"].ToString(),
+                    endCityName = row["endCityName"].ToString()
+                });
+            }
+
+            return trips;
+        }
+
+        private List<Trip> DataTableToBillingList(DataTable table)
+        {
+            var trips = new List<Trip>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                trips.Add(new Trip
+                {
+                    tripID = row["tripID"].ToString(),
+                    startCityID = row["startCity"].ToString(),
+                    startCityName = row["startCityName"].ToString(),
+                    endCity = row["endCity"].ToString(),
+                    endCityName = row["endCityName"].ToString(),
+                    tripStatus = row["tripStatus"].ToString(),
+                    distance = Convert.ToDouble(row["distance"]),
+                    workingTime = Convert.ToDouble(row["workingTime"]),
+                    ftlRate = Convert.ToDouble(row["ftlRate"]),
+                    ltlRate = Convert.ToDouble(row["ltlRate"]),
+                    jobType = Convert.ToInt16(row["jobtype"]),
+                    quantity = Convert.ToInt16(row["quantity"]),
+                    vanType = Convert.ToInt16(row["vantype"])
+                });
+            }
+
+            return trips;
+        }
+
+        private List<Trip> DataTableToTripBillingList(DataTable table)
+        {
+            var trips = new List<Trip>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                trips.Add(new Trip
+                {   
+                    startCity = row["startCity"].ToString(),
+                    endCity = row["endCity"].ToString(),
+                    carrierID = row["carrierID"].ToString()
+                  
                 });
             }
 

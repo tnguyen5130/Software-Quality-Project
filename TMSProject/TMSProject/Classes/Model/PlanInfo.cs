@@ -90,6 +90,11 @@ namespace TMSProject.Classes.Model
             return planList;
         }
 
+        public List<PlanInfo> GetPlanID(string pattern)
+        {
+            var planList = new PlanInfoBizDAO().GetPlanID(pattern);
+            return planList;
+        }
 
         /// \brief This method generatePlanID
         /// \details <b>Details</b>

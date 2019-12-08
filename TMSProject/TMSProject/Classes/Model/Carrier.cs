@@ -51,16 +51,19 @@ namespace TMSProject.Classes.Model
         /// \details <b>Details</b>
         /// This method will save carrier
         /// \return  void
-        public void Save()
+        public bool Save()
         {
-            if (carrierID != "")
+            bool flag = false;
+            if (command == "UPDATE")
             {
-                new CarrierBizDAO().UpdateCarrier(this);
+                flag = new CarrierBizDAO().UpdateCarrier(this);
             }
             else
             {
-                new CarrierBizDAO().InsertCarrier(this);
+                flag = new CarrierBizDAO().InsertCarrier(this);
             }
+
+            return flag;
         }
 
 
@@ -87,6 +90,12 @@ namespace TMSProject.Classes.Model
         {
             string value = String.Format("{0:D3}", seq);
             return "CAR" + value;
+        }
+
+        public List<Carrier> GetAvailabilty(string orderID, string carrierID)
+        {
+            var contractsList = new CarrierBizDAO().GetAvailabilty(orderID, carrierID);
+            return contractsList;
         }
     }
 }

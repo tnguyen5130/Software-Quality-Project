@@ -168,6 +168,52 @@ namespace TMSProject.Classes.Controller
                                                 vanType, 
                                                 ftlAvail, 
                                                 ltlAvail, 
+                                                reeferCharge,
+                                                depotCity,
+                                                ftlRate,
+                                                ltlRate,
+                                                carrierName
+                                            FROM planinfo 
+			                                INNER JOIN 
+                                                ordering on planinfo.orderID = ordering.orderID
+                                            INNER JOIN 
+                                                carrier on ordering.carrierID = carrier.carrierID
+                                            WHERE planinfo.orderID = @orderID 
+                                            AND carrier.carrierID = @carrierID  ; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                myCommand.Parameters.AddWithValue("@carrierID", carrierID);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var carriers = DataTableToAvailabilityList(dataTable);
+
+                return carriers;
+            }
+        }
+
+        public List<Carrier> GetCarriers(string searchItem)
+        {
+            const string sqlStatement = @" SELECT 
+                                                planinfo.orderID, 
+                                                ordering.carrierID, 
+                                                jobType, 
+                                                quantity, 
+                                                vanType, 
+                                                ftlAvail, 
+                                                ltlAvail, 
                                                 reeferCharge 
                                             FROM planinfo 
 			                                INNER JOIN 
@@ -241,7 +287,12 @@ namespace TMSProject.Classes.Controller
                     vanType = Convert.ToInt32(row["vanType"]),
                     ftlAvail = Convert.ToDouble(row["ftlAvail"]),
                     ltlAvail = Convert.ToDouble(row["ltlAvail"]),
-                    reeferCharge = Convert.ToDouble(row["reeferCharge"])
+
+                    reeferCharge = Convert.ToDouble(row["reeferCharge"]),
+                    depotCity = row["depotCity"].ToString(),
+                    ftlRate = Convert.ToDouble(row["ftlRate"]),
+                    ltlRate = Convert.ToDouble(row["ltlRate"]),
+                    carrierName = row["carrierName"].ToString()
                 });
             }
 

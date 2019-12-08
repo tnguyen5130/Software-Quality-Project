@@ -27,6 +27,20 @@ namespace TMSProject.Classes.Model
         public string completeStatus { get; set; }
         public string command { get; set; }
 
+        //extended properties
+        public string orderID { get; set; }
+        public string customerName { get; set; }
+        public string orderDate { get; set; }
+        public string customerCity { get; set; }
+        public string telno { get; set; }
+        public string address { get; set; }
+        public string zipcode { get; set; }
+        public string customerCompany { get; set; }
+        public string customerProvince { get; set; }
+        public string startCityName { get; set; }
+        public string endCityName { get; set; }
+        public int jobType { get; set; }
+
         public string orderID { get; set; }
 
         public Invoice() { }
@@ -60,6 +74,18 @@ namespace TMSProject.Classes.Model
         public List<Invoice> GetInvoices(string billingID, string orderID)
         {
             var invoiceList = new InvoiceBizDAO().GetInvoices(billingID, orderID);
+            return invoiceList;
+        }
+
+        public List<Invoice> ViewInvoices(string billingID, string orderID)
+        {
+            var invoiceList = new InvoiceBizDAO().ViewInvoices(billingID, orderID);
+            return invoiceList;
+        }
+
+        public List<Invoice> GetInvoiceID(string invoiceID)
+        {
+            var invoiceList = new InvoiceBizDAO().GetInvoiceID(invoiceID);
             return invoiceList;
         }
 

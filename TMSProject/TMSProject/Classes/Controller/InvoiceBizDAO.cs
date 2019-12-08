@@ -55,9 +55,8 @@ namespace TMSProject.Classes.Controller
             {
                 Console.WriteLine(ex.Message);
                 return false;
+
             }
-
-
         }
 
 
@@ -145,6 +144,77 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        public List<Invoice> GetInvoiceID(string invoiceID)
+        {
+
+            const string sqlStatement = @" SELECT 
+                                                invoiceID, 
+                                                invoice.billingID, 
+                                                billing.orderID
+                                            FROM invoice
+                                            INNER JOIN billing on invoice.billingID = billing.billingID
+                                            WHERE invoiceID = @invoiceID; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@invoiceID", invoiceID);
+               
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var invoices = DataTableToInvoiceIDList(dataTable);
+
+                return invoices;
+            }
+        }
+
+        public List<Invoice> ViewInvoices(string billingID, string orderID)
+        {
+            const string sqlStatement = @" select billing.billingID, customerName, billing.orderID, orderDate, customerCity, 
+                                            telno, address, zipcode, customerCompany, customerProvince,  
+                                            startCity, u1.cityName as startCityName, endCity, u2.cityName as endCityName,
+                                            tripStatus, invoiceID, jobType 
+                                            from ordering 
+		                                    inner join billing on ordering.orderID = billing.orderID
+                                            inner join customer on ordering.customerID = customer.customerID
+                                            inner join trip on ordering.orderID = trip.orderID
+                                            INNER JOIN city u1 ON trip.startCity = u1.cityID
+                                            INNER JOIN city u2 ON trip.endCity = u2.cityID
+                                            INNER JOIN invoice on billing.billingID = invoice.billingID 
+                                            WHERE billing.billingID = @billingID AND ordering.orderID = @orderID; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@billingID", billingID);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var invoices = DataTableToViewInvoiceList(dataTable);
+
+                return invoices;
+            }
+        }
+
         private List<Invoice> DataTableToInvoiceList(DataTable table)
         {
             var invoices = new List<Invoice>();
@@ -157,6 +227,51 @@ namespace TMSProject.Classes.Controller
                     contractID = row["contractID"].ToString(),
                     customerID = row["customerID"].ToString(),
                     completeStatus = row["orderStatus"].ToString()
+                });
+            }
+
+            return invoices;
+        }
+
+        private List<Invoice> DataTableToInvoiceIDList(DataTable table)
+        {
+            var invoices = new List<Invoice>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                invoices.Add(new Invoice
+                {
+                    orderID = row["orderID"].ToString(),
+                    billingID = row["billingID"].ToString(),
+                    invoiceID = row["invoiceID"].ToString()
+                });
+            }
+
+            return invoices;
+        }
+
+        private List<Invoice> DataTableToViewInvoiceList(DataTable table)
+        {
+            var invoices = new List<Invoice>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                invoices.Add(new Invoice
+                {
+                    billingID = row["billingID"].ToString(),
+                    customerName = row["customerName"].ToString(),
+                    orderID = row["orderID"].ToString(),
+                    orderDate = row["orderDate"].ToString(),
+                    customerCity = row["customerCity"].ToString(),
+                    telno = row["telno"].ToString(),
+                    address = row["address"].ToString(),
+                    zipcode = row["zipcode"].ToString(),
+                    customerCompany = row["customerCompany"].ToString(),
+                    customerProvince = row["customerProvince"].ToString(),
+                    startCityName = row["startCityName"].ToString(),
+                    endCityName = row["endCityName"].ToString(),
+                    invoiceID = row["invoiceID"].ToString(),
+                    jobType = Convert.ToInt32(row["jobType"])
                 });
             }
 

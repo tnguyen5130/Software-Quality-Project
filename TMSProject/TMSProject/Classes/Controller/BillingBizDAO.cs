@@ -152,6 +152,37 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        public List<Billing> GetBillingID(string planID, string orderID)
+        {
+            const string sqlStatement = @" SELECT 
+                                                billingID
+                                            FROM billing 
+                                            WHERE orderID = @orderID
+                                            AND planID = @planID; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@planID", planID);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var billings = DataTableToBillingIDList(dataTable);
+
+                return billings;
+            }
+        }
+
         /* =========================================================================================================================
         * Name		: GetBillings																						
         * Purpose	: to GET the billing infor whenever create an new order 	
@@ -241,6 +272,21 @@ namespace TMSProject.Classes.Controller
                     ltlRate = Convert.ToDouble(row["ltlRate"]),
                     reeferCharge = Convert.ToDouble(row["reeferCharge"]),
 
+                });
+            }
+
+            return billings;
+        }
+
+        private List<Billing> DataTableToBillingIDList(DataTable table)
+        {
+            var billings = new List<Billing>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                billings.Add(new Billing
+                {
+                    billingID = row["billingID"].ToString()
                 });
             }
 

@@ -41,6 +41,9 @@ namespace TMSProject.Classes.Model
         public string orderStatus { get; set; }
         public string command { get; set; }
 
+        public string customerName { get; set; }
+        public string startCityName { get; set; }
+        public string endCityName { get; set; }
 
         public Order() { }
 
@@ -128,6 +131,24 @@ namespace TMSProject.Classes.Model
         public List<Order> GetOrders(string pattern)
         {
             var orderList = new OrderBizDAO().GetOrders(pattern);
+            return orderList;
+        }
+
+        public List<Order> GetOrderDetail(string startCity, string endCity)
+        {
+            var orderList = new OrderBizDAO().GetOrderDetail(startCity, endCity);
+            return orderList;
+        }
+
+        public List<Order> GetOrderWithID(string orderID)
+        {
+            var orderList = new OrderBizDAO().GetOrderWithID(orderID);
+            return orderList;
+        }
+
+        public List<Order> GetOrderDetailWithID(string orderID)
+        {
+            var orderList = new OrderBizDAO().GetOrderDetailWithID(orderID);
             return orderList;
         }
 

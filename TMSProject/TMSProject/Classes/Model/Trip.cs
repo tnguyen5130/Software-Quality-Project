@@ -32,7 +32,7 @@ namespace TMSProject.Classes.Model
         public string tripStatus { get; set; }
         public string command { get; set; }
 
-        //order + mileage information for making trips
+        //order + mileage + plan information for making trips
         public string contractID { get; set; }
         public string orderDate { get; set; }
         public string originalCityID { get; set; }
@@ -44,6 +44,15 @@ namespace TMSProject.Classes.Model
         public string endCityID { get; set; }
         public double distance { get; set; }
         public double workingTime { get; set; }
+        public string startCityName { get; set; }
+        public string endCityName { get; set; }
+        public double ftlRate { get; set; }
+        public double ltlRate { get; set; }
+        public int    jobType { get; set; }
+        public int    quantity { get; set; }
+        public int    vanType { get; set; }
+        public double rate { get; set; }
+        public double price { get; set; }
 
         public Trip() { }
 
@@ -104,7 +113,17 @@ namespace TMSProject.Classes.Model
             return tripList;
         }
 
+        public List<Trip> GetShowTripsForBillings(string orderID, string carrierID)
+        {
+            var billingList = new TripBizDAO().GetShowTripsForBillings(orderID, carrierID);
+            return billingList;
+        }
 
+        public List<Trip> GetTripBilling(string orderID)
+        {
+            var billingList = new TripBizDAO().GetTripBilling(orderID);
+            return billingList;
+        }
 
         /// \brief This method generateTripID
         /// \details <b>Details</b>
@@ -114,6 +133,12 @@ namespace TMSProject.Classes.Model
         {
             // Naming currentCityID + seq
             return null;
+        }
+
+        public List<Trip> newTripID()
+        {
+            var tripList = new TripBizDAO().GetTripID();
+            return tripList;
         }
     }
 }

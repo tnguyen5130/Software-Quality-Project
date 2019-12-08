@@ -168,6 +168,39 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        public List<PlanInfo> GetPlanID(string orderID)
+        {
+            const string sqlStatement = @" SELECT 
+                                                planID, 
+                                                orderID, 
+                                                distance, 
+                                                workingTime, 
+                                                startCityID, 
+                                                endCityID 
+                                            FROM planinfo
+                                            WHERE orderID = @orderID; ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var plans = DataTableToPlanIDList(dataTable);
+
+                return plans;
+            }
+        }
 
         /// \brief This method DataTableToPlanInfoList for user 
         /// \details <b>Details</b>
@@ -186,6 +219,30 @@ namespace TMSProject.Classes.Controller
                     workingTime = Convert.ToDouble(row["workingTime"]),
                     startCityID = row["originalCityID"].ToString(),
                     endCityID = row["desCityID"].ToString(),
+                });
+            }
+
+            return plans;
+        }
+
+        /// \brief This method DataTableToPlanInfoList for user 
+        /// \details <b>Details</b>
+        /// This method will store plan info when finishing order
+        /// \return  void
+        private List<PlanInfo> DataTableToPlanIDList(DataTable table)
+        {
+            var plans = new List<PlanInfo>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                plans.Add(new PlanInfo
+                {
+                    planID = row["planID"].ToString(),
+                    orderID = row["orderID"].ToString(),
+                    distance = Convert.ToDouble(row["distance"]),
+                    workingTime = Convert.ToDouble(row["workingTime"]),
+                    startCityID = row["startCityID"].ToString(),
+                    endCityID = row["endCityID"].ToString()
                 });
             }
 

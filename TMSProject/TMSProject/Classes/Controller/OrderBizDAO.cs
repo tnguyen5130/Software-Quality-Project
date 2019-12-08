@@ -39,12 +39,7 @@ namespace TMSProject.Classes.Controller
                 try
                 {   
                     const string sqlStatement = @"  UPDATE ordering
-	                                            SET contractID = @contractID,
-                                                    orderDate = @orderDate,
-		                                            originalCityID = @originalCityID,
-                                                    desCityID = @desCityID,
-                                                    carrierID = @carrierID,
-                                                    orderStatus = @orderStatus
+	                                            SET carrierID = @carrierID
 	                                            WHERE orderID = @orderID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
@@ -54,7 +49,6 @@ namespace TMSProject.Classes.Controller
                 myCommand.Parameters.AddWithValue("@originalCityID", order.originalCityID);
                 myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
                 myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
-                myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
                 myCommand.Parameters.AddWithValue("@orderID", order.orderID);
 
                 myConn.Open();
@@ -190,7 +184,8 @@ namespace TMSProject.Classes.Controller
 												DELETE FROM products WHERE ProductID = @ProductID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                
+
+                myCommand.Parameters.AddWithValue("@ProductID", order.orderID);
 
                 myConn.Open();
 
@@ -255,6 +250,144 @@ namespace TMSProject.Classes.Controller
 
                 return orders;
             }
+        }
+
+        public List<Order> GetOrderWithID(string orderID)
+        {
+
+            const string sqlStatement = @" select u1.cityName as startCityName, u2.cityName as endCityName from ordering                                              
+                                            INNER JOIN city u1 ON ordering.originalCityID = u1.cityID
+                                            INNER JOIN city u2 ON ordering.desCityID = u2.cityID
+                                            where orderID = @orderID; ";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var orders = DataTableToCityNamesList(dataTable);
+
+                return orders;
+            }
+        }
+
+        private List<Order> DataTableToCityNamesList(DataTable table)
+        {
+            var orders = new List<Order>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                orders.Add(new Order
+                {   
+                    startCityName = row["startCityName"].ToString(),
+                    endCityName = row["endCityName"].ToString()
+                    
+                });
+            }
+
+            return orders;
+        }
+
+        public List<Order> GetOrderDetailWithID(string orderID)
+        {
+
+            const string sqlStatement = @" SELECT orderID, contractID, customerName, orderDate, jobType, quantity, vanType, carrierID,                                              
+                                            originalCityID, u1.cityName as startCityName, desCityID, u2.cityName as endCityName from ordering
+                                            INNER JOIN customer on ordering.customerID = customer.customerID
+                                            INNER JOIN city u1 ON ordering.originalCityID = u1.cityID
+                                            INNER JOIN city u2 ON ordering.desCityID = u2.cityID
+                                            WHERE orderID = @orderID ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var orders = DataTableToOrderDetailList(dataTable);
+
+                return orders;
+            }
+        }
+
+        public List<Order> GetOrderDetail(string startCity, string endCity)
+        {
+
+            const string sqlStatement = @" SELECT orderID, contractID, customerName, orderDate, jobType, quantity, vanType,                                              
+                                            originalCityID, u1.cityName as startCityName, desCityID, u2.cityName as endCityName, 
+                                            carrierID from ordering
+                                            INNER JOIN customer on ordering.customerID = customer.customerID
+                                            INNER JOIN city u1 ON ordering.originalCityID = u1.cityID
+                                            INNER JOIN city u2 ON ordering.desCityID = u2.cityID
+                                            WHERE u1.cityName = @startCityName or u2.cityName = @endCityName ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@startCityName", startCity);
+                myCommand.Parameters.AddWithValue("@endCityName", endCity);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var orders = DataTableToOrderDetailList(dataTable);
+
+                return orders;
+            }
+        }
+
+        private List<Order> DataTableToOrderDetailList(DataTable table)
+        {
+            var orders = new List<Order>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                orders.Add(new Order
+                {  
+                    orderID = row["orderID"].ToString(),
+                    contractID = row["contractID"].ToString(),
+                    originalCityID = row["originalCityID"].ToString(),
+                    startCityName = row["startCityName"].ToString(),
+                    desCityID = row["desCityID"].ToString(),
+                    customerName = row["customerName"].ToString(),
+                    endCityName = row["endCityName"].ToString(),
+                    orderDate = row["orderDate"].ToString(),
+                    jobType = Convert.ToInt32(row["jobType"]),
+                    quantity = Convert.ToInt32(row["quantity"]),
+                    vanType = Convert.ToInt32((row["vanType"])),
+                    carrierID = row["carrierID"].ToString()
+                });
+            }
+
+            return orders;
         }
 
         /// \brief This method DataTableToOrderList for user 
