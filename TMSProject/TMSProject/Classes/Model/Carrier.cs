@@ -76,26 +76,20 @@ namespace TMSProject.Classes.Model
             new CarrierBizDAO().DeleteCarrier(this);
         }
 
-
-        /// \brief This method GetById  
-        /// \details <b>Details</b>
-        /// This method will get carrier by ID
-        /// \return  void
-        public Carrier GetById(string contractID)
+        public string GetLastCarrierID()
         {
-            var carriers = new CarrierBizDAO().GetCarriers(contractID);
-            return carriers[0];
+            var carrier = new CarrierBizDAO().GetLastCarrierID();
+            return carrier;
         }
 
-
-        /// \brief This method GetCarriers carrier 
+        /// \brief This method NewCarrierID
         /// \details <b>Details</b>
-        /// This method will get carriers
-        /// \return  void
-        public List<Carrier> GetCarriers(string pattern)
+        /// This method will generate carrier ID
+        /// \return  string
+        public string NewCarrierID(int seq)
         {
-            var contractsList = new CarrierBizDAO().GetCarriers(pattern);
-            return contractsList;
+            string value = String.Format("{0:D3}", seq);
+            return "CAR" + value;
         }
 
         public List<Carrier> GetAvailabilty(string orderID, string carrierID)

@@ -201,7 +201,7 @@ namespace TMSProject.Classes.Controller
             return cities;
         }
 
-        public void getCityNameList(ComboBox box)
+        public void GetCityNameList(ComboBox box)
         {
 
             const string sqlStatement = @" SELECT 

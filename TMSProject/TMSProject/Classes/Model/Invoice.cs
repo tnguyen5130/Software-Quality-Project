@@ -41,6 +41,8 @@ namespace TMSProject.Classes.Model
         public string endCityName { get; set; }
         public int jobType { get; set; }
 
+        public string orderID { get; set; }
+
         public Invoice() { }
 
         public bool Save()

@@ -110,6 +110,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Classes\View\CMPWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Classes\View\InvoiceWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -189,6 +193,9 @@
     <Compile Include="Classes\View\BuyerWindow.xaml.cs">
       <DependentUpon>BuyerWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\View\CMPWindow.xaml.cs">
+      <DependentUpon>CMPWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\View\InvoiceWindow.xaml.cs">
       <DependentUpon>InvoiceWindow.xaml</DependentUpon>
     </Compile>
@@ -219,6 +226,7 @@
     <Compile Include="Classes\View\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DBConnect\CMPConfigs.cs" />
     <Compile Include="DBConnect\Configs.cs" />
     <Compile Include="DBConnect\DBHandler.cs" />
     <Page Include="Classes\View\Test.xaml">

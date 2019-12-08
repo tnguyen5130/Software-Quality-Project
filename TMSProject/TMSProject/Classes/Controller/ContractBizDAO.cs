@@ -1,8 +1,8 @@
-﻿//* FILE			: CMPBizDAO.cs
+﻿//* FILE			: ContractBizDAO.cs
 //* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
 //* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
 //* FIRST VERSON	: Nov 11, 2019
-//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
+//* DESCRIPTION		: The file defines a class  : CityBizDAO for the billing infomation
 
 
 
@@ -66,7 +66,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /// \brief This method InsertContract for user 
         /// \details <b>Details</b>
         /// This method will insert contract database 
@@ -82,11 +81,11 @@ namespace TMSProject.Classes.Controller
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@ProductID", contract.contractID);
-                    myCommand.Parameters.AddWithValue("@CategoryId", contract.initiateBy);
-                    myCommand.Parameters.AddWithValue("@UnitPrice", contract.startDate);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", contract.endDate);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", contract.completeStatus);
+                    myCommand.Parameters.AddWithValue("@contractID", contract.contractID);
+                    myCommand.Parameters.AddWithValue("@initiateBy", contract.initiateBy);
+                    myCommand.Parameters.AddWithValue("@startDate", contract.startDate);
+                    myCommand.Parameters.AddWithValue("@endDate", contract.endDate);
+                    myCommand.Parameters.AddWithValue("@completeStatus", contract.completeStatus);
 
                     myConn.Open();
 
@@ -101,7 +100,26 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method GetLastContractID for user 
+        /// \details <b>Details</b>
+        /// This method will get the last contract id to check whether DB contains it
+        /// \return  void
+        public string GetLastContractID(Contract contract)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT contractID FROM contract ORDER BY contractID DESC LIMIT 1; ";
 
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
 
         /// \brief This method DeleteContract for user 
         /// \details <b>Details</b>
@@ -161,7 +179,6 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-
         /// \brief This method DataTableToContractList for user 
         /// \details <b>Details</b>
         /// This method will store cotract into contract list data
@@ -184,5 +201,5 @@ namespace TMSProject.Classes.Controller
 
             return contracts;
         }
-    }
-}
+    } // End of class
+} // End of namespace 

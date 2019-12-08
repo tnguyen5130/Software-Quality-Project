@@ -73,8 +73,6 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
-
         /// \brief This method InsertCarrier for user 
         /// \details <b>Details</b>
         /// This method will insert carrier for making order
@@ -114,8 +112,6 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
-
         /// \brief This method DeleteCarrier for user 
         /// \details <b>Details</b>
         /// This method will delete an carrier
@@ -137,7 +133,26 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        /// \brief This method GetCustomers for user 
+        /// \details <b>Details</b>
+        /// This method will get customer database 
+        /// \return  void
+        public string GetLastCarrierID()
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT carrierID FROM carrier ORDER BY carrierID DESC LIMIT 1; ";
 
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
 
         /// \brief This method GetCarriers for user 
         /// \details <b>Details</b>
@@ -192,24 +207,28 @@ namespace TMSProject.Classes.Controller
         public List<Carrier> GetCarriers(string searchItem)
         {
             const string sqlStatement = @" SELECT 
-                                                carrierID, 
-                                                depotCity, 
-                                                carrierName, 
+                                                planinfo.orderID, 
+                                                ordering.carrierID, 
+                                                jobType, 
+                                                quantity, 
+                                                vanType, 
                                                 ftlAvail, 
                                                 ltlAvail, 
-                                                ftlRate,
-                                                ltlRate, 
-                                                reeferCharge,
-                                                cityName
-                                            FROM carrier
-                                            INNER JOIN city on carrier.depotCity = city.cityID
-                                            WHERE city.cityName = @SearchItem ; ";
+                                                reeferCharge 
+                                            FROM planinfo 
+			                                INNER JOIN 
+                                                ordering on planinfo.orderID = ordering.orderID
+                                            INNER JOIN 
+                                                carrier on ordering.carrierID = carrier.carrierID
+                                            WHERE planinfo.orderID = @orderID 
+                                            AND carrier.carrierID = @carrierID  ; ";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                myCommand.Parameters.AddWithValue("@carrierID", carrierID);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -221,13 +240,11 @@ namespace TMSProject.Classes.Controller
 
                 myAdapter.Fill(dataTable);
 
-                var carriers = DataTableToCarrierList(dataTable);
+                var carriers = DataTableToAvailabilityList(dataTable);
 
                 return carriers;
             }
         }
-
-
 
         /// \brief This method DataTableToCarrierList for user 
         /// \details <b>Details</b>
@@ -270,6 +287,7 @@ namespace TMSProject.Classes.Controller
                     vanType = Convert.ToInt32(row["vanType"]),
                     ftlAvail = Convert.ToDouble(row["ftlAvail"]),
                     ltlAvail = Convert.ToDouble(row["ltlAvail"]),
+
                     reeferCharge = Convert.ToDouble(row["reeferCharge"]),
                     depotCity = row["depotCity"].ToString(),
                     ftlRate = Convert.ToDouble(row["ftlRate"]),

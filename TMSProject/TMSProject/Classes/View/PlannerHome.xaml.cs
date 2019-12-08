@@ -36,7 +36,7 @@ namespace TMSProject.Classes.View
         private void loadTableData()
         {
             OrderBizDAO orderBiz = new OrderBizDAO();
-            orderBiz.loadOrderList(OrderList);
+            orderBiz.LoadOrderList(OrderList);
         }
 
         private void Row_DoubleClick(object sender, MouseButtonEventArgs e)
@@ -68,7 +68,9 @@ namespace TMSProject.Classes.View
                 Order order = new Order();
                 order.orderID = ItemSelect;
                 UserControl usc = null;
+                
                 usc = new OrderDetails(order);
+
                 GridMain.Children.Add(usc);
             }
         }

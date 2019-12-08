@@ -26,23 +26,13 @@
                     </Grid.ColumnDefinitions>
 
                     <StackPanel Grid.Column="0" Margin="0,0,53.6,-0.8">
+                        <StackPanel Orientation="Horizontal" >
+                            <Label Content="Order ID:" Foreground="Blue" FontSize="15" FontWeight="Bold" />
+                            <TextBlock x:Name="txtOrderID" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
+                        </StackPanel>
                         <ComboBox x:Name="boxFrom" Foreground="Black" materialDesign:HintAssist.Hint="From" Margin="2,5,-2.2,5"/>
-                        <TextBox x:Name="txtAddressFrom" materialDesign:HintAssist.Hint="Address" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
-                            <TextBox.Resources>
-                                <Style TargetType="ContentControl">
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                        <TextBox x:Name="txtPostalCodeFrom" materialDesign:HintAssist.Hint="Postal Code" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
-                            <TextBox.Resources>
-                                <Style TargetType="ContentControl">
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                        <DatePicker Name="txtDateFrom" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>
-                        <TextBlock Text="Carrier">
+                        <!--<DatePicker Name="txtDateFrom" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>-->
+                        <TextBlock Text="Carrier" Foreground="Black">
                             <TextBlock.Resources>
                                 <Style TargetType="ContentControl">
                                     <Setter Property="Foreground" Value="Black"/>
@@ -52,31 +42,24 @@
                         <StackPanel>
                             <CheckBox x:Name="boxFTL" Foreground="Black" Margin="10">FTL</CheckBox>
                         </StackPanel>
-                        <TextBox x:Name="txtWeight" materialDesign:HintAssist.Hint="Weight (lbs)" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                        <TextBox x:Name="txtVanType" Foreground="Black" materialDesign:HintAssist.Hint="Van Type( E.g: 0 or 1)" Margin="0,5,-0.4,5">
                             <TextBox.Resources>
-                                <Style TargetType="ContentControl">
+                                <Style TargetType="{x:Type ContentControl}">
                                     <Setter Property="Foreground" Value="Black"/>
                                 </Style>
                             </TextBox.Resources>
+                            <TextBox.Style>
+                                <StaticResource ResourceKey="MaterialDesignFloatingHintTextBox"/>
+                            </TextBox.Style>
                         </TextBox>
                     </StackPanel>
                     <StackPanel Grid.Column="1">
+                        <StackPanel Orientation="Horizontal">
+                            <Label Content="Date:" Foreground="Blue" FontSize="15" FontWeight="Bold" />
+                            <TextBlock x:Name="txtOrderDate" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
+                        </StackPanel>
                         <ComboBox x:Name="boxTo" Foreground="Black" materialDesign:HintAssist.Hint="To" Margin="0 5"/>
-                        <TextBox x:Name="txtAddressTo" materialDesign:HintAssist.Hint="Address" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
-                            <TextBox.Resources>
-                                <Style TargetType="ContentControl">
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                        <TextBox x:Name="txtpostalCodeTo" materialDesign:HintAssist.Hint="Postal Code" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
-                            <TextBox.Resources>
-                                <Style TargetType="ContentControl">
-                                    <Setter Property="Foreground" Value="Black"/>
-                                </Style>
-                            </TextBox.Resources>
-                        </TextBox>
-                        <DatePicker x:Name="boxDateTo" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>
+                        <!--<DatePicker x:Name="boxDateTo" materialDesign:HintAssist.Hint="Year/MM/DD" Foreground="Black" DisplayDateStart="{x:Static sys:DateTime.Today}" Margin="0 5" Height="55"/>-->
                         <TextBlock Text="Carrier">
                             <TextBlock.Resources>
                                 <Style TargetType="ContentControl">
@@ -87,16 +70,19 @@
                         <StackPanel>
                             <CheckBox x:Name="boxLTL" Margin="10" Foreground="Black">LTL</CheckBox>
                         </StackPanel>
-                        <TextBox x:Name="txtPallet" materialDesign:HintAssist.Hint="Pallet" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                        <TextBox x:Name="txtPallet" Foreground="Black" materialDesign:HintAssist.Hint="Pallet(lbs)" Margin="0,5,-0.4,5">
                             <TextBox.Resources>
-                                <Style TargetType="ContentControl">
+                                <Style TargetType="{x:Type ContentControl}">
                                     <Setter Property="Foreground" Value="Black"/>
                                 </Style>
                             </TextBox.Resources>
+                            <TextBox.Style>
+                                <StaticResource ResourceKey="MaterialDesignFloatingHintTextBox"/>
+                            </TextBox.Style>
                         </TextBox>
                     </StackPanel>
                 </Grid>
-                <Button Content="OK" Click="btn_OK" Margin="206,20,286,20"/>
+                <Button Content="SEND ORDER" Click="btn_OK" Margin="206,20,271,20" Height="64"/>
             </StackPanel>
         </Border>
 

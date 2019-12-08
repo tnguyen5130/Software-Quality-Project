@@ -70,6 +70,7 @@ namespace TMSProject.Classes.Model
         public List<Billing> GetBillingID(string planID, string orderID)
         {
             var billingList = new BillingBizDAO().GetBillingID(planID, orderID);
+
             return billingList;
         }
 
