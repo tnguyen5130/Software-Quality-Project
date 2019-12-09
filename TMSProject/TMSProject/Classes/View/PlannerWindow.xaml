@@ -55,7 +55,7 @@
         </Grid>
 
 
-        <Grid x:Name="GridMenu" Width="154" HorizontalAlignment="Left" Background="#388e3c">
+        <Grid x:Name="GridMenu" Width="182" HorizontalAlignment="Left" Background="#388e3c">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="1" Color="#FFAEAEAE"/>
             </Grid.Effect>

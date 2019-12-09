@@ -14,21 +14,12 @@
             SelectionMode="Single"    
             ColumnWidth="*"
             HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-            Margin="10,23,365.6,274"
+            Margin="10,23,447.6,69"
             AutoGenerateColumns="True"
             CanUserSortColumns="True"
             CanUserAddRows="False" SelectionChanged="CMPList_SelectionChanged"/>
-        <DataGrid
-            x:Name="CustomerList"
-            SelectionMode="Single"    
-            ColumnWidth="*"
-            HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
-            Margin="10,333,365.6,10"
-            AutoGenerateColumns="True"
-            CanUserSortColumns="True"
-            CanUserAddRows="False" SelectionChanged="CustomerList_SelectionChanged"/>
-        <Grid Background="AntiqueWhite" Margin="664,23,9.6,10">
-            <TextBox Name="txtClientName" Foreground="Black" HorizontalAlignment="Left" TextWrapping="Wrap" Width="133" Margin="99,17,0,467"/>
+        <Grid Background="AntiqueWhite" Height="440" Margin="589,23,84.6,77">
+            <TextBox Name="txtClientName" Foreground="Black" HorizontalAlignment="Left" TextWrapping="Wrap" Width="133" Margin="99,17,0,400"/>
             <TextBox Name="txtJobType" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,61,0,0"/>
             <TextBox Name="txtQuantity" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,115,0,0"/>
             <TextBox Name="txtOrigin" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,177,0,0"/>
@@ -42,12 +33,11 @@
             <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Van Type" Height="23" Margin="10,301,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
             <TextBox Name="lblEndDate" Foreground="Black" HorizontalAlignment="Left" Text="End Date of Contract" Height="23" Margin="54,342,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112"/>
             <DatePicker Name="txtEndDate" Foreground="Black" HorizontalAlignment="Left" Margin="21,379,0,0" VerticalAlignment="Top" Width="175"/>
-            <Button
-                x:Name="btn_Next"
-                Background="Red"
-                Style="{StaticResource MaterialDesignFlatDarkBgButton}"
-                ToolTip="MaterialDesignFlatDarkButton" Height="50" Margin="78,433,70,24" Click="btn_Next_Click" Content="Okay"/>
         </Grid>
-        <Label Content="Customer List" FontSize="20" FontWeight="Black" HorizontalAlignment="Left" Margin="10,278,0,0" VerticalAlignment="Top" Height="33" Width="163"/>
+        <Button
+                Name="btn_Next"
+                Style="{StaticResource MaterialDesignFlatDarkBgButton}"
+                ToolTip="MaterialDesignFlatDarkButton" Height="50" Margin="102,405,681.6,85" Click="btn_Next_Click">Okay
+        </Button>
     </Grid>
 </UserControl>

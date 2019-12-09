@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -136,10 +135,27 @@ namespace TMSProject.Classes.View
                     // Command
                     order.command = "INSERT";
                     // Order Status
-                    order.orderStatus = "ACTIVE";                    
+                    order.orderStatus = "FINISHED";                    
                     // CarrierID
                     Carrier carrier = new Carrier();
-                    order.carrierID = carrier.GetCarrierIDbyDepotCity(order.originalCityID);                    
+                    if (order.carrierID != carrier.GetLastCarrierID() && order.carrierID != null || carrier.GetLastCarrierID() == null)
+                    {
+                        order.carrierID = carrier.NewCarrierID(1);
+                    }
+                    else if (order.carrierID == carrier.GetLastCarrierID() || order.carrierID == null)
+                    {
+                        string buffer = carrier.GetLastCarrierID();
+                        // Get the last character in the last OrderID
+                        string last = buffer.Substring(buffer.Length - 3);
+                        // Convert it into INT
+                        int temp = Convert.ToInt32(last);
+                        // Add by 1
+                        temp += 1;
+                        //Delete the last character of the buffer
+                        string newBuffer = RemoveLastChar(buffer);
+                        // Add with new temp
+                        order.carrierID = newBuffer + String.Format("{0:D3}", temp);
+                    }
 
                     if (MessageBox.Show("Confirm the Order?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                     {
@@ -151,9 +167,7 @@ namespace TMSProject.Classes.View
                         // Save to DB
                         order.Save();
                         MessageBox.Show("Order Successful\nOrder Details:\nOrderID:" + order.orderID + "\nOrder Date: " + order.orderDate + "\nFrom: " + boxFrom.SelectedItem.ToString() + "\nTo: " + boxTo.SelectedItem.ToString());
-                        generateOrderInvoice(order);
                     }
-                    MessageBox.Show("Order Invoice generated");
                 }
             }
             else if (currentStatus == "NOT CHANGE")
@@ -180,7 +194,7 @@ namespace TMSProject.Classes.View
                 // Command
                 order.command = "INSERT";
                 // Order Status
-                order.orderStatus = "ACTIVE";
+                order.orderStatus = "FINISHED";
                 // CarrierID
                 Carrier carrier = new Carrier();
                 order.carrierID = carrier.GetCarrierIDbyDepotCity(order.originalCityID);
@@ -195,51 +209,9 @@ namespace TMSProject.Classes.View
                     // Save to DB
                     order.Save();
                     MessageBox.Show("Order Successful\nOrder Details:\nOrderID:" + order.orderID + "\nOrder Date: " + order.orderDate + "\nFrom: " + txtOriginalCity.Text + "\nTo: " + txtDestinationCity.Text);
-                    generateOrderInvoice(order);
                 }
-                MessageBox.Show("Order Invoice generated");
             }
 		}
-
-        private void generateOrderInvoice(Order order)
-        {
-            try
-            {
-                //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter("./InvoiceOrder.txt");
-
-                //Write a line of text
-                sw.WriteLine("ORDER");
-                sw.WriteLine("********************");
-                sw.WriteLine("Customer Name: " + currentCustomerName);
-                sw.WriteLine("********************");
-                sw.WriteLine("Order Information:");                
-                sw.WriteLine("OrderID: " + order.orderID);
-                sw.WriteLine("Order Date: " + order.orderDate);
-                sw.WriteLine("Carrier ID: " + order.carrierID);
-                sw.WriteLine("From: " + txtOriginalCity.Text);
-                sw.WriteLine("To: " + txtDestinationCity.Text);
-                sw.WriteLine("********************");
-                sw.WriteLine("Quantity: " + txtPallet.Text);
-                sw.WriteLine("Van Type: " + txtVanType.Text);
-                if (boxFTL.IsChecked == true)
-                {
-                    sw.WriteLine("Job Type: " + "FTL");
-                }
-                else if (boxLTL.IsChecked == true)
-                {
-                    sw.WriteLine("Job Type: " + "LTL");
-                }
-                
-
-                //Close the file
-                sw.Close();
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Exception: " + e.Message);
-            }
-        }
 
 	}
 }

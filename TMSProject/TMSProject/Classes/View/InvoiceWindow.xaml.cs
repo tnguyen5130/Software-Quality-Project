@@ -49,7 +49,7 @@ namespace TMSProject.Classes.View
             try
             {
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter("./InvoiceBilling.txt");
+                StreamWriter sw = new StreamWriter("./Invoice.txt");
 
                 //Write a line of text
                 sw.WriteLine("INVOICE");
@@ -73,10 +73,15 @@ namespace TMSProject.Classes.View
                 sw.WriteLine("LIST: ");
                 for (int i = 0; i < routeCount; i++)
                 {
-                    sw.WriteLine("Trip ID: " + selectedTrips[i].tripID + "|" + "Start City: " + selectedTrips[i].startCityName + "|" + "End City: "
-                                  + selectedTrips[i].endCityName + "|" + "Distance: " + selectedTrips[i].distance + "|" + "Working Time: " + selectedTrips[i].workingTime);
+                    sw.WriteLine("Trip ID: " + trips[i].tripID + "|" + "Start City: " + trips[i].startCityName + "|" + "End City: "
+                                  + trips[i].endCityName + "|" + "Distance: " + trips[i].distance + "|" + "Working Time: " + trips[i].workingTime);
                 }
-                sw.WriteLine("********************");               
+                sw.WriteLine("********************");
+                for (int i = 0; i < routeCount; i++)
+                {
+                    sw.WriteLine("Trip ID: " + trips[i].tripID + "|" + "Start City: " + trips[i].startCityName + "|" + "End City: "
+                                  + trips[i].endCityName + "|" + "Distance: " + trips[i].distance + "|" + "Working Time: " + trips[i].workingTime);
+                }
                 sw.WriteLine("");
                 sw.WriteLine("YOUR TOTAL AMOUNT: " + invoiceTotalAmount.Text);
 
