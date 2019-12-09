@@ -123,10 +123,10 @@ namespace TMSProject.Classes.Model
         /// \details <b>Details</b>
         /// This method will get customer info
         /// \return List<Customer>
-        public List<Customer> GetCustomerDetailsOnly(string pattern)
+        public Customer GetCustomerDetailsOnly(string customerName)
         {
-            var customerList = new CustomerBizDAO().GetCustomersDetailsOnly(pattern);
-            return customerList;
+            var customerList = new CustomerBizDAO().GetCustomersDetailsOnly(customerName);
+            return customerList[0];
         }
 
         /// \brief This method NewCustomerID

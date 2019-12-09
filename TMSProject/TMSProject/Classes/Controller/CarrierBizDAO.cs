@@ -154,6 +154,28 @@ namespace TMSProject.Classes.Controller
             return value;
         }
 
+        /// \brief This method GetCarrierIDbyDepotCity for user 
+        /// \details <b>Details</b>
+        /// This method will get GetCarrierIDbyDepotCity
+        /// \return  void
+        public string GetCarrierIDbyDepotCity(string depotCity)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT carrierID FROM carrier WHERE depotCity = @depotCity; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@depotCity", depotCity);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
         /// \brief This method GetCarriers for user 
         /// \details <b>Details</b>
         /// This method will get a nee carrier

@@ -31,7 +31,7 @@
             <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Origin" Height="23" Margin="10,177,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
             <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Destination" Height="23" Margin="10,239,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
             <TextBox Foreground="Black" HorizontalAlignment="Left" Text="Van Type" Height="23" Margin="10,301,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="74"/>
-            <TextBox Foreground="Black" HorizontalAlignment="Left" Text="End Date of Contract" Height="23" Margin="54,342,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112"/>
+            <TextBox Name="lblEndDate" Foreground="Black" HorizontalAlignment="Left" Text="End Date of Contract" Height="23" Margin="54,342,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="112"/>
             <DatePicker Name="txtEndDate" Foreground="Black" HorizontalAlignment="Left" Margin="21,379,0,0" VerticalAlignment="Top" Width="175"/>
         </Grid>
         <Button

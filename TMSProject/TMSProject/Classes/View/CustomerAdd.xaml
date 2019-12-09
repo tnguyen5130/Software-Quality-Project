@@ -65,7 +65,18 @@
                         </Style>
                     </TextBox.Resources>
                 </TextBox>
-                
+                <!-- PROVINCE COMBO BOX-->
+                <ComboBox x:Name="txtProvince" Foreground="Black" materialDesign:HintAssist.Hint="Province" Margin="0 5" SelectedValuePath="Content">
+                    <ComboBoxItem Content="Ontario(ON)" />
+                    <ComboBoxItem Content="British Columbia(BC)" />
+                    <ComboBoxItem Content="Alberta(AB)" />
+                    <ComboBoxItem Content="Saskatchewan(SK)" />
+                    <ComboBoxItem Content="Quebec(QC)" />
+                    <ComboBoxItem Content="Nova Scotia(NS)" />
+                    <ComboBoxItem Content="New Brunswick(NB)" />
+                    <ComboBoxItem Content="Manitoba(MB)" />
+                </ComboBox>
+
                 <!-- CITY COMBO BOX -->
                 <ComboBox x:Name="txtCity" Foreground="Black" materialDesign:HintAssist.Hint="City" Margin="0 5" SelectedValuePath="Content">
                     <ComboBoxItem Content="Toronto"/>
@@ -79,19 +90,9 @@
                     <ComboBoxItem Content="Oshawa" />
                     <ComboBoxItem Content="Belleville" />                    
                 </ComboBox>
-                <!-- PROVINCE COMBO BOX-->
-                <ComboBox x:Name="txtProvince" Foreground="Black" materialDesign:HintAssist.Hint="Province" Margin="0 5" SelectedValuePath="Content">
-                    <ComboBoxItem Content="Ontario(ON)" />
-                    <ComboBoxItem Content="British Columbia(BC)" />
-                    <ComboBoxItem Content="Alberta(AB)" />
-                    <ComboBoxItem Content="Saskatchewan(SK)" />
-                    <ComboBoxItem Content="Quebec(QC)" />
-                    <ComboBoxItem Content="Nova Scotia(NS)" />
-                    <ComboBoxItem Content="New Brunswick(NB)" />
-                    <ComboBoxItem Content="Manitoba(MB)" />
-                </ComboBox>
+               
 
-                <Button x:Name="btnUpdateCustomer" Visibility="Hidden" Content="UPDATE CUSTOMER" Margin="0 10" Click="btnUpdateCustomer_Click" />
+                <Button x:Name="btnUpdateCustomer" Visibility="Hidden" Content="UPDATE CUSTOMER" Margin="0 20" Click="btnUpdateCustomer_Click" />
                 <Button Content="Next" Margin="0 0" Click="btn_To_ShippingInfo"/>
             </StackPanel>
         </Border>

@@ -68,11 +68,17 @@ namespace TMSProject.Classes.View
             txtOrderID.Text = order.orderID;
             txtOrderDate.Text = order.orderDate;
 
+            customer = new Customer();
             // Assign customerID & customer Name
             if (status == "NEW")
             {
                 tempBuffer = cusID;
                 txtName.Text = cusName;
+                cmpOrigin = origin;
+                cmpDestination = destination;
+                cmpQuantity = quantity;
+                cmpJobType = jobType;
+                cmpVanType = vanType;
             }            
 
             // Check if status is EXIST - existing customer
@@ -80,15 +86,16 @@ namespace TMSProject.Classes.View
             if (status == "EXIST")
             {
                 // Append to each one
-                List<Customer> listOfCustomer = new List<Customer>();
-                listOfCustomer = customer.GetCustomerDetailsOnly(cusName);
-                txtAddress.Text = listOfCustomer[0].address;
-                txtCity.Text = listOfCustomer[0].customerCity;
-                txtPostalCode.Text = listOfCustomer[0].zipcode;
-                txtProvince.Text = listOfCustomer[0].customerProvince;
-                txtTelPhone.Text = listOfCustomer[0].telno;
-                txtCompany.Text = listOfCustomer[0].customerCompany;
+                txtName.Text = customer.GetCustomerDetailsOnly(cusName).customerName;
+                txtAddress.Text = customer.GetCustomerDetailsOnly(cusName).address;
+                txtCity.Text = customer.GetCustomerDetailsOnly(cusName).customerCity;
+                txtPostalCode.Text = customer.GetCustomerDetailsOnly(cusName).zipcode;
+                txtProvince.Text = customer.GetCustomerDetailsOnly(cusName).customerProvince;
+                txtTelPhone.Text = customer.GetCustomerDetailsOnly(cusName).telno;
+                txtCompany.Text = customer.GetCustomerDetailsOnly(cusName).customerCompany;
+                
                 btnUpdateCustomer.Visibility = Visibility.Visible;
+                customer.customerName = txtName.Text;
                 cmpOrigin = origin;
                 cmpDestination = destination;
                 cmpQuantity = quantity;
@@ -228,8 +235,7 @@ namespace TMSProject.Classes.View
         {
             if (validationOrderAdd())
             {
-                // Get customer information
-                customer = new Customer();
+                
                 // Company
                 customer.customerCompany = txtCompany.Text;
                 // City

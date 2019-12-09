@@ -77,7 +77,7 @@ namespace TMSProject.Classes.Controller
                 try
                 {
                     const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, customerID, orderDate, jobType, quantity, vanType, originalCityID, desCityID, carrierID, orderStatus)
-	                                                VALUES (@orderID, @contractID, @orderDate, @originalCityID, @desCityID, @carrierID, @orderStatus); ";
+	                                                VALUES (@orderID, @contractID, @customerID, @orderDate, @jobType, @quantity, @vanType, @originalCityID, @desCityID, @carrierID, @orderStatus); ";
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
                     
@@ -116,9 +116,7 @@ namespace TMSProject.Classes.Controller
             string value = "";
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  SELECT ordering.originalCityID FROM ordering 
-                                                INNER JOIN city 
-                                                ON ordering.originalCityID = city.cityID AND city.cityName = @cityName; ";
+                const string sqlStatement = @"  SELECT city.cityID FROM city WHERE city.cityName = @cityName; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
                 myCommand.Parameters.AddWithValue("@cityName", cityName);
@@ -140,9 +138,7 @@ namespace TMSProject.Classes.Controller
             string value = "";
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  SELECT ordering.desCityID FROM ordering 
-                                                INNER JOIN city 
-                                                ON ordering.originalCityID = city.cityID AND city.cityName = @cityName; ";
+                const string sqlStatement = @"  SELECT city.cityID FROM city WHERE city.cityName = @cityName; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
                 myCommand.Parameters.AddWithValue("@cityName", cityName);

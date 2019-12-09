@@ -76,6 +76,20 @@ namespace TMSProject.Classes.Model
             new CarrierBizDAO().DeleteCarrier(this);
         }
 
+        /// \brief This method GetCarrierIDbyDepotCity  
+        /// \details <b>Details</b>
+        /// This method will get the carrier ID by depotCity 
+        /// \return  void
+        public string GetCarrierIDbyDepotCity(string depotCity)
+        {
+            var carrier = new CarrierBizDAO().GetCarrierIDbyDepotCity(depotCity);
+            return carrier;
+        }
+
+        /// \brief This method GetLastCarrierID  
+        /// \details <b>Details</b>
+        /// This method will get the last carrier by ID
+        /// \return  void
         public string GetLastCarrierID()
         {
             var carrier = new CarrierBizDAO().GetLastCarrierID();
@@ -110,7 +124,7 @@ namespace TMSProject.Classes.Model
         public string NewCarrierID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
-            return "CAR" + value;
+            return "CA" + value;
         }
 
         public List<Carrier> GetAvailabilty(string orderID, string carrierID)

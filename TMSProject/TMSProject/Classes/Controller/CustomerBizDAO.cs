@@ -40,11 +40,11 @@ namespace TMSProject.Classes.Controller
 		                                            telno = @CustomerTelPhone,
                                                     address = @CustomerAddress,
                                                     zipcode = @CustomerZipcode
-	                                            WHERE customerID = @CustomerID; ";
+	                                            WHERE customerName = @CustomerName; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
+                myCommand.Parameters.AddWithValue("@CustomerName", customer.customerName);
                 myCommand.Parameters.AddWithValue("@CustomerCompany", customer.customerCompany);
                 myCommand.Parameters.AddWithValue("@CustomerCity", customer.customerCity);
                 myCommand.Parameters.AddWithValue("@CustomerProvince", customer.customerProvince);

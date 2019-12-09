@@ -34,11 +34,7 @@ namespace TMSProject.Classes.View
             InitializeComponent();
             // Load the CMP Database
             LoadCMPList();
-            customer = new Customer();
-            if (customer.GetCustomerIDbyName(txtClientName.Text) != null)
-            {
-                txtEndDate.Visibility = Visibility.Hidden;
-            }
+            customer = new Customer();            
         }
 
         /// \brief This method LoadCMPList for user 
@@ -76,7 +72,18 @@ namespace TMSProject.Classes.View
                 txtOrigin.Text = selectedItemRow["Origin"].ToString();
                 txtQuantity.Text = selectedItemRow["Quantity"].ToString();
                 txtVanType.Text = selectedItemRow["Van_Type"].ToString();
-            }          
+            }
+            // Check for existing customer, hide the end date portion
+            if (customer.GetCustomerIDbyName(txtClientName.Text) != null)
+            {
+                lblEndDate.Visibility = Visibility.Hidden;
+                txtEndDate.Visibility = Visibility.Hidden;
+            }
+            else
+            {
+                lblEndDate.Visibility = Visibility.Visible;
+                txtEndDate.Visibility = Visibility.Visible;
+            }
         }
 
         /// \brief This method btn_Next_Click 

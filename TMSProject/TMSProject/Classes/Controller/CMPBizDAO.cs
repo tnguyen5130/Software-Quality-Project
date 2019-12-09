@@ -97,7 +97,7 @@ namespace TMSProject.Classes.Controller
         public string GetContractIDbyCustomerName(string customerName)
         {
             string value = "";
-            using (var myConn = new MySqlConnection(connectionString))
+            using (var myConn = new MySqlConnection(connectionStringLocal))
             {
                 const string sqlStatement = @"  SELECT contract_market_place.contractID FROM contract_market_place 
                                                 INNER JOIN customer ON contract_market_place.customerID = customer.customerID 
