@@ -29,6 +29,101 @@ namespace TMSProject.Classes.Controller
         ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
+        /// \brief This method UpdateMileage for user 
+        /// \details <b>Details</b>
+        /// This method will update mileage when finishing order
+        /// \return  void
+        public bool UpdateMileage(Mileage mileage)
+        {
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    const string sqlStatement = @"  UPDATE mileage
+	                                            SET startCityID = @startCityID,
+                                                    endCityID = @endCityID,
+		                                            distance = @distance, 
+                                                    workingTime = @workingTime
+	                                            WHERE mileageID = @mileageID; ";
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                    myCommand.Parameters.AddWithValue("@depotCity", mileage.startCityID);
+                    myCommand.Parameters.AddWithValue("@carrierName", mileage.endCityID);
+                    myCommand.Parameters.AddWithValue("@ftlAvail", mileage.distance);
+                    myCommand.Parameters.AddWithValue("@ltlAvail", mileage.workingTime);
+                    myCommand.Parameters.AddWithValue("@ftlRate", mileage.mileageID);
+
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+
+        }
+
+        /// \brief This method InsertMileage for user 
+        /// \details <b>Details</b>
+        /// This method will insert mileage for making order
+        /// \return  void
+        public bool InsertMileage(Mileage mileage)
+        {
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    const string sqlStatement = @"  INSERT INTO products (mileageID, startCityID, endCityID, distance, workingTime)
+	                                            VALUES (@mileageID, @depotCity, @endCityID, @distance, @workingTime); ";
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                    myCommand.Parameters.AddWithValue("@startCityID", mileage.startCityID);
+                    myCommand.Parameters.AddWithValue("@endCityID", mileage.endCityID);
+                    myCommand.Parameters.AddWithValue("@distance", mileage.distance);
+                    myCommand.Parameters.AddWithValue("@workingTime", mileage.workingTime);
+                    myCommand.Parameters.AddWithValue("@mileageID", mileage.mileageID);
+
+
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+
+        }
+
+        /// \brief This method DeleteCarrier for user 
+        /// \details <b>Details</b>
+        /// This method will delete an carrier
+        /// \return  void
+        public void DeleteMileage(Mileage mileage)
+        {
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  DELETE FROM mileage WHERE mileageID = @mileageID;";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myCommand.Parameters.AddWithValue("@ProductID", mileage.mileageID);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+            }
+        }
+
         /// \brief This method GetOrders for user 
         /// \details <b>Details</b>
         /// This method will get order when finishing order

@@ -18,6 +18,22 @@ namespace TMSProject.Classes.Model
         public double distance { get; set; }
         public double workingTime { get; set; }
         public string status { get; set; }
+        public string command { get; set; }
+
+        public bool Save()
+        {
+            bool flag = false;
+            if (command == "UPDATE")
+            {
+                flag = new MileageBizDAO().UpdateMileage(this);
+            }
+            else
+            {
+                flag = new MileageBizDAO().InsertMileage(this);
+            }
+
+            return flag;
+        }
 
         public List<Mileage> GetMileages()
         {

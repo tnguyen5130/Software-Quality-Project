@@ -67,7 +67,7 @@ namespace TMSProject.DBConnect
             // Query for sign in as Buyer
             string queryBuyer = "Select * from projectslinger.buyer where buyerEmployeeID=@user and buyerPassword=@pass";
             //Query for sign in as Admin
-            string queryAdmin = "Select * from projectslinger.admin where adminID=@user and adminPassword=@pass";
+            string queryAdmin = "Select * from projectslinger.admin where adminEmployeeID=@user and adminPassword=@pass";
             // open connection
             if (this.OpenConnection() == true)
             {
