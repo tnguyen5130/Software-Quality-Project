@@ -36,7 +36,15 @@ namespace TMSProject.Classes.View
 			ButtonOpenMenu.Visibility = Visibility.Visible;
 		}
 
-		private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void btn_Order_Begin(object sender, RoutedEventArgs e)
+        {
+            UserControl usc = null;
+            GridMain.Children.Clear();
+            usc = new CMPWindow();
+            GridMain.Children.Add(usc);
+        }
+
+        private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			UserControl usc = null;
 			GridMain.Children.Clear();
@@ -44,7 +52,7 @@ namespace TMSProject.Classes.View
 			switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
 			{
 				case "ItemOrder":
-					usc = new OrderAdd();
+					usc = new CMPWindow();
 					GridMain.Children.Add(usc);
 					break;
 				case "ItemExit":

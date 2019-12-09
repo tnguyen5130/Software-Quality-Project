@@ -1,4 +1,12 @@
-﻿using System;
+﻿//* FILE			: EmployeeBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : EmployeeBizDAO for the biiling infomation
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +19,18 @@ using System.Configuration;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class CarrierBizDAO
+    /// \brief This class contains the employee's information for a employee file when buyer make an order
+    /// \author : <i>Nhung Luong <i>
     public class EmployeeBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
+        /// \brief This method UpdateCarrier for user 
+        /// \details <b>Details</b>
+        /// This method will update carrier when finishing order
+        /// \return  void
         public void UpdateEmployee(Employee employee)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -41,6 +56,11 @@ namespace TMSProject.Classes.Controller
         }
 
 
+
+        /// \brief This method InsertEmployee for user 
+        /// \details <b>Details</b>
+        /// This method will update carrier when finishing order
+        /// \return  void
         public void InsertEmployee(Employee employee)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -62,6 +82,11 @@ namespace TMSProject.Classes.Controller
 
         }
 
+
+        /// \brief This method DeleteEmployee for user 
+        /// \details <b>Details</b>
+        /// This method will delete employee when finishing order
+        /// \return  void
         public void DeleteEmployee(Employee employee)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -79,6 +104,12 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+
+        /// \brief This method GetEmployees for user 
+        /// \details <b>Details</b>
+        /// This method will get employee when finishing order
+        /// \return  void
         public List<Employee> GetEmployees(string searchItem)
         {
             const string sqlStatement = @" SELECT 
@@ -129,6 +160,13 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+
+
+
+        /// \brief This method DataTableToEmployeeList for user 
+        /// \details <b>Details</b>
+        /// This method will get employee when finishing order
+        /// \return  void
         private List<Employee> DataTableToEmployeeList(DataTable table)
         {
             var employees = new List<Employee>();

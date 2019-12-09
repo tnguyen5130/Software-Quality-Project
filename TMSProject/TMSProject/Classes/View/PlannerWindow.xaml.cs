@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using TMSProject.Classes.Model;
 
 namespace TMSProject.Classes.View
 {
@@ -39,7 +40,11 @@ namespace TMSProject.Classes.View
 		private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
 		{
 			UserControl usc = null;
+            //Page page = null;
 			GridMain.Children.Clear();
+
+            Order order = new Order();
+            order.orderID = "ORD20191120001";
 
 			switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
 			{
@@ -50,14 +55,13 @@ namespace TMSProject.Classes.View
 				case "ItemInvoice":
 					usc = new InvoiceWindow();
 					GridMain.Children.Add(usc);
-					break;
-				case "ItemInfo":
-					usc = new PlannerInfo();
-					GridMain.Children.Add(usc);
-					break;
+					break;				
 				case "ItemExit":
-					this.Close();
-					break;
+                    //usc = new Test(order);
+                    usc = new UserControl1(order);
+                    GridMain.Children.Add(usc);
+                    //this.Close();
+                    break;
 				default:
 					break;
 			}

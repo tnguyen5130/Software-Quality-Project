@@ -1,4 +1,11 @@
-﻿using System;
+﻿//* FILE			: Billing.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : Billing for the biiling infomation 
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,19 +21,33 @@ namespace TMSProject.Classes.Model
         public string planID { get; set; }
         public string customerID { get; set; }
         public double totalAmount { get; set; }
-        
+        public string command { get; set; }
+
+        public double workingTime { get; set; }
+        public double distance { get; set; }
+        public int jobType { get; set; }
+        public int quantity { get; set; }
+        public int vanType { get; set; }
+        public double ftlRate { get; set; }
+        public double ltlRate { get; set; }
+        public double reeferCharge { get; set; }
+
         public Billing() { }
 
-        public void Save()
+        public bool Save()
         {
-            if (planID != "")
+            bool flag = false;
+
+            if (command == "UPDATE")
             {
-                new BillingBizDAO().UpdateBilling(this);
+                flag = new BillingBizDAO().UpdateBilling(this);
             }
-            else
+            else if (command == "INSERT")
             {
-                new BillingBizDAO().InsertBilling(this);
+                flag = new BillingBizDAO().InsertBilling(this);
             }
+
+            return flag;
         }
 
         public void Delete()
@@ -34,15 +55,22 @@ namespace TMSProject.Classes.Model
             new BillingBizDAO().DeleteBilling(this);
         }
 
-        public Billing GetById(string billingID)
+        public Billing GetById(string billingID, string orderID)
         {
-            var billings = new BillingBizDAO().GetBillings(billingID);
+            var billings = new BillingBizDAO().GetBillings(billingID, orderID);
             return billings[0];
         }
 
-        public List<Billing> GetBillings(string pattern)
+        public List<Billing> GetBillings(string planID, string orderID)
         {
-            var billingList = new BillingBizDAO().GetBillings(pattern);
+            var billingList = new BillingBizDAO().GetBillings(planID, orderID);
+            return billingList;
+        }
+
+        public List<Billing> GetBillingID(string planID, string orderID)
+        {
+            var billingList = new BillingBizDAO().GetBillingID(planID, orderID);
+
             return billingList;
         }
 

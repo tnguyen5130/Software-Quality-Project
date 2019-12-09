@@ -12,7 +12,7 @@
             <TextBlock Style="{DynamicResource MaterialDesignSubtitle1TextBlock}">Regular 16sp</TextBlock>
         </ControlTemplate>
     </UserControl.Resources>
-    <Grid x:Name="GridMain" Background="WhiteSmoke" Margin="0,0,-0.4,-747">
+    <Grid x:Name="GridMain" Background="WhiteSmoke" Margin="0,0,0,-1631">
         <ScrollViewer>
             <Grid Height="1742" Width="Auto">
                 <Grid.ColumnDefinitions>
@@ -28,17 +28,13 @@
                 <StackPanel Grid.Column="0" Margin="0,0,0.4,289.6" Grid.RowSpan="2">
                     <TextBlock Text="Billing Information" Foreground="Black" FontSize="36" FontWeight="DemiBold" Margin="0,5,-0.6,5"/>
                     <StackPanel>
+                        <StackPanel Orientation="Horizontal"  Margin="0 20">
+                            <Label Content="Customer Name" Foreground="Black" FontSize="15"/>
+                            <TextBlock x:Name="NameTBlock" Foreground="Black" Width="Auto" VerticalAlignment="Center"/>
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal" Margin="0 20">
                             <Label Content="Company" FontSize="15" Foreground="Black"/>
                             <TextBlock x:Name="CompanyTBlock" Foreground="Black" Width="Auto" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"  Margin="0 20">
-                            <Label Content="First name" Foreground="Black" FontSize="15"/>
-                            <TextBlock x:Name="FNameTBlock" Foreground="Black" Width="Auto" VerticalAlignment="Center"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label Content="Last Name" Foreground="Black" FontSize="15"  Margin="0 20"/>
-                            <TextBlock x:Name="LNameTBlock" Foreground="Black" Width="Auto" VerticalAlignment="Center"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label Content="Phone Number" Foreground="Black" FontSize="15"  Margin="0 20"/>
@@ -61,6 +57,7 @@
                             <TextBlock x:Name="PostalCodeTBlock" Foreground="Black" Width="Auto" VerticalAlignment="Center"/>
                         </StackPanel>
                     </StackPanel>
+                    <TextBlock Text="Scheduling Information" FontSize="36" FontWeight="DemiBold" Margin="230,5,-727,5"/>
                 </StackPanel>
 
 
@@ -109,8 +106,7 @@
                 </StackPanel>
 
 
-                <StackPanel Grid.Row="1" Grid.ColumnSpan="2" Margin="0,0.4,-0.2,15.6">
-                    <TextBlock Text="Scheduling Information" FontSize="36" FontWeight="DemiBold" Margin="0,5,-0.6,5"/>
+                <StackPanel Grid.ColumnSpan="2" Margin="0,619,0,16" Grid.RowSpan="2">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Carrier" FontSize="15"  Margin="0 10"/>
                         <TextBlock x:Name="CarrierSTBlock" Width="Auto" VerticalAlignment="Center"/>
@@ -141,7 +137,7 @@
                             Margin="0 8 0 0"
                             ItemsSource="{Binding Items3}"
                             CanUserSortColumns="True"
-                            CanUserAddRows="False" />
+                            CanUserAddRows="False" Height="203" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Estimate Time" FontSize="15"  Margin="0 10"/>
@@ -195,7 +191,7 @@
                         </Button>
                     </materialDesign:Badged>
                 </StackPanel>
-                
+
             </Grid>
         </ScrollViewer>
     </Grid>

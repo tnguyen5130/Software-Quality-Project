@@ -1,72 +1,181 @@
-﻿using System;
+﻿//* FILE			: OrderBizDAO.cs
+//* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
+//* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
+//* FIRST VERSON	: Nov 11, 2019
+//* DESCRIPTION		: The file defines a class  : OrderBizDAO for the biiling infomation
+
+
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMSProject.Classes.Model;
 using TMSProject.DBConnect;
+using TMSProject.Classes.View;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using System.Windows.Controls;
 
 namespace TMSProject.Classes.Controller
 {
+    /// \class OrderBizDAO
+    /// \brief This class contains the order's information for a Order file when buyer make an order
+    /// \author : <i>Nhung Luong <i>
     public class OrderBizDAO
     {
-        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
-        public void UpdateOrder(Order order)
+        /// \brief This method UpdateOrder for user 
+        /// \details <b>Details</b>
+        /// This method will update order when finishing order
+        /// \return  void
+        public bool UpdateOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  UPDATE products
-	                                            SET CategoryId = @CategoryId,
-                                                    UnitPrice = @UnitPrice,
-		                                            UnitsInStock = @UnitsInStock
-	                                            WHERE ProductID = @ProductID; ";
+                try
+                {   
+                    const string sqlStatement = @"  UPDATE ordering
+	                                            SET carrierID = @carrierID
+	                                            WHERE orderID = @orderID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", order.orderID);
-                myCommand.Parameters.AddWithValue("@CategoryId", order.contractID);
-                myCommand.Parameters.AddWithValue("@UnitPrice", order.orderDate);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.origincalCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.desCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.carrierID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.orderStatus);
+                myCommand.Parameters.AddWithValue("@contractID", order.contractID);
+                myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
+                myCommand.Parameters.AddWithValue("@originalCityID", order.originalCityID);
+                myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
+                myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
+                myCommand.Parameters.AddWithValue("@orderID", order.orderID);
 
                 myConn.Open();
 
                 myCommand.ExecuteNonQuery();
-            }
-
-        }
-
-
-        public void InsertOrder(Order order)
-        {
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
-	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                myCommand.Parameters.AddWithValue("@ProductName", order.orderID);
-                myCommand.Parameters.AddWithValue("@SupplierID", order.contractID);
-                myCommand.Parameters.AddWithValue("@CategoryID", order.orderDate);
-                myCommand.Parameters.AddWithValue("@QuantityPerUnit", order.origincalCityID);
-                myCommand.Parameters.AddWithValue("@UnitPrice", order.desCityID);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", order.orderStatus);
                 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
+                return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
             }
 
         }
 
+        /// \brief This method InsertOrder for user 
+        /// \details <b>Details</b>
+        /// This method will insert order when finishing order
+        /// \return  void
+        public bool InsertOrder(Order order)
+        {
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                try
+                {
+                    const string sqlStatement = @"  INSERT INTO ordering (orderID, contractID, customerID, orderDate, jobType, quantity, vanType, originalCityID, desCityID, carrierID, orderStatus)
+	                                                VALUES (@orderID, @contractID, @customerID, @orderDate, @jobType, @quantity, @vanType, @originalCityID, @desCityID, @carrierID, @orderStatus); ";
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    
+                    myCommand.Parameters.AddWithValue("@orderID", order.orderID);
+                    myCommand.Parameters.AddWithValue("@contractID", order.contractID);
+                    myCommand.Parameters.AddWithValue("@customerID", order.customerID);
+                    myCommand.Parameters.AddWithValue("@orderDate", order.orderDate);
+                    myCommand.Parameters.AddWithValue("@jobType", order.jobType);
+                    myCommand.Parameters.AddWithValue("@quantity", order.quantity);
+                    myCommand.Parameters.AddWithValue("@vanType", order.vanType);
+                    myCommand.Parameters.AddWithValue("@originalCityID", order.originalCityID);
+                    myCommand.Parameters.AddWithValue("@desCityID", order.desCityID);
+                    myCommand.Parameters.AddWithValue("@carrierID", order.carrierID);
+                    myCommand.Parameters.AddWithValue("@orderStatus", order.orderStatus);
+                
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    return true;
+                }
+                catch(Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return false;
+                }
+            }
+
+        }
+
+        /// \brief This method GetOriginCityIDbyName for user 
+        /// \details <b>Details</b>
+        /// This method will get original city ID 
+        /// \return  string
+        public string GetOriginCityIDbyName(string cityName)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT city.cityID FROM city WHERE city.cityName = @cityName; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@cityName", cityName);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
+        /// \brief This method GetDestinateCityIDbyName for user 
+        /// \details <b>Details</b>
+        /// This method will get the destination city ID
+        /// \return  void
+        public string GetDestinateCityIDbyName(string cityName)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT city.cityID FROM city WHERE city.cityName = @cityName; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@cityName", cityName);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
+        /// \brief This method GetLastOrderID for user 
+        /// \details <b>Details</b>
+        /// This method will get the last order id to check whether DB contains it
+        /// \return string
+        public string GetLastOrderID(Order order)
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT orderID FROM ordering ORDER BY orderID DESC LIMIT 1; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
+        /// \brief This method DeleteOrder for user 
+        /// \details <b>Details</b>
+        /// This method will delete order when finishing order
+        /// \return  void
         public void DeleteOrder(Order order)
         {
             using (var myConn = new MySqlConnection(connectionString))
@@ -84,39 +193,48 @@ namespace TMSProject.Classes.Controller
             }
         }
 
-        public List<Order> GetOrders(string searchItem)
+        /// \brief This method LoadOrderList for user 
+        /// \details <b>Details</b>
+        /// This method will get order list that has orderID and orderDate into DataGrid table
+        /// \return  void
+        public void LoadOrderList(DataGrid grid)
         {
-            const string sqlStatement = @" SELECT 
-                                                ProductId, 
-                                                ProductName, 
-                                                QuantityPerUnit, 
-                                                UnitPrice, 
-                                                UnitsInStock, 
-                                                QuantityPerUnit,
-                                                UnitsOnOrder, 
-                                                ReorderLevel,
-                                                categories.CategoryId,
-                                                CategoryName,
-                                                Description, 
-                                                suppliers.SupplierId,
-                                                CompanyName
-                                            FROM products
-		                                        INNER JOIN categories ON products.CategoryId = categories.CategoryID 
-                                                INNER JOIN suppliers ON products.SupplierId = suppliers.SupplierId
-                                            WHERE Discontinued <> 1 
-                                                AND ( ProductId = @SearchItem 
-                                                        OR ProductName = @SearchItem
-		                                                OR CategoryName = @SearchItem 
-                                                        OR CompanyName = @SearchItem
-		                                                OR @SearchItem = '')
-                                            ORDER BY ProductName; ";
-
+            const string sqlStatement = @" SELECT orderID, orderDate FROM ordering;";
 
             using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                DataTable dataTable = new DataTable("ordering");
+
+                myAdapter.Fill(dataTable);
+
+                grid.ItemsSource = dataTable.DefaultView;                
+            }
+        }
+
+        /// \brief This method GetOrders for user 
+        /// \details <b>Details</b>
+        /// This method will get order when finishing order
+        /// \return  void
+        public List<Order> GetOrders(string searchItem)
+        {
+            const string sqlStatement = @" SELECT orderID, orderDate                                                
+                                            FROM ordering
+                                            WHERE orderID = @OrderID, 
+                                                  orderDate = @OrderDate ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@OrderID", searchItem);
 
                 //For offline connection we weill use  MySqlDataAdapter class.  
                 var myAdapter = new MySqlDataAdapter
@@ -134,6 +252,148 @@ namespace TMSProject.Classes.Controller
             }
         }
 
+        public List<Order> GetOrderWithID(string orderID)
+        {
+
+            const string sqlStatement = @" select u1.cityName as startCityName, u2.cityName as endCityName from ordering                                              
+                                            INNER JOIN city u1 ON ordering.originalCityID = u1.cityID
+                                            INNER JOIN city u2 ON ordering.desCityID = u2.cityID
+                                            where orderID = @orderID; ";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var orders = DataTableToCityNamesList(dataTable);
+
+                return orders;
+            }
+        }
+
+        private List<Order> DataTableToCityNamesList(DataTable table)
+        {
+            var orders = new List<Order>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                orders.Add(new Order
+                {   
+                    startCityName = row["startCityName"].ToString(),
+                    endCityName = row["endCityName"].ToString()
+                    
+                });
+            }
+
+            return orders;
+        }
+
+        public List<Order> GetOrderDetailWithID(string orderID)
+        {
+
+            const string sqlStatement = @" SELECT orderID, contractID, customerName, orderDate, jobType, quantity, vanType, carrierID,                                              
+                                            originalCityID, u1.cityName as startCityName, desCityID, u2.cityName as endCityName from ordering
+                                            INNER JOIN customer on ordering.customerID = customer.customerID
+                                            INNER JOIN city u1 ON ordering.originalCityID = u1.cityID
+                                            INNER JOIN city u2 ON ordering.desCityID = u2.cityID
+                                            WHERE orderID = @orderID ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@orderID", orderID);
+                
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var orders = DataTableToOrderDetailList(dataTable);
+
+                return orders;
+            }
+        }
+
+        public List<Order> GetOrderDetail(string startCity, string endCity)
+        {
+
+            const string sqlStatement = @" SELECT orderID, contractID, customerName, orderDate, jobType, quantity, vanType,                                              
+                                            originalCityID, u1.cityName as startCityName, desCityID, u2.cityName as endCityName, 
+                                            carrierID from ordering
+                                            INNER JOIN customer on ordering.customerID = customer.customerID
+                                            INNER JOIN city u1 ON ordering.originalCityID = u1.cityID
+                                            INNER JOIN city u2 ON ordering.desCityID = u2.cityID
+                                            WHERE u1.cityName = @startCityName or u2.cityName = @endCityName ";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                myCommand.Parameters.AddWithValue("@startCityName", startCity);
+                myCommand.Parameters.AddWithValue("@endCityName", endCity);
+
+                //For offline connection we weill use  MySqlDataAdapter class.  
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                var dataTable = new DataTable();
+
+                myAdapter.Fill(dataTable);
+
+                var orders = DataTableToOrderDetailList(dataTable);
+
+                return orders;
+            }
+        }
+
+        private List<Order> DataTableToOrderDetailList(DataTable table)
+        {
+            var orders = new List<Order>();
+
+            foreach (DataRow row in table.Rows)
+            {
+                orders.Add(new Order
+                {  
+                    orderID = row["orderID"].ToString(),
+                    contractID = row["contractID"].ToString(),
+                    originalCityID = row["originalCityID"].ToString(),
+                    startCityName = row["startCityName"].ToString(),
+                    desCityID = row["desCityID"].ToString(),
+                    customerName = row["customerName"].ToString(),
+                    endCityName = row["endCityName"].ToString(),
+                    orderDate = row["orderDate"].ToString(),
+                    jobType = Convert.ToInt32(row["jobType"]),
+                    quantity = Convert.ToInt32(row["quantity"]),
+                    vanType = Convert.ToInt32((row["vanType"])),
+                    carrierID = row["carrierID"].ToString()
+                });
+            }
+
+            return orders;
+        }
+
+        /// \brief This method DataTableToOrderList for user 
+        /// \details <b>Details</b>
+        /// This method will store order when finishing order
+        /// \return  void
         private List<Order> DataTableToOrderList(DataTable table)
         {
             var orders = new List<Order>();
@@ -143,17 +403,12 @@ namespace TMSProject.Classes.Controller
                 orders.Add(new Order
                 {
                     orderID = row["orderID"].ToString(),
-                    contractID = row["contractID"].ToString(),
                     orderDate = row["orderDate"].ToString(),
-                    origincalCityID = row["originalCityID"].ToString(),
-                    desCityID = row["desCityID"].ToString(),
-                    carrierID = row["carrierID"].ToString(),
-                    orderStatus = row["orderStatus"].ToString()
                 });
             }
 
             return orders;
-        }
+        }        
 
-    }
-}
+    } // End of class
+} // End of namespace

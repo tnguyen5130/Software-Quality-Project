@@ -1,0 +1,81 @@
+﻿<UserControl x:Class="TMSProject.Classes.View.OrderDetails"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:TMSProject.Classes.View"
+             mc:Ignorable="d"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             d:DesignHeight="540" d:DesignWidth="1050">
+    <UserControl.Resources>
+        <ControlTemplate x:Key="PlannerTemplate">
+            <TextBlock Style="{DynamicResource MaterialDesignSubtitle1TextBlock}">Regular 16sp</TextBlock>
+        </ControlTemplate>
+    </UserControl.Resources>
+    <Grid x:Name="UpdateCarrier" Background="WhiteSmoke" Margin="0,10,0,-303">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="499*"/>
+            <ColumnDefinition Width="6*"/>
+        </Grid.ColumnDefinitions>
+
+
+        <TextBlock Text="Order Details" VerticalAlignment="Bottom" FontSize="35" FontWeight="Bold" Foreground="ForestGreen" Height="52" Margin="0,0,0,764" Grid.ColumnSpan="2"/>
+
+        <Label Content="Customer name:" Foreground="Black" FontSize="15" Margin="10,67,396.25,613"/>
+
+        <Label Content="Order ID:" Foreground="Black" FontSize="15"  Margin="10,121,440.25,559"/>
+
+        <Label Content="Order Date:" Foreground="Black" FontSize="15"  Margin="10,171,426.25,509" RenderTransformOrigin="0.506,0.344"/>
+
+
+        <Label Content="Start City:" Foreground="Black" FontSize="15"  Margin="10,229,440.25,451"/>
+
+
+        <Label Content="End City:" FontSize="15" Foreground="Black" Margin="482,220,10,460" Grid.ColumnSpan="2"/>
+
+
+        <Label Content="Contract ID" FontSize="15" Foreground="Black" Margin="506,67,462.25,613"/>
+
+        <Button Content="Load Carrier " Height="26" Margin="434,339,396.25,0"
+                        x:Name="Load_Carrier_Btn" VerticalAlignment="Top" Click="Load_Carrier_Btn_Click" RenderTransformOrigin="0.325,-4.318" Background="ForestGreen"/>
+
+
+        <DataGrid AutoGenerateColumns="True" HorizontalAlignment="Left" Height="152" Margin="53,387,0,0" VerticalAlignment="Top" Width="932" Background="LightGreen" Name="resultDataGrid" IsReadOnly="False" >
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="MouseDoubleClick" Handler="resultDataGrid_MouseDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
+        </DataGrid>
+
+        <Button Content="Confirm Carrier" HorizontalAlignment="Left" Margin="434,768,0,0" VerticalAlignment="Top" Width="138"
+                x:Name="Confirm_Carrier_Btn" Click="Confirm_Carrier_Btn_Click" Background="ForestGreen"/>
+        <TextBox Name="CustomerName" HorizontalAlignment="Left" Height="32" Margin="162,62,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="635" />
+        <TextBox Name="Order" HorizontalAlignment="Left" Height="32" Margin="162,118,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="635" />
+        <TextBox Name="OrderDate" HorizontalAlignment="Left" Height="32" Margin="162,166,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="635" />
+        <TextBox Name="StartCity" HorizontalAlignment="Left" Height="32" Margin="162,226,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="272"/>
+
+        <TextBox Name="EndCity" HorizontalAlignment="Left" Height="32" Margin="566,221,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="272" />
+        <TextBlock FontSize="15" HorizontalAlignment="Left" Margin="27,298,0,0" TextWrapping="Wrap" Text="VanType:" VerticalAlignment="Top" RenderTransformOrigin="-2.98,0.906"/>
+        <TextBlock FontSize="15" HorizontalAlignment="Left" Margin="347,298,0,0" TextWrapping="Wrap" Text="Job Type:" VerticalAlignment="Top"/>
+        <TextBlock FontSize="15" HorizontalAlignment="Left" Margin="642,298,0,0" TextWrapping="Wrap" Text="Quality:" VerticalAlignment="Top"/>
+
+        <TextBox Name="JobType" FontSize="15" HorizontalAlignment="Left" Height="25" Margin="434,294,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="188"/>
+        <TextBox Name="Quality"  FontSize="15" HorizontalAlignment="Left" Height="25" Margin="732,298,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="188"/>
+        <TextBox Name="VanType" FontSize="15" HorizontalAlignment="Left" Height="25" Margin="105,293,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="188"/>
+        
+        <TextBlock Text="Carrier Infomation" VerticalAlignment="Bottom" FontSize="25" FontWeight="Bold" Foreground="ForestGreen" Height="52" Margin="10,0,-10,216" Grid.ColumnSpan="2"/>
+
+        <TextBlock FontSize="15" HorizontalAlignment="Left" Margin="53,617,0,0" TextWrapping="Wrap" Text="Company Name:" VerticalAlignment="Top"/>
+        <TextBlock FontSize="15" HorizontalAlignment="Left" Margin="53,682,0,0" TextWrapping="Wrap" Text="Avalability:" VerticalAlignment="Top"/>
+        <TextBlock FontSize="15" HorizontalAlignment="Left" Margin="458,617,0,0" TextWrapping="Wrap" Text="Rate:" VerticalAlignment="Top"/>
+        <TextBlock FontSize="15" HorizontalAlignment="Left" Margin="458,685,0,0" TextWrapping="Wrap" Text="Reefer Charger:" VerticalAlignment="Top"/>
+
+        <TextBox Name="Rate" FontSize="15" HorizontalAlignment="Left" Height="23" Margin="622,617,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="CompanyName" FontSize="15" HorizontalAlignment="Left" Height="23" Margin="173,614,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="Availability" FontSize="15" HorizontalAlignment="Left" Height="23" Margin="173,681,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+        <TextBox Name="RefeerChanger" FontSize="15" HorizontalAlignment="Left" Height="23" Margin="622,679,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="120"/>
+
+    </Grid>
+</UserControl>

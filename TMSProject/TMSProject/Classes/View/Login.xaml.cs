@@ -91,6 +91,9 @@ namespace TMSProject.Classes.View
 			}
 		} // end Login_Click
 
-
-	}
+        private void btn_Exit(object sender, RoutedEventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+    }
 }
