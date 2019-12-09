@@ -15,56 +15,68 @@ using TMSProject.Classes.Model;
 
 namespace TMSProject.Classes.View
 {
-	/// <summary>
-	/// Interaction logic for PlannerWindow.xaml
-	/// </summary>
-	public partial class PlannerWindow : Window
-	{
-		public PlannerWindow()
-		{
-			InitializeComponent();
-		}
+    /// <summary>
+    /// Interaction logic for PlannerWindow.xaml
+    /// </summary>
+    public partial class PlannerWindow : Window
+    {
+        public PlannerWindow()
+        {
+            InitializeComponent();
+        }
 
-		private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
-		{
-			ButtonCloseMenu.Visibility = Visibility.Visible;
-			ButtonOpenMenu.Visibility = Visibility.Collapsed;
-		}
+        private void ButtonOpenMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu.Visibility = Visibility.Visible;
+            ButtonOpenMenu.Visibility = Visibility.Collapsed;
+        }
 
-		private void ButtonCloseMenu_Click(object sender, RoutedEventArgs e)
-		{
-			ButtonCloseMenu.Visibility = Visibility.Collapsed;
-			ButtonOpenMenu.Visibility = Visibility.Visible;
-		}
+        private void ButtonCloseMenu_Click(object sender, RoutedEventArgs e)
+        {
+            ButtonCloseMenu.Visibility = Visibility.Collapsed;
+            ButtonOpenMenu.Visibility = Visibility.Visible;
+        }
 
-		private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
-		{
-			UserControl usc = null;
+        private void ListViewMenu_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UserControl usc = null;
             //Page page = null;
-			GridMain.Children.Clear();
+            GridMain.Children.Clear();
 
             Order order = new Order();
             order.orderID = "ORD20191120001";
 
-			switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
-			{
-				case "ItemOrder":
-					usc = new PlannerHome();
-					GridMain.Children.Add(usc);
-					break;
-				case "ItemInvoice":
-					usc = new InvoiceWindow();
-					GridMain.Children.Add(usc);
-					break;				
-				case "ItemExit":
-                    //usc = new Test(order);
-                    usc = new UserControl1(order);
+            switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
+            {
+                case "ItemOrder":
+                    usc = new PlannerHome();
                     GridMain.Children.Add(usc);
-                    //this.Close();
                     break;
-				default:
-					break;
-			}
-		}
-	}
+                case "ItemInvoice":
+                    usc = new InvoiceWindow();
+                    GridMain.Children.Add(usc);
+                    break;
+                case "OrderSummary":
+                    usc = new OrderSummary();
+                    GridMain.Children.Add(usc);
+                    break;
+                case "InvoiceSummary":
+                    usc = new InvoiceSummary();
+                    GridMain.Children.Add(usc);
+                    break;
+                case "TripTracker":
+                    usc = new TripTracker();
+                    GridMain.Children.Add(usc);
+                    break;
+                case "ItemExit":
+                    //usc = new Test(order);
+                    //usc = new UserControl1(order);
+                    //GridMain.Children.Add(usc);
+                    this.Close();
+                    break;
+                default:
+                    break;
+            }
+        }
+    }
 }

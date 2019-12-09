@@ -129,6 +129,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Classes\View\InvoiceSummary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Classes\View\InvoiceWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -144,6 +148,10 @@
     <Page Include="Classes\View\OrderDetail.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Classes\View\OrderSummary.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Classes\View\PlannerHome.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -220,6 +228,9 @@
     <Compile Include="Classes\View\GeneralConfiguration.xaml.cs">
       <DependentUpon>GeneralConfiguration.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\View\InvoiceSummary.xaml.cs">
+      <DependentUpon>InvoiceSummary.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\View\InvoiceWindow.xaml.cs">
       <DependentUpon>InvoiceWindow.xaml</DependentUpon>
     </Compile>
@@ -231,6 +242,9 @@
     </Compile>
     <Compile Include="Classes\View\OrderDetail.xaml.cs">
       <DependentUpon>OrderDetail.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\OrderSummary.xaml.cs">
+      <DependentUpon>OrderSummary.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\View\PlannerHome.xaml.cs">
       <DependentUpon>PlannerHome.xaml</DependentUpon>
@@ -250,6 +264,9 @@
     <Compile Include="Classes\View\TMSAlter.xaml.cs">
       <DependentUpon>TMSAlter.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\View\TripTracker.xaml.cs">
+      <DependentUpon>TripTracker.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\View\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
@@ -266,6 +283,10 @@
     <Page Include="Classes\View\TMSAlter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Classes\View\TripTracker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Classes\View\UserControl1.xaml">
       <SubType>Designer</SubType>
