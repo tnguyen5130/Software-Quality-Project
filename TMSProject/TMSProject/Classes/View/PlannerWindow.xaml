@@ -55,7 +55,7 @@
         </Grid>
 
 
-        <Grid x:Name="GridMenu" Width="182" HorizontalAlignment="Left" Background="#388e3c">
+        <Grid x:Name="GridMenu" Width="154" HorizontalAlignment="Left" Background="#388e3c">
             <Grid.Effect>
                 <DropShadowEffect BlurRadius="2" ShadowDepth="1" Color="#FFAEAEAE"/>
             </Grid.Effect>
@@ -92,23 +92,6 @@
                             <TextBlock Text="Invoice" VerticalAlignment="Center" Margin="20 10"/>
                         </StackPanel>
                     </ListViewItem>
-
-                    <ListViewItem x:Name="InvoiceSummary" Height="60">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Invoice" Height="25" Width="25" Margin="10"/>
-                            <TextBlock Text="Invoice Summary" VerticalAlignment="Center" Margin="20 10"/>
-                        </StackPanel>
-                    </ListViewItem>
-
-                    <ListViewItem x:Name="OrderSummary" Height="60">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Invoice" Height="25" Width="25" Margin="10"/>
-                            <TextBlock Text="Order Summary" VerticalAlignment="Center" Margin="20 10"/>
-                        </StackPanel>
-                    </ListViewItem>
-
-
-
                     <ListViewItem x:Name="ItemExit" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ExitToApp" Height="25" Width="25" Margin="10"/>
