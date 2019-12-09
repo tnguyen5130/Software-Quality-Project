@@ -50,7 +50,7 @@ namespace TMSProject.Classes.View
                     GridMain.Children.Add(usc);
                     break;
                 case "Route":
-                    usc = new LogFileWindow();
+                    usc = new ViewLogFile();
                     GridMain.Children.Add(usc);
                     break;
                 case "Backup":

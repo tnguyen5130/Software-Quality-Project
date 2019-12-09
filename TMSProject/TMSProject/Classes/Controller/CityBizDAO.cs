@@ -94,7 +94,6 @@ namespace TMSProject.Classes.Controller
 
         }
 
-
         /// \brief This method DeleteCity for user 
         /// \details <b>Details</b>
         /// This method will delete city for selecting start and end city

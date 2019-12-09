@@ -116,7 +116,7 @@ namespace TMSProject.Classes.Controller
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", mileage.mileageID);
+                myCommand.Parameters.AddWithValue("@mileageID", mileage.mileageID);
 
                 myConn.Open();
 
@@ -225,5 +225,27 @@ namespace TMSProject.Classes.Controller
 
             return mileages;
         }
+
+        /// \brief This method GetLastMileageID for user 
+        /// \details <b>Details</b>
+        /// This method will get mileage last ID database 
+        /// \return  void
+        public string GetLastMileageID()
+        {
+            string value = "";
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+                const string sqlStatement = @"  SELECT mileageID FROM mileage ORDER BY mileageID DESC LIMIT 1; ";
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                myConn.Open();
+
+                myCommand.ExecuteNonQuery();
+                value = (string)myCommand.ExecuteScalar();
+            }
+            return value;
+        }
+
     }
 }

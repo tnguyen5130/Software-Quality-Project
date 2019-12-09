@@ -99,5 +99,11 @@ namespace TMSProject.Classes.Model
             var cityList = new CityBizDAO().GetCityName(pattern);
             return cityList;
         }
+
+        public List<City> GetCities(string cityID)
+        {
+            var cityList = new CityBizDAO().GetCities(cityID);
+            return cityList;
+        }
     }
 }

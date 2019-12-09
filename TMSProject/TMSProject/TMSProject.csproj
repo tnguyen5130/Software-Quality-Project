@@ -102,6 +102,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Classes\View\AdminWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Classes\View\BackUpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Classes\View\BillingAndPlanning.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -187,6 +195,12 @@
     <Compile Include="Classes\Controller\OrderBizDAO.cs" />
     <Compile Include="Classes\Controller\PlanInfoBizDAO.cs" />
     <Compile Include="Classes\Controller\TripBizDAO.cs" />
+    <Compile Include="Classes\View\AdminWindow.xaml.cs">
+      <DependentUpon>AdminWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\BackUpWindow.xaml.cs">
+      <DependentUpon>BackUpWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\View\BillingAndPlanning.xaml.cs">
       <DependentUpon>BillingAndPlanning.xaml</DependentUpon>
     </Compile>
@@ -223,8 +237,14 @@
     <Compile Include="Classes\View\Test.xaml.cs">
       <DependentUpon>Test.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\View\TMSAlter.xaml.cs">
+      <DependentUpon>TMSAlter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Classes\View\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\ViewLogFile.xaml.cs">
+      <DependentUpon>ViewLogFile.xaml</DependentUpon>
     </Compile>
     <Compile Include="DBConnect\CMPConfigs.cs" />
     <Compile Include="DBConnect\Configs.cs" />
@@ -233,7 +253,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Classes\View\TMSAlter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Classes\View\UserControl1.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Classes\View\ViewLogFile.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

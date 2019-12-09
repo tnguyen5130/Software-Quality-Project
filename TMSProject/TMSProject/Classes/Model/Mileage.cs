@@ -35,6 +35,15 @@ namespace TMSProject.Classes.Model
             return flag;
         }
 
+        /// \brief This method Delete carrier 
+        /// \details <b>Details</b>
+        /// This method will Delete carrier
+        /// \return  void
+        public void Delete()
+        {
+            new MileageBizDAO().DeleteMileage(this);
+        }
+
         public List<Mileage> GetMileages()
         {
             var mileageList = new MileageBizDAO().GetMileages();
@@ -45,6 +54,26 @@ namespace TMSProject.Classes.Model
         {
             var mileageList = new MileageBizDAO().GetCitiesMileages(startCityName, endCityName);
             return mileageList;
+        }
+
+        /// \brief This method NewMileageID
+        /// \details <b>Details</b>
+        /// This method will generate mileage ID
+        /// \return  string
+        public string NewMileageID(int seq)
+        {
+            string value = String.Format("{0:D3}", seq);
+            return "MILE" + value;
+        }
+
+        /// \brief This method GetLastCarrierID  
+        /// \details <b>Details</b>
+        /// This method will get the last carrier by ID
+        /// \return  void
+        public string GetLastMileageID()
+        {
+            var mileage = new MileageBizDAO().GetLastMileageID();
+            return mileage;
         }
 
         /// \brief This method Admin 

@@ -120,12 +120,11 @@ namespace TMSProject.Classes.Controller
         {
             using (var myConn = new MySqlConnection(connectionString))
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
-												DELETE FROM products WHERE ProductID = @ProductID; ";
+                const string sqlStatement = @"  DELETE FROM carrier WHERE carrierID = @carrierID; ";
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", carrier.carrierID);
+                myCommand.Parameters.AddWithValue("@carrierID", carrier.carrierID);
 
                 myConn.Open();
 

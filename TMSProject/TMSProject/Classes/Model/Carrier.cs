@@ -124,7 +124,7 @@ namespace TMSProject.Classes.Model
         public string NewCarrierID(int seq)
         {
             string value = String.Format("{0:D3}", seq);
-            return "CA" + value;
+            return "CA" + DateTime.Now.ToString("yyyyMMdd") + value;
         }
 
         public List<Carrier> GetAvailabilty(string orderID, string carrierID)
