@@ -18,11 +18,16 @@ namespace TMSProject.Classes.View
     /// <summary>
     /// Interaction logic for TripTracker.xaml
     /// </summary>
-    public partial class TripTracker : Page
+    public partial class TripTracker : UserControl
     {
         public TripTracker()
         {
-            InitializeComponent();
+            
+        }
+
+        private void Load_Trip_Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

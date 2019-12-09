@@ -5,20 +5,27 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TMSProject.Classes.View"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800">
+      d:DesignHeight="540" d:DesignWidth="1010">
 
 
     <Grid Background="White">
-        <TextBlock HorizontalAlignment="Left" Margin="45,99,0,0" TextWrapping="Wrap" Text="Start Date:" VerticalAlignment="Top" RenderTransformOrigin="0.193,0.439" FontSize="20"/>
-        <TextBlock HorizontalAlignment="Left" Margin="413,99,0,0" TextWrapping="Wrap" Text="End Date:" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.5,-0.105"/>
-        <DatePicker Margin="155,101,425,324" Name="Start_Order_Date" RenderTransformOrigin="0.606,-0.473"></DatePicker>
-        <DatePicker Margin="522,101,53,324" Name="End_Order_Date"></DatePicker>
+        <TextBlock Foreground="Black" HorizontalAlignment="Left" Margin="45,124,0,0" TextWrapping="Wrap" Text="Start Date:" VerticalAlignment="Top" RenderTransformOrigin="0.193,0.439" FontSize="20" />
+        <TextBlock HorizontalAlignment="Left" Margin="501,114,0,0" TextWrapping="Wrap" Text="End Date:" VerticalAlignment="Top" FontSize="20" RenderTransformOrigin="0.5,-0.105" Foreground="Black"/>
+        <DatePicker Margin="155,124,559,391" Name="Start_Order_Date" RenderTransformOrigin="0.606,-0.473"></DatePicker>
+        <DatePicker Margin="632,114,78,401" Name="End_Order_Date"></DatePicker>
 
 
-        <DataGrid Margin="45,212,28,30" Name="Invoice_Summary"></DataGrid>
-        <Button Content="Load Invoice" Name="Load_Invoice_Button" Click="Load_Invoice_Button_Click"  HorizontalAlignment="Left" Margin="340,155,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.49,0.152" Height="39"/>
-        <TextBlock HorizontalAlignment="Left" Margin="45,67,0,0" TextWrapping="Wrap" Text="Carrier Name:" VerticalAlignment="Top" FontSize="20"/>
-        <ComboBox  Name="AllCarrier" HorizontalAlignment="Left" Margin="178,67,0,0" VerticalAlignment="Top" Width="273" Height="27"/>
+        <DataGrid Margin="45,269,28,30" Name="Invoice_Summary" Background="LightGreen"></DataGrid>
+        <Button Content="Load Invoice" Name="Load_Invoice_Button" Click="Load_Invoice_Button_Click"  HorizontalAlignment="Left" Margin="445,189,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.49,0.152" Height="39"/>
+        <TextBlock  Foreground="Black" HorizontalAlignment="Left" Margin="45,67,0,0" TextWrapping="Wrap" Text="Carrier Name:" VerticalAlignment="Top" FontSize="20" />
+        <ComboBox  Name="AllCarrier" HorizontalAlignment="Left" Margin="178,67,0,0" VerticalAlignment="Top" Width="273" Height="27">
+            <ComboBoxItem Content="All" />
+            <ComboBoxItem Content="Planet Express" />
+            <ComboBoxItem Content="Schooner's" />
+            <ComboBoxItem Content="Tillman Transport" />
+            <ComboBoxItem Content="We Haul" />
+           
+        </ComboBox>
         <TextBlock HorizontalAlignment="Left" Margin="45,10,0,0" TextWrapping="Wrap" Text="Invoice Summary" VerticalAlignment="Top" FontSize="30" FontWeight="DemiBold" Foreground="Red" Width="248"/>
 
 
