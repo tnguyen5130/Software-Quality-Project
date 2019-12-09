@@ -73,15 +73,10 @@ namespace TMSProject.Classes.View
                 sw.WriteLine("LIST: ");
                 for (int i = 0; i < routeCount; i++)
                 {
-                    sw.WriteLine("Trip ID: " + trips[i].tripID + "|" + "Start City: " + trips[i].startCityName + "|" + "End City: "
-                                  + trips[i].endCityName + "|" + "Distance: " + trips[i].distance + "|" + "Working Time: " + trips[i].workingTime);
+                    sw.WriteLine("Trip ID: " + selectedTrips[i].tripID + "|" + "Start City: " + selectedTrips[i].startCityName + "|" + "End City: "
+                                  + selectedTrips[i].endCityName + "|" + "Distance: " + selectedTrips[i].distance + "|" + "Working Time: " + selectedTrips[i].workingTime);
                 }
-                sw.WriteLine("********************");
-                for (int i = 0; i < routeCount; i++)
-                {
-                    sw.WriteLine("Trip ID: " + trips[i].tripID + "|" + "Start City: " + trips[i].startCityName + "|" + "End City: "
-                                  + trips[i].endCityName + "|" + "Distance: " + trips[i].distance + "|" + "Working Time: " + trips[i].workingTime);
-                }
+                sw.WriteLine("********************");               
                 sw.WriteLine("");
                 sw.WriteLine("YOUR TOTAL AMOUNT: " + invoiceTotalAmount.Text);
 

@@ -55,16 +55,8 @@ namespace TMSProject.Classes.View
 				case "ItemInvoice":
 					usc = new InvoiceWindow();
 					GridMain.Children.Add(usc);
-					break;
-                case "OrderSummary":
-                    usc = new OrderSummary();
-                    GridMain.Children.Add(usc);
-                    break;
-                case "InvoiceSummary":
-                    usc = new InvoiceSummary();
-                    GridMain.Children.Add(usc);
-                    break;
-                case "ItemExit":
+					break;				
+				case "ItemExit":
                     //usc = new Test(order);
                     usc = new UserControl1(order);
                     GridMain.Children.Add(usc);
