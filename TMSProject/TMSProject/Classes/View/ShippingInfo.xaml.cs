@@ -135,27 +135,10 @@ namespace TMSProject.Classes.View
                     // Command
                     order.command = "INSERT";
                     // Order Status
-                    order.orderStatus = "FINISHED";                    
+                    order.orderStatus = "ACTIVE";                    
                     // CarrierID
                     Carrier carrier = new Carrier();
-                    if (order.carrierID != carrier.GetLastCarrierID() && order.carrierID != null || carrier.GetLastCarrierID() == null)
-                    {
-                        order.carrierID = carrier.NewCarrierID(1);
-                    }
-                    else if (order.carrierID == carrier.GetLastCarrierID() || order.carrierID == null)
-                    {
-                        string buffer = carrier.GetLastCarrierID();
-                        // Get the last character in the last OrderID
-                        string last = buffer.Substring(buffer.Length - 3);
-                        // Convert it into INT
-                        int temp = Convert.ToInt32(last);
-                        // Add by 1
-                        temp += 1;
-                        //Delete the last character of the buffer
-                        string newBuffer = RemoveLastChar(buffer);
-                        // Add with new temp
-                        order.carrierID = newBuffer + String.Format("{0:D3}", temp);
-                    }
+                    order.carrierID = carrier.GetCarrierIDbyDepotCity(order.originalCityID);                    
 
                     if (MessageBox.Show("Confirm the Order?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
                     {
@@ -194,7 +177,7 @@ namespace TMSProject.Classes.View
                 // Command
                 order.command = "INSERT";
                 // Order Status
-                order.orderStatus = "FINISHED";
+                order.orderStatus = "ACTIVE";
                 // CarrierID
                 Carrier carrier = new Carrier();
                 order.carrierID = carrier.GetCarrierIDbyDepotCity(order.originalCityID);
