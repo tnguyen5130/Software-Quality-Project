@@ -34,6 +34,12 @@ namespace TMSProject.Classes.View
             InitializeComponent();
             // Load the CMP Database
             LoadCMPList();
+            // Existing customer
+            if (CustomerList.Items.Count == 0)
+            {
+                MessageBox.Show("No existing customer");
+            }
+            LoadCustomerList();
             customer = new Customer();            
         }
 
@@ -45,7 +51,14 @@ namespace TMSProject.Classes.View
         {
             CMPBizDAO CMPBiz = new CMPBizDAO();
             CMPBiz.LoadCMPList(CMPList);
-        }        
+        }
+        
+        private void LoadCustomerList()
+        {
+            CustomerBizDAO cusBiz = new CustomerBizDAO();
+            cusBiz.LoadCustomerList(CustomerList);
+        }
+
 
         /// \brief This method RemoveLastChar for ID 
         /// \details <b>Details</b>
@@ -220,6 +233,9 @@ namespace TMSProject.Classes.View
             }
         }
 
+        private void CustomerList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
 
+        }
     }
 }
