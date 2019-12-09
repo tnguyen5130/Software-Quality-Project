@@ -30,10 +30,10 @@ namespace TMSProject.Classes.View
             ListOfStatus.Add("All");
             ListOfStatus.Add("Active");
             ListOfStatus.Add("Finish");
+            
 
-
-            All_Status.ItemsSource = ListOfStatus;
-            All_Status.SelectedIndex = 0;
+            AllStatus.ItemsSource = ListOfStatus;
+            AllStatus.SelectedIndex = 0;
         }
 
         private void Load_Order_Button_Click(object sender, RoutedEventArgs e)

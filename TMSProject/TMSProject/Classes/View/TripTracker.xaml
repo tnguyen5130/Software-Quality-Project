@@ -1,43 +1,14 @@
-﻿<UserControl x:Class="TMSProject.Classes.View.TripTracker"
+﻿<Page x:Class="TMSProject.Classes.View.TripTracker"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:TMSProject.Classes.View"
       mc:Ignorable="d" 
-      d:DesignHeight="540" d:DesignWidth="1010">
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="TripTracker">
 
-    <Grid x:Name="GridMain" Background="White">
-        <Button x:Name="Load_Trip_Button" Content="OK" HorizontalAlignment="Left" Margin="763,121,0,0" VerticalAlignment="Top" Width="75" Click="Load_Trip_Button_Click"/>
-        <TextBox x:Name="txtorderID" HorizontalAlignment="Left" Height="23" Margin="137,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="227"/>
-        <Label Content="Order ID:" HorizontalAlignment="Left" Margin="49,73,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Segoe UI Black"/>
-        <TextBlock HorizontalAlignment="Left" Margin="49,25,0,0" TextWrapping="Wrap" Text="Trip Tracker for Order" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Foreground="ForestGreen" Width="217"/>
-        <Label Content="Start City:" HorizontalAlignment="Left" Margin="63,125,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <Label Content="End City:" HorizontalAlignment="Left" Margin="388,125,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <DataGrid AutoGenerateColumns="True" HorizontalAlignment="Left" Height="233" Margin="36,195,0,0" VerticalAlignment="Top" Width="729" Background="LightGreen" Name="Trip_" IsReadOnly="False" >
+    <Grid>
         
-        </DataGrid>
-        <ComboBox HorizontalAlignment="Left" Margin="132,125,0,0" VerticalAlignment="Top" Width="227" Name="Start_City">
-            <ComboBoxItem Content="Windsor" />
-            <ComboBoxItem Content="London" />
-            <ComboBoxItem Content="Hamilton" />
-            <ComboBoxItem Content="Toronto" />
-            <ComboBoxItem Content="Oshawa" />
-            <ComboBoxItem Content="Belleville" />
-            <ComboBoxItem Content="Kingston" />
-            <ComboBoxItem Content="Ottawa" />
-        </ComboBox>
-
-        <ComboBox HorizontalAlignment="Left" Margin="481,125,0,0" VerticalAlignment="Top" Width="227" Name="End_City">
-            <ComboBoxItem Content="Windsor" />
-            <ComboBoxItem Content="London" />
-            <ComboBoxItem Content="Hamilton" />
-            <ComboBoxItem Content="Toronto" />
-            <ComboBoxItem Content="Oshawa" />
-            <ComboBoxItem Content="Belleville" />
-            <ComboBoxItem Content="Kingston" />
-            <ComboBoxItem Content="Ottawa" />
-        </ComboBox>
-
     </Grid>
-</UserControl>
+</Page>

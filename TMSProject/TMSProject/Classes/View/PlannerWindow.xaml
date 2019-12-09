@@ -93,13 +93,6 @@
                         </StackPanel>
                     </ListViewItem>
 
-                    <ListViewItem x:Name="TripTracker" Height="60">
-                        <StackPanel Orientation="Horizontal">
-                            <materialDesign:PackIcon Kind="Invoice" Height="25" Width="25" Margin="10"/>
-                            <TextBlock Text="Trip Tracker" VerticalAlignment="Center" Margin="20 10"/>
-                        </StackPanel>
-                    </ListViewItem>
-
                     <ListViewItem x:Name="InvoiceSummary" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Invoice" Height="25" Width="25" Margin="10"/>

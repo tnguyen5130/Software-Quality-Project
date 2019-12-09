@@ -149,11 +149,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Classes\View\OrderSummary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Classes\View\PlannerHome.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Classes\View\PlannerInfo.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -239,11 +239,11 @@
     <Compile Include="Classes\View\OrderDetail.xaml.cs">
       <DependentUpon>OrderDetail.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\View\OrderSummary.xaml.cs">
-      <DependentUpon>OrderSummary.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Classes\View\PlannerHome.xaml.cs">
       <DependentUpon>PlannerHome.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\PlannerInfo.xaml.cs">
+      <DependentUpon>PlannerInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\View\PlannerWindow.xaml.cs">
       <DependentUpon>PlannerWindow.xaml</DependentUpon>
@@ -256,9 +256,6 @@
     </Compile>
     <Compile Include="Classes\View\TMSAlter.xaml.cs">
       <DependentUpon>TMSAlter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\View\TripTracker.xaml.cs">
-      <DependentUpon>TripTracker.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\View\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
@@ -274,10 +271,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Classes\View\TMSAlter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Classes\View\TripTracker.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -323,6 +316,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resource\splashscreen.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="InvoicePrint\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
