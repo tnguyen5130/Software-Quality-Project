@@ -14,8 +14,9 @@ namespace TMSProject.DBConnect
         public static string dbPassword = "Snodgr4ss!";
         public static string dbDatabase = "cmp";
 
+
         public CMPConfigs()
-        {        
+        {
         }
 
         public string DbServer

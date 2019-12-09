@@ -129,10 +129,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Classes\View\InvoiceSummary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Classes\View\InvoiceWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -223,9 +219,6 @@
     </Compile>
     <Compile Include="Classes\View\GeneralConfiguration.xaml.cs">
       <DependentUpon>GeneralConfiguration.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Classes\View\InvoiceSummary.xaml.cs">
-      <DependentUpon>InvoiceSummary.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\View\InvoiceWindow.xaml.cs">
       <DependentUpon>InvoiceWindow.xaml</DependentUpon>

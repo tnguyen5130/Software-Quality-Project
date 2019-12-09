@@ -1,0 +1,47 @@
+2019-12-08 19:28:51,301 FATAL [1] TMSProject.DBConnect.DBHandler.Initialize - Connection success.
+2019-12-08 19:28:53,791 INFO [1] TMSProject.Classes.Controller.OrderBizDAO.DataTableToOrderDetailList - ResultSet Execute!!!
+2019-12-08 19:28:53,798 INFO [1] TMSProject.Classes.Controller.OrderBizDAO.GetOrderDetailWithID - SQL Execute:  SELECT orderID, contractID, customerName, orderDate, jobType, quantity, vanType, carrierID,                                              
+                                            originalCityID, u1.cityName as startCityName, desCityID, u2.cityName as endCityName from ordering
+                                            INNER JOIN customer on ordering.customerID = customer.customerID
+                                            INNER JOIN city u1 ON ordering.originalCityID = u1.cityID
+                                            INNER JOIN city u2 ON ordering.desCityID = u2.cityID
+                                            WHERE orderID = @orderID 
+2019-12-08 19:29:09,594 INFO [1] TMSProject.Classes.Controller.InvoiceBizDAO.DataTableToInvoiceIDList - ResultSet Execute!!!
+2019-12-08 19:29:09,597 INFO [1] TMSProject.Classes.Controller.InvoiceBizDAO.GetInvoiceID - SQL Execute:  SELECT 
+                                                invoiceID, 
+                                                invoice.billingID, 
+                                                billing.orderID
+                                            FROM invoice
+                                            INNER JOIN billing on invoice.billingID = billing.billingID
+                                            WHERE invoiceID = @invoiceID; 
+2019-12-08 19:29:09,607 INFO [1] TMSProject.Classes.Controller.InvoiceBizDAO.DataTableToViewInvoiceList - ResultSet Execute!!!
+2019-12-08 19:29:09,608 INFO [1] TMSProject.Classes.Controller.InvoiceBizDAO.ViewInvoices - SQL Execute:  select billing.billingID, customerName, billing.orderID, orderDate, customerCity, 
+                                            telno, address, zipcode, customerCompany, customerProvince,  
+                                            ordering.originalCityID, u3.cityName as originalCityName, 
+                                            ordering.desCityID, u4.cityName as desCityName,  
+                                            startCity, u1.cityName as startCityName, endCity, u2.cityName as endCityName,
+                                            tripStatus, invoiceID, jobType 
+                                            from ordering 
+		                                    inner join billing on ordering.orderID = billing.orderID
+                                            inner join customer on ordering.customerID = customer.customerID
+                                            inner join trip on ordering.orderID = trip.orderID
+                                            INNER JOIN city u1 ON trip.startCity = u1.cityID
+                                            INNER JOIN city u2 ON trip.endCity = u2.cityID
+                                            INNER JOIN city u3 ON ordering.originalCityID = u3.cityID
+                                            INNER JOIN city u4 ON ordering.desCityID = u4.cityID
+                                            INNER JOIN invoice on billing.billingID = invoice.billingID 
+                                            WHERE billing.billingID = @billingID AND ordering.orderID = @orderID; 
+2019-12-08 19:29:09,612 INFO [1] TMSProject.Classes.Controller.TripBizDAO.DataTableToTripBillingList - ResultSet Execute!!!
+2019-12-08 19:29:09,613 INFO [1] TMSProject.Classes.Controller.TripBizDAO.GetTripBilling - SQL Execute:  SELECT 
+                                                startCity, endCity, carrierID from trip
+                                           INNER JOIN ordering on trip.orderID = ordering.orderID where trip.orderID = @orderID; 
+2019-12-08 19:29:09,618 INFO [1] TMSProject.Classes.Controller.TripBizDAO.DataTableToBillingList - ResultSet Execute!!!
+2019-12-08 19:29:09,619 INFO [1] TMSProject.Classes.Controller.TripBizDAO.GetShowTripsForBillings - SQL Execute:  SELECT 
+                                                tripID, startCity, u1.cityName as startCityName, endCity, u2.cityName as endCityName, 
+                                                tripStatus, distance, workingTime, jobtype, quantity, vantype, ftlRate, ltlRate from trip 
+                                           inner join mileage on trip.startCity = mileage.startCityID and trip.endCity = mileage.endCityID 
+                                           inner join ordering on trip.orderID = ordering.orderID 
+                                           inner join carrier on ordering.carrierID = carrier.carrierID 
+                                           INNER JOIN city u1 ON trip.startCity = u1.cityID 
+                                           INNER JOIN city u2 ON trip.endCity = u2.cityID 
+                                           WHERE trip.orderID = @orderID and ordering.carrierID = @carrierID; 
