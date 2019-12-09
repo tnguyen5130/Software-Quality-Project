@@ -79,10 +79,10 @@
                 </Grid>
                 <ListView x:Name="ListViewMenu" Foreground="Black" ScrollViewer.HorizontalScrollBarVisibility="Disabled" SelectionChanged="ListViewMenu_SelectionChanged">
                                      
-                    <ListViewItem x:Name="Carrier" Height="60">
+                    <ListViewItem x:Name="ViewData" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="Update" Height="25" Width="25" Margin="10"/>
-                            <TextBlock Text="Carrier Data" VerticalAlignment="Center" Margin="20 10"/>
+                            <TextBlock Text="View Data" VerticalAlignment="Center" Margin="20 10"/>
                         </StackPanel>
                     </ListViewItem>
                     <ListViewItem x:Name="Route" Height="60">

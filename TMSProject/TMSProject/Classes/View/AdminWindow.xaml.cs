@@ -45,8 +45,8 @@ namespace TMSProject.Classes.View
             switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
             {
                
-                case "Carrier":
-                    usc = new CarrierWindow();
+                case "ViewData":
+                    usc = new TmsAlter();
                     GridMain.Children.Add(usc);
                     break;
                 case "Route":
