@@ -13,11 +13,11 @@
         <Button Content="View Log File" HorizontalAlignment="Left" Margin="39,10,0,0" VerticalAlignment="Top" Width="125" RenderTransformOrigin="-0.972,0.459" Height="37" Click="Button_Click"/>
         <ScrollViewer HorizontalScrollBarVisibility="Visible" VerticalScrollBarVisibility="Auto" Margin="0,124,0,0" >
 
-            <TextBlock FontSize="20" Name="debugLog"/>
+            <TextBlock FontSize="20" Foreground="Black" Name="debugLog"/>
 
         </ScrollViewer>
 
-        <TextBox Name="currentPath" HorizontalAlignment="Left" Height="23" Margin="187,24,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="426"/>
+        <TextBox Name="currentPath" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="187,24,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="426"/>
         <Button Content="Save" HorizontalAlignment="Left" Margin="640,15,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1"/>
 
     </Grid>
