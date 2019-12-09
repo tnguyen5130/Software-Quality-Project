@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,27 +15,84 @@ namespace TMSProject.Classes.View
 	/// </summary>
 	public partial class InvoiceWindow : UserControl
 	{
-		public InvoiceWindow()
+        IList<DataGridRoute> selectedTrips;
+        List<Trip> trips;
+        int routeCount = 0;
+        Trip trip;
+
+        public InvoiceWindow()
 		{
 			InitializeComponent();
+            txtInvoiceDate.Text = DateTime.Now.Date.ToString("DD-MM-YYYY");
 		}
 
 		private void Button_Click(object sender, RoutedEventArgs e)
 		{
-			try
-			{
-				this.IsEnabled = false;
-				PrintDialog printDialog = new PrintDialog();
-				if (printDialog.ShowDialog() == true)
-				{
-					printDialog.PrintVisual(print, "invoice");
-				}
-			}
-			finally
-			{
-				this.IsEnabled = true;
-			}
+            //try
+            //{
+            //	this.IsEnabled = false;
+            //	PrintDialog printDialog = new PrintDialog();
+            //	if (printDialog.ShowDialog() == true)
+            //	{
+            //		printDialog.PrintVisual(print, "invoice");
+            //	}
+            //}
+            //finally
+            //{
+            //	this.IsEnabled = true;
+            //}
+            GenerateInvoice();
 		}
+
+        private void GenerateInvoice()
+        {
+            try
+            {
+                //Pass the filepath and filename to the StreamWriter Constructor
+                StreamWriter sw = new StreamWriter("./Invoice.txt");
+
+                //Write a line of text
+                sw.WriteLine("INVOICE");
+                sw.WriteLine("********************");
+                sw.WriteLine("Invoice No:" + txtInputInvoice.Text);
+                sw.WriteLine("Invoice Date: " + txtInvoiceDate.Text);
+                sw.WriteLine("********************");
+                sw.WriteLine("Order Information:");
+                sw.WriteLine("Order Date: " + txtOrderDate.Text);
+                sw.WriteLine("Order ID: " + txtOrderID.Text);
+                sw.WriteLine("Shipping Route: " + txtStartEndCities.Text);
+                sw.WriteLine("Carrier Type: " + txtJobType.Text);
+                sw.WriteLine("********************");
+                sw.WriteLine("Customer Information:");
+                sw.WriteLine("Your Name: " + txtCustomerName.Text);
+                sw.WriteLine("Your Company Name: " + txtCompanyName.Text);
+                sw.WriteLine("Your Address: " + txtAddress.Text);
+                sw.WriteLine("Town, City, Province: " + txtLocation.Text);
+                sw.WriteLine("Postal Code: " + txtPostalCode.Text);
+                sw.WriteLine("********************");
+                sw.WriteLine("LIST: ");
+                for (int i = 0; i < routeCount; i++)
+                {
+                    sw.WriteLine("Trip ID: " + trips[i].tripID + "|" + "Start City: " + trips[i].startCityName + "|" + "End City: "
+                                  + trips[i].endCityName + "|" + "Distance: " + trips[i].distance + "|" + "Working Time: " + trips[i].workingTime);
+                }
+                sw.WriteLine("********************");
+                for (int i = 0; i < routeCount; i++)
+                {
+                    sw.WriteLine("Trip ID: " + trips[i].tripID + "|" + "Start City: " + trips[i].startCityName + "|" + "End City: "
+                                  + trips[i].endCityName + "|" + "Distance: " + trips[i].distance + "|" + "Working Time: " + trips[i].workingTime);
+                }
+                sw.WriteLine("");
+                sw.WriteLine("YOUR TOTAL AMOUNT: " + invoiceTotalAmount.Text);
+
+                //Close the file
+                sw.Close();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.Message);
+            }
+        }
 
         private void Invoice_Retreive_Click(object sender, RoutedEventArgs e)
         {
@@ -66,7 +124,7 @@ namespace TMSProject.Classes.View
 
             //assign values for DataGrid
             //assign Shipping Data
-            IList<DataGridRoute> selectedTrips = new List<DataGridRoute>();
+            selectedTrips = new List<DataGridRoute>();
 
             //Display information
             txtOrderDate.Text = invoiceResult[0].orderDate;
@@ -91,12 +149,13 @@ namespace TMSProject.Classes.View
             }
 
             //get Shipping Route
-            Trip trip = new Trip();
+            trip = new Trip();
             trip.orderID = orderID;
             var billingTripData = trip.GetTripBilling(trip.orderID);
 
             trip.carrierID = billingTripData[0].carrierID;
-            var shippingRoute = trip.GetShowTripsForBillings(trip.orderID, trip.carrierID);
+            var shippingRoute = trip.GetShowTripsForBillings(trip.orderID, trip.carrierID);          
+            routeCount = shippingRoute.Count;
 
             for (int i = 0; i < shippingRoute.Count; i++)
             {
@@ -137,6 +196,7 @@ namespace TMSProject.Classes.View
                 });
             }
 
+            trips = shippingRoute;
             invoiceTotalAmount.Text = "$ " + invoiceTotalAmount.Text;
 
             billingDataGrid.ItemsSource = selectedTrips;

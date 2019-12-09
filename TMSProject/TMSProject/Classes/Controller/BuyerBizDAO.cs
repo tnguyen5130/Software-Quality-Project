@@ -8,11 +8,14 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
     public class BuyerBizDAO
-    {   
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         public bool UpdateBuyer(Buyer buyer)
@@ -33,18 +36,19 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
 
                     return true;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
             }
 
         }
-
 
         public bool InsertBuyer(Buyer buyer)
         {
@@ -62,12 +66,14 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
 
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
 
                 }
@@ -77,19 +83,29 @@ namespace TMSProject.Classes.Controller
 
         public void DeleteBuyer(Buyer buyer)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM buyer WHERE buyerEmployeeID = @buyerEmployeeID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM buyer WHERE buyerEmployeeID = @buyerEmployeeID;
 												DELETE FROM employee WHERE employeeID = @buyerEmployeeID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@adminEmployeeID", buyer.buyerEmployeeID);
+                    myCommand.Parameters.AddWithValue("@adminEmployeeID", buyer.buyerEmployeeID);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+
+            }            
         }
 
         public List<Buyer> GetBuyers(string buyerID, string password)
@@ -104,7 +120,7 @@ namespace TMSProject.Classes.Controller
                                             WHERE employee.employeeID = @buyerID 
                                             AND buyer.buyerPassword = @password ";
 
-                using (var myConn = new MySqlConnection(connectionString))
+            using (var myConn = new MySqlConnection(connectionString))
             {
 
                 var myCommand = new MySqlCommand(sqlStatement, myConn);
@@ -122,7 +138,7 @@ namespace TMSProject.Classes.Controller
                 myAdapter.Fill(dataTable);
 
                 var buyers = DataTableToOrderList(dataTable);
-
+                Log.Info("SQL Execute: " + sqlStatement);
                 return buyers;
             }
         }

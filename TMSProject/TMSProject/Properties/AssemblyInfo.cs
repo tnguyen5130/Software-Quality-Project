@@ -51,5 +51,8 @@ using System.Windows;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
+// Let log4net know that it can look for configuration in the default application config file
+[assembly: Guid("1558a1e2-944d-47de-a1ba-b342994bed98")]
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 [assembly: AssemblyVersion("1.0.0.0")]
 [assembly: AssemblyFileVersion("1.0.0.0")]

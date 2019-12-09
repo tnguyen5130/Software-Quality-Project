@@ -10,8 +10,8 @@
     <Grid x:Name="GridMain" Background="White" Margin="0,0,-0.4,0">
         <ScrollViewer HorizontalAlignment="Left" Width="1010" Margin="5,2,-4.6,-2">
             <Grid>
-                <Button HorizontalAlignment="Right" Margin="10" Click="Button_Click" VerticalAlignment="Top">
-                    <materialDesign:PackIcon Kind="Printer"/>
+                <Button HorizontalAlignment="Right" Margin="0,663,139.8,0" Click="Button_Click" VerticalAlignment="Top" Height="70" Width="106">
+                    <materialDesign:PackIcon Kind="Printer" />
                 </Button>
 
                 <Grid x:Name="print">
@@ -135,7 +135,7 @@
                                 </StackPanel>
                             </StackPanel>
                             <StackPanel Grid.Column="1">
-                                <TextBlock Text="18 Jul '19" FontSize="25" Margin="5" Foreground="Black"/>
+                                <TextBlock x:Name="txtInvoiceDate" FontSize="25" Margin="5" Foreground="Black"/>
                             </StackPanel>
                             <StackPanel Grid.Column="2">
                                 <TextBlock Name="invoiceTotalAmount" Text="0" FontSize="25" Margin="5" HorizontalAlignment="Right" Foreground="#FF62013C" FontWeight="Bold"/>
