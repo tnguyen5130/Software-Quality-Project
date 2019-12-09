@@ -33,7 +33,8 @@ namespace TMSProject.Classes.Controller
                     const string sqlStatement = @"  UPDATE invoice
 	                                            SET billingID = @billingID,
                                                     contractID = @contractID,
-		                                            customerID = @customerID, 
+		                                            customerID = @customerID,
+                                                    invoiceDate = @invoiceDate,
                                                     completeStatus = @completeStatus, 
 	                                            WHERE invoiceID = @invoiceID; ";
 
@@ -42,6 +43,7 @@ namespace TMSProject.Classes.Controller
                     myCommand.Parameters.AddWithValue("@billingID", invoice.billingID);
                     myCommand.Parameters.AddWithValue("@contractID", invoice.contractID);
                     myCommand.Parameters.AddWithValue("@customerID", invoice.customerID);
+                    myCommand.Parameters.AddWithValue("@invoiceDate", invoice.invoiceDate);
                     myCommand.Parameters.AddWithValue("@completeStatus", invoice.completeStatus);
                     myCommand.Parameters.AddWithValue("@invoiceID", invoice.invoiceID);
 
@@ -66,8 +68,8 @@ namespace TMSProject.Classes.Controller
             {
                 try
                 {
-                    const string sqlStatement = @"  INSERT INTO invoice (invoiceID, billingID, contractID, customerID, completeStatus)
-	                                            VALUES (@invoiceID, @billingID, @contractID, @customerID, @completeStatus); ";
+                    const string sqlStatement = @"  INSERT INTO invoice (invoiceID, billingID, contractID, customerID, invoiceDate, completeStatus)
+	                                            VALUES (@invoiceID, @billingID, @contractID, @customerID, @invoiceDate, @completeStatus); ";
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
@@ -75,6 +77,7 @@ namespace TMSProject.Classes.Controller
                     myCommand.Parameters.AddWithValue("@billingID", invoice.billingID);
                     myCommand.Parameters.AddWithValue("@contractID", invoice.contractID);
                     myCommand.Parameters.AddWithValue("@customerID", invoice.customerID);
+                    myCommand.Parameters.AddWithValue("@invoiceDate", invoice.invoiceDate);
                     myCommand.Parameters.AddWithValue("@completeStatus", invoice.completeStatus);
 
                     myConn.Open();
