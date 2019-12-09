@@ -49,7 +49,7 @@ namespace TMSProject.Classes.View
             try
             {
                 //Pass the filepath and filename to the StreamWriter Constructor
-                StreamWriter sw = new StreamWriter("./Invoice.txt");
+                StreamWriter sw = new StreamWriter("./InvoiceBilling.txt");
 
                 //Write a line of text
                 sw.WriteLine("INVOICE");

@@ -28,7 +28,7 @@
             CanUserSortColumns="True"
             CanUserAddRows="False" SelectionChanged="CustomerList_SelectionChanged"/>
         <Grid Background="AntiqueWhite" Margin="664,23,9.6,10">
-            <TextBox Name="txtClientName" Foreground="Black" HorizontalAlignment="Left" TextWrapping="Wrap" Width="133" Margin="99,17,0,400"/>
+            <TextBox Name="txtClientName" Foreground="Black" HorizontalAlignment="Left" TextWrapping="Wrap" Width="133" Margin="99,17,0,467"/>
             <TextBox Name="txtJobType" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,61,0,0"/>
             <TextBox Name="txtQuantity" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,115,0,0"/>
             <TextBox Name="txtOrigin" Foreground="Black" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="133" Margin="99,177,0,0"/>

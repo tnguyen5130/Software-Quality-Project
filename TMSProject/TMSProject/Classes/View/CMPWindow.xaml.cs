@@ -33,13 +33,14 @@ namespace TMSProject.Classes.View
         {
             InitializeComponent();
             // Load the CMP Database
-            LoadCMPList();
+            LoadCMPList();            
+            LoadCustomerList();
+
             // Existing customer
             if (CustomerList.Items.Count == 0)
             {
                 MessageBox.Show("No existing customer");
             }
-            LoadCustomerList();
             customer = new Customer();            
         }
 
