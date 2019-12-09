@@ -79,10 +79,7 @@ namespace TMSProject.Classes.View
 				}
                 else if (input && status == 2)
                 {
-                    AdminWindow admin = new AdminWindow();
-                    this.Visibility = Visibility.Collapsed; // hide window
-                    admin.ShowDialog();
-                    this.Visibility = Visibility.Visible; // show window
+
                 }
 				else 
 				{

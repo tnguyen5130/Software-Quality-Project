@@ -14,38 +14,38 @@ namespace TMSProject.DBConnect
 {
     class DBHandler
     {
-        //Declare an instance for log4net
-        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+		//Declare an instance for log4net
+		private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        private MySqlConnection connection;
+		private MySqlConnection connection;
 
-        // Constructor
-        public DBHandler()
-        {
-            Initialize();
-        }
+		// Constructor
+		public DBHandler()
+		{
+			Initialize();
+		}
 
-        /*
+		/*
 		 * Function: Initialize
 		 * Description: initial connection with connection string
 		 * Input: none
 		 * Return: none
 		 */
-        public void Initialize()
-        {
-            string connectionString = "SERVER=" + Configs.dbServer + ";" + "DATABASE=" +
-            Configs.dbDatabase + ";" + "UID=" + Configs.dbUID + ";" + "PASSWORD=" + Configs.dbPassword + ";";
+		public void Initialize()
+		{
+			string connectionString = "SERVER=" + Configs.dbServer + ";" + "DATABASE=" +
+			Configs.dbDatabase + ";" + "UID=" + Configs.dbUID + ";" + "PASSWORD=" + Configs.dbPassword + ";";
 
-            connection = new MySqlConnection(connectionString);
-            if (connection == null)
-            {
-                Log.Fatal("Connection Error.");
-            }
-            else
-            {
-                Log.Fatal("Connection success.");
-            }
-        }
+			connection = new MySqlConnection(connectionString);
+			if (connection == null)
+			{
+				Log.Fatal("Connection Error.");
+			}
+			else
+			{
+				Log.Fatal("Connection success.");
+			}
+		}
 
         /*
 		 * Function: validate_login()
@@ -67,11 +67,11 @@ namespace TMSProject.DBConnect
             // Query for sign in as Buyer
             string queryBuyer = "Select * from projectslinger.buyer where buyerEmployeeID=@user and buyerPassword=@pass";
             //Query for sign in as Admin
-            string queryAdmin = "Select * from projectslinger.admin where adminEmployeeID=@user and adminPassword=@pass";
+            string queryAdmin = "Select * from projectslinger.admin where adminID=@user and adminPassword=@pass";
             // open connection
             if (this.OpenConnection() == true)
             {
-
+                
                 // Buyer sign in
                 if (status == 0)
                 {
@@ -148,51 +148,51 @@ namespace TMSProject.DBConnect
 		 * Return: true if success - false if fail
 		 */
         private bool OpenConnection()
-        {
-            try
-            {
-                connection.Open();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                //When handling errors, you can your application's response based 
-                //on the error number.
-                //The two most common error numbers when connecting are as follows:
-                //0: Cannot connect to server.
-                //1045: Invalid user name and/or password.
-                switch (ex.Number)
-                {
-                    case 0:
-                        Log.Fatal("Cannot connect to server.  Contact administrator.");
-                        break;
+		{
+			try
+			{
+				connection.Open();
+				return true;
+			}
+			catch (MySqlException ex)
+			{
+				//When handling errors, you can your application's response based 
+				//on the error number.
+				//The two most common error numbers when connecting are as follows:
+				//0: Cannot connect to server.
+				//1045: Invalid user name and/or password.
+				switch (ex.Number)
+				{
+					case 0:
+						Log.Fatal("Cannot connect to server.  Contact administrator.");
+						break;
 
-                    case 1045:
-                        Log.Fatal("Invalid username/password, please try again.");
-                        break;
-                }
-                return false;
-            }
-        }
+					case 1045:
+						Log.Fatal("Invalid username/password, please try again.");
+						break;
+				}
+				return false;
+			}
+		}
 
-        /*
+		/*
 		* Function: CloseConnection
 		 * Description: act as close connection statement
 		 * Input: 
 		 * Return: true if success - false if fail
 		 */
-        private bool CloseConnection()
-        {
-            try
-            {
-                connection.Close();
-                return true;
-            }
-            catch (MySqlException ex)
-            {
-                Log.Fatal(ex.Message);
-                return false;
-            }
-        }
-    }
+		private bool CloseConnection()
+		{
+			try
+			{
+				connection.Close();
+				return true;
+			}
+			catch (MySqlException ex)
+			{
+				Log.Fatal(ex.Message);
+				return false;
+			}
+		}		
+	}
 }
