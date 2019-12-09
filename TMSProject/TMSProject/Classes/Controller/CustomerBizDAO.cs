@@ -14,6 +14,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
 using TMSProject.DBConnect;
+using System.Windows.Controls;
 
 namespace TMSProject.Classes.Controller
 {
@@ -127,6 +128,32 @@ namespace TMSProject.Classes.Controller
                 value = (string)myCommand.ExecuteScalar();
             }
             return value;
+        }
+
+        /// \brief This method LoadOrderList for user 
+        /// \details <b>Details</b>
+        /// This method will get order list that has orderID and orderDate into DataGrid table
+        /// \return  void
+        public void LoadCustomerList(DataGrid grid)
+        {
+            const string sqlStatement = @" SELECT * FROM customer;";
+
+            using (var myConn = new MySqlConnection(connectionString))
+            {
+
+                var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                var myAdapter = new MySqlDataAdapter
+                {
+                    SelectCommand = myCommand
+                };
+
+                DataTable dataTable = new DataTable("customer");
+
+                myAdapter.Fill(dataTable);
+
+                grid.ItemsSource = dataTable.DefaultView;
+            }
         }
 
         /// \brief This method GetCustomerIDbyName for user 
