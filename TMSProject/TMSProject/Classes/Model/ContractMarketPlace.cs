@@ -36,9 +36,9 @@ namespace TMSProject.Classes.Model
         public string origin { get; set; }
         public string destination { get; set; }
         public string vanType { get; set; }
-        public string command { get; set; }
 
         public ContractMarketPlace() { }
+
 
         /// \brief This method Save
         /// \details <b>Details</b>
@@ -46,15 +46,17 @@ namespace TMSProject.Classes.Model
         /// \return  void
         public void Save()
         {
-            if (command == "UPDATE")
+            if (customerID != "")
             {
                 new CMPBizDAO().UpdateCMP(this);
             }
-            else if (command == "INSERT")
+            else
             {
                 new CMPBizDAO().InsertCMP(this);
             }
         }
+
+
 
         /// \brief This method Delete
         /// \details <b>Details</b>
@@ -64,6 +66,8 @@ namespace TMSProject.Classes.Model
         {
             new CMPBizDAO().DeleteCMP(this);
         }
+
+
 
         /// \brief This method GetById
         /// \details <b>Details</b>
@@ -75,25 +79,7 @@ namespace TMSProject.Classes.Model
             return cmps[0];
         }
 
-        /// \brief This method GetLastCusID
-        /// \details <b>Details</b>
-        /// This method will get the last customerID
-        /// \return string
-        public string GetLastCusID()
-        {
-            var customer = new CMPBizDAO().GetLastCustomerId(this);
-            return customer;
-        }
 
-        /// \brief This method NewCustomerID
-        /// \details <b>Details</b>
-        /// This method will create new customerID
-        /// \return  void
-        public string NewCustomerID(int seq)
-        {
-            string value = String.Format("{0:D3}", seq);
-            return "CUS" + DateTime.Now.ToString("MMddyyyy") + value;
-        }
 
         /// \brief This method GetCMPs
         /// \details <b>Details</b>

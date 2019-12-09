@@ -8,11 +8,13 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
     public class BuyerBizDAO
-    {   
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         public bool UpdateBuyer(Buyer buyer)
@@ -33,12 +35,13 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
-
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
             }
@@ -62,12 +65,14 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
 
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
 
                 }
@@ -77,24 +82,34 @@ namespace TMSProject.Classes.Controller
 
         public void DeleteBuyer(Buyer buyer)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM buyer WHERE buyerEmployeeID = @buyerEmployeeID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM buyer WHERE buyerEmployeeID = @buyerEmployeeID;
 												DELETE FROM employee WHERE employeeID = @buyerEmployeeID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@adminEmployeeID", buyer.buyerEmployeeID);
+                    myCommand.Parameters.AddWithValue("@adminEmployeeID", buyer.buyerEmployeeID);
 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    myCommand.ExecuteNonQuery();
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
+            
         }
 
         public List<Buyer> GetBuyers(string buyerID, string password)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 employeeID, 
                                                 employeeType, 
                                                 buyerPassword
@@ -105,43 +120,59 @@ namespace TMSProject.Classes.Controller
                                             AND buyer.buyerPassword = @password ";
 
                 using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@buyerID", buyerID);
-                myCommand.Parameters.AddWithValue("@password", password);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@buyerID", buyerID);
+                    myCommand.Parameters.AddWithValue("@password", password);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var buyers = DataTableToOrderList(dataTable);
+                    var dataTable = new DataTable();
 
-                return buyers;
+                    myAdapter.Fill(dataTable);
+
+                    var buyers = DataTableToOrderList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return buyers;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+            
         }
 
         private List<Buyer> DataTableToOrderList(DataTable table)
         {
-            var buyers = new List<Buyer>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                buyers.Add(new Buyer
-                {
-                    buyerEmployeeID = row["employeeID"].ToString(),
-                    buyerPassword = row["buyerPassword"].ToString(),
-                    employeeType = row["employeeType"].ToString()
-                });
-            }
+                var buyers = new List<Buyer>();
 
-            return buyers;
+                foreach (DataRow row in table.Rows)
+                {
+                    buyers.Add(new Buyer
+                    {
+                        buyerEmployeeID = row["employeeID"].ToString(),
+                        buyerPassword = row["buyerPassword"].ToString(),
+                        employeeType = row["employeeType"].ToString()
+                    });
+                }
+                Log.Info("ResultSet Execute!!!");
+                return buyers;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+            
         }
 
     }

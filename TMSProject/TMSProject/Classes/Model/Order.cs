@@ -17,14 +17,14 @@ using TMSProject.Classes.Controller;
 namespace TMSProject.Classes.Model
 {
     /// \class Order
-    /// \brief This class contains the Order Info
+    /// \brief This class contains the Invoice Info
     /// \author : <i>Yonchul Choi <i>
     public class Order
     {
         /// <summary>
         /// A string to get orderID 
         /// A string to get contractID
-        /// A string to get originalCityID
+        /// A string to get origincalCityID
         /// A string to get customerID
         /// A string to get completeStatus
         /// </summary>
@@ -32,15 +32,18 @@ namespace TMSProject.Classes.Model
         public string contractID { get; set; }
         public string customerID { get; set; }
         public string orderDate { get; set; }
+        public int jobType { get; set; }
+        public int quantity { get; set; }
+        public int vanType { get; set; }
         public string originalCityID { get; set; }
         public string desCityID { get; set; }
-        public int quantity { get; set; }
-        public int jobType { get; set; }
-        public int vanType { get; set; }
         public string carrierID { get; set; }
         public string orderStatus { get; set; }
         public string command { get; set; }
 
+        public string customerName { get; set; }
+        public string startCityName { get; set; }
+        public string endCityName { get; set; }
 
         public Order() { }
 
@@ -73,6 +76,7 @@ namespace TMSProject.Classes.Model
             new OrderBizDAO().DeleteOrder(this);
         }
 
+
         /// \brief This method GetById
         /// \details <b>Details</b>
         /// This method will get  order ID
@@ -91,35 +95,7 @@ namespace TMSProject.Classes.Model
             
         }
 
-        /// \brief This method GetOriginalID
-        /// \details <b>Details</b>
-        /// This method will get original city ID based on name
-        /// \return  string
-        public string GetOriginalID(string cityName)
-        {
-            var originCityID = new OrderBizDAO().GetOriginCityIDbyName(cityName);
-            return originCityID;
-        }
 
-        /// \brief This method GetDestinateID
-        /// \details <b>Details</b>
-        /// This method will get destination city ID based on name
-        /// \return  string
-        public string GetDestinateID(string cityName)
-        {
-            var destinateCityID = new OrderBizDAO().GetDestinateCityIDbyName(cityName);
-            return destinateCityID;
-        }
-
-        /// \brief This method GetLastId
-        /// \details <b>Details</b>
-        /// This method will get last order ID
-        /// \return  string
-        public string GetLastId()
-        {
-            var orderID = new OrderBizDAO().GetLastOrderID(this);
-            return orderID;
-        }
 
         /// \brief This method GetOrders
         /// \details <b>Details</b>
@@ -131,23 +107,36 @@ namespace TMSProject.Classes.Model
             return orderList;
         }
 
-        /// \brief This method newOrderID
-        /// \details <b>Details</b>
-        /// This method will generate order ID
-        /// \return  string
-        public string NewOrderID(int seq)
+        public List<Order> GetOrderDetail(string startCity, string endCity)
         {
-            string value = String.Format("{0:D3}", seq);
-            return "ORD" + DateTime.Now.ToString("MMddyyyy") + value;
+            var orderList = new OrderBizDAO().GetOrderDetail(startCity, endCity);
+            return orderList;
         }
 
-        /// \brief This method newOrderDate
+        public List<Order> GetOrderWithID(string orderID)
+        {
+            var orderList = new OrderBizDAO().GetOrderWithID(orderID);
+            return orderList;
+        }
+
+        public List<Order> GetOrderDetailWithID(string orderID)
+        {
+            var orderList = new OrderBizDAO().GetOrderDetailWithID(orderID);
+            return orderList;
+        }
+
+        /// \brief This method generateOrderID
         /// \details <b>Details</b>
-        /// This method will generate order Date
-        /// \return  string
-        public string NewOrderDate()
-         {
-            return DateTime.Now.ToString("yyyy-MM-dd");
-         }
+        /// This method will generate order ID
+        /// \return  void
+        public string generateOrderID(int seq,int time)
+        {            
+            return "ord"+DateTime.Now.ToString()+time;
+        }
+
+        public bool fieldsValidation()
+        {
+            return false;
+        }
     }
 }

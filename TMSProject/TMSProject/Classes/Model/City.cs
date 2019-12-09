@@ -93,5 +93,11 @@ namespace TMSProject.Classes.Model
             string value = String.Format("{0:D3}", seq);
             return "C" + value;
         }
+
+        public List<City> GetCityName(string pattern)
+        {
+            var cityList = new CityBizDAO().GetCityName(pattern);
+            return cityList;
+        }
     }
 }

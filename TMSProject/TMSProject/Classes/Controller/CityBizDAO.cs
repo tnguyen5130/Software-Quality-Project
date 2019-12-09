@@ -17,6 +17,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
 using System.Windows.Controls;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -24,7 +25,8 @@ namespace TMSProject.Classes.Controller
     /// \brief This class contains the City's information for a billing file when buyer make an order
     /// \author : <i>nhung Luong<i>
     public class CityBizDAO
-    {       
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         /// \brief This method UpdateCity for user 
@@ -50,11 +52,13 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
                 }
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
                 
@@ -83,11 +87,13 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
                 }
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
             }
@@ -101,19 +107,67 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void DeleteCity(City city)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
 												DELETE FROM products WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", city.cityID);
+                    myCommand.Parameters.AddWithValue("@ProductID", city.cityID);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
+            
+        }
+
+        public List<City> GetCityName(string searchItem)
+        {
+            try
+            {
+                const string sqlStatement = @" SELECT 
+                                                cityId, 
+                                                cityName 
+                                            FROM city
+                                            WHERE cityName = @SearchItem; ";
+
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
+
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
+
+                    var dataTable = new DataTable();
+
+                    myAdapter.Fill(dataTable);
+
+                    var cities = DataTableToCityList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return cities;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+            
         }
 
         /// \brief This method GetCities for user 
@@ -122,32 +176,41 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public List<City> GetCities(string searchItem)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 cityId, 
                                                 cityName 
                                             FROM city
                                             WHERE cityName = @SearchItem; ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var cities = DataTableToCityList(dataTable);
+                    var dataTable = new DataTable();
 
-                return cities;
+                    myAdapter.Fill(dataTable);
+
+                    var cities = DataTableToCityList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return cities;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+            
         }
 
         /// \brief This method DataTableToCityList for user 
@@ -156,47 +219,63 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         private List<City> DataTableToCityList(DataTable table)
         {
-            var cities = new List<City>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                cities.Add(new City
-                {
-                    cityID = row["cityID"].ToString(),
-                    cityName = row["cityName"].ToString(),
-                    
-                });
-            }
+                var cities = new List<City>();
 
-            return cities;
+                foreach (DataRow row in table.Rows)
+                {
+                    cities.Add(new City
+                    {
+                        cityID = row["cityID"].ToString(),
+                        cityName = row["cityName"].ToString(),
+
+                    });
+                }
+                Log.Info("ResultSet Execute!!!");
+                return cities;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+            
         }
 
-        public void GetCityNameList(ComboBox box)
+        public void getCityNameList(ComboBox box)
         {
-
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 cityName 
                                             FROM city; ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-                myConn.Open();
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
+                    myConn.Open();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                MySqlDataReader dr = myCommand.ExecuteReader();             
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                while (dr.Read())
-                {
-                    City city = new City();
-                    city.cityName = dr.GetString("cityName");
-                    box.Items.Add(city.cityName);
+                    MySqlDataReader dr = myCommand.ExecuteReader();
+
+                    while (dr.Read())
+                    {
+                        City city = new City();
+                        city.cityName = dr.GetString("cityName");
+                        box.Items.Add(city.cityName);
+                    }
+                    Log.Info("SQL Execute: " + sqlStatement);
                 }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
             }
         }
 

@@ -1,8 +1,8 @@
-﻿//* FILE			: CustomerBizDAO.cs
+﻿//* FILE			: CMPBizDAO.cs
 //* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
 //* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
 //* FIRST VERSON	: Nov 11, 2019
-//* DESCRIPTION		: The file defines a class  : CustomerBizDAO for the biiling infomation
+//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
 
 using System;
 using System.Collections.Generic;
@@ -14,6 +14,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
 using TMSProject.DBConnect;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -22,17 +23,22 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>Nhung Luong<i>
     public class CustomerBizDAO
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
-        
-        /// \brief This method UpdateCustomer for user 
+
+
+        /// \brief This method UpdateContract for user 
         /// \details <b>Details</b>
-        /// This method will update customer database 
+        /// This method will update contract database 
         /// \return  void
         public void UpdateCustomer(Customer customer)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  UPDATE customer
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  UPDATE customer
 	                                            SET customerID = @CustomerID,
                                                     customerCompany = @CustomerCompany,
                                                     customerName = @CustomerName,
@@ -43,22 +49,26 @@ namespace TMSProject.Classes.Controller
                                                     zipcode = @CustomerZipcode
 	                                            WHERE customerID = @CustomerID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
-                myCommand.Parameters.AddWithValue("@CustomerCompany", customer.customerCompany);
-                myCommand.Parameters.AddWithValue("@CustomerName", customer.customerName);
-                myCommand.Parameters.AddWithValue("@CustomerCity", customer.customerCity);
-                myCommand.Parameters.AddWithValue("@CustomerProvince", customer.customerProvince);
-                myCommand.Parameters.AddWithValue("@CustomerTelPhone", customer.telno);
-                myCommand.Parameters.AddWithValue("@CustomerAddress", customer.address);
-                myCommand.Parameters.AddWithValue("@CustomerZipcode", customer.zipcode);
+                    myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
+                    myCommand.Parameters.AddWithValue("@CustomerCompany", customer.customerCompany);
+                    myCommand.Parameters.AddWithValue("@CustomerName", customer.customerName);
+                    myCommand.Parameters.AddWithValue("@CustomerCity", customer.customerCity);
+                    myCommand.Parameters.AddWithValue("@CustomerProvince", customer.customerProvince);
+                    myCommand.Parameters.AddWithValue("@CustomerTelPhone", customer.telno);
+                    myCommand.Parameters.AddWithValue("@CustomerAddress", customer.address);
+                    myCommand.Parameters.AddWithValue("@CustomerZipcode", customer.zipcode);
 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    myCommand.ExecuteNonQuery();
+                }
             }
-
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
         }
 
         /// \brief This method InsertCustomer for user 
@@ -67,28 +77,35 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void InsertCustomer(Customer customer)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  INSERT INTO customer (customerID, customerName, customerCity, customerProvince, telno, address, zipcode, customerCompany)
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  INSERT INTO customer (customerID, customerName, customerCity, customerProvince, telno, address, zipcode, customerCompany)
 	                                            VALUES (@CustomerID, @CustomerName, @CustomerCity, @CustomerProvince, @CustomerTelNo, @CustomerAddress, @CustomerZipcode, @CustomerCompany); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
-                myCommand.Parameters.AddWithValue("@CustomerName", customer.customerName);
-                myCommand.Parameters.AddWithValue("@CustomerCity", customer.customerCity);
-                myCommand.Parameters.AddWithValue("@CustomerProvince", customer.customerProvince);
-                myCommand.Parameters.AddWithValue("@CustomerTelNo", customer.telno);
-                myCommand.Parameters.AddWithValue("@CustomerAddress", customer.address);
-                myCommand.Parameters.AddWithValue("@CustomerZipcode", customer.zipcode);
-                myCommand.Parameters.AddWithValue("@CustomerCompany", customer.customerCompany);
+                    myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
+                    myCommand.Parameters.AddWithValue("@CustomerName", customer.customerName);
+                    myCommand.Parameters.AddWithValue("@CustomerCity", customer.customerCity);
+                    myCommand.Parameters.AddWithValue("@CustomerProvince", customer.customerProvince);
+                    myCommand.Parameters.AddWithValue("@CustomerTelNo", customer.telno);
+                    myCommand.Parameters.AddWithValue("@CustomerAddress", customer.address);
+                    myCommand.Parameters.AddWithValue("@CustomerZipcode", customer.zipcode);
+                    myCommand.Parameters.AddWithValue("@CustomerCompany", customer.customerCompany);
 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    myCommand.ExecuteNonQuery();
+                }
             }
-
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message); 
+            }
         }
+
 
         /// \brief This method DeleteCustomer for user 
         /// \details <b>Details</b>
@@ -96,61 +113,28 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void DeleteCustomer(Customer customer)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM customer WHERE customerID = @CustomerID;";
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM customer WHERE customerID = @CustomerID;";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
+                    myCommand.Parameters.AddWithValue("@CustomerID", customer.customerID);
 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    myCommand.ExecuteNonQuery();
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
+            
         }
 
-        /// \brief This method GetLastCustomerName for user 
-        /// \details <b>Details</b>
-        /// This method will get last customer's name database 
-        /// \return  void
-        public string GetLastCustomerName(Customer customer)
-        {
-            string value = "";
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-                const string sqlStatement = @"  SELECT customerName FROM customer ORDER BY customerID DESC LIMIT 1; ";
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
-                value = (string)myCommand.ExecuteScalar();
-            }
-            return value;
-        }
-
-        /// \brief This method GetLastCustomerID for user 
-        /// \details <b>Details</b>
-        /// This method will get last customer's ID database 
-        /// \return  void
-        public string GetLastCustomerID(Customer customer)
-        {
-            string value = "";
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-                const string sqlStatement = @"  SELECT customerID FROM customer ORDER BY customerID DESC LIMIT 1; ";
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
-                value = (string)myCommand.ExecuteScalar();
-            }
-            return value;
-        }
 
         /// \brief This method GetCustomers for user 
         /// \details <b>Details</b>
@@ -158,34 +142,44 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public List<Customer> GetCustomers(string searchItem)
         {
-            const string sqlStatement = @" SELECT customerName, customerCompany, telno, address, customerCity, customerProvince, zipcode
+            try
+            {
+                const string sqlStatement = @" SELECT customerName, customerCompany, telno, address, customerCity, customerProvince, zipcode
                                            FROM customer 
                                            INNER JOIN ordering
                                            WHERE customer.customerID = ordering.customerID
                                            AND ordering.orderID = @SearchItem; ";
 
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var customers = DataTableToCustomerList(dataTable);
+                    var dataTable = new DataTable();
 
-                return customers;
+                    myAdapter.Fill(dataTable);
+
+                    var customers = DataTableToCustomerList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return customers;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+            
         }
+
 
         /// \brief This method DataTableToCustomerList for user 
         /// \details <b>Details</b>
@@ -193,23 +187,32 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         private List<Customer> DataTableToCustomerList(DataTable table)
         {
-            var customers = new List<Customer>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                customers.Add(new Customer
-                {
-                    customerName = row["customerName"].ToString(),
-                    customerCompany = row["customerCompany"].ToString(),
-                    telno = row["telno"].ToString(),
-                    address = row["address"].ToString(),
-                    customerCity = row["customerCity"].ToString(),
-                    customerProvince = row["customerProvince"].ToString(),
-                    zipcode = row["zipcode"].ToString()          
-            });
-            }
+                var customers = new List<Customer>();
 
-            return customers;
+                foreach (DataRow row in table.Rows)
+                {
+                    customers.Add(new Customer
+                    {
+                        customerName = row["customerName"].ToString(),
+                        customerCompany = row["customerCompany"].ToString(),
+                        telno = row["telno"].ToString(),
+                        address = row["address"].ToString(),
+                        customerCity = row["customerCity"].ToString(),
+                        customerProvince = row["customerProvince"].ToString(),
+                        zipcode = row["zipcode"].ToString()
+                    });
+                }
+                Log.Info("ResultSet Execute!!!");
+                return customers;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+            
         }
-    } // End of class
-} // end of namespace
+    }
+}

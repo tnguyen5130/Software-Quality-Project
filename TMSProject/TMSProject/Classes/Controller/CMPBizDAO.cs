@@ -16,7 +16,7 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
-using System.Windows.Controls;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -25,14 +25,10 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>nhung Luong<i>
     public class CMPBizDAO
     {
-        /// <summary>
-        /// Remote DB connectionString
-        /// </summary>
-        private string connectionString = "server=" + CMPConfigs.dbServer + ";user id=" + CMPConfigs.dbUID + ";password=" + CMPConfigs.dbPassword + ";database=" + CMPConfigs.dbDatabase + ";SslMode=none";
-        /// <summary>
-        /// Local DB connectionString
-        /// </summary>
-        private string connectionStringLocal = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+
 
 
         /// \brief This method UpdateCMP for user 
@@ -41,137 +37,112 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void UpdateCMP(ContractMarketPlace cmp)
         {
-            using (var myConn = new MySqlConnection(connectionStringLocal))
+            try
             {
-                const string sqlStatement = @"  UPDATE contract_market_place
-	                                            SET jobType = @jobType,
-                                                    quantity = @quantity,
-		                                            origin = @origin,
-                                                    destination = @destination,
-                                                    vanType = @vanType
-	                                            WHERE customerID = @customerID,
-                                                      contractID = @contractID; ";
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  UPDATE products
+	                                            SET CategoryId = @CategoryId,
+                                                    UnitPrice = @UnitPrice,
+		                                            UnitsInStock = @UnitsInStock
+	                                            WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@customerID", cmp.customerID);
-                myCommand.Parameters.AddWithValue("@contractID", cmp.contractID);
-                myCommand.Parameters.AddWithValue("@jobType", cmp.jobType);
-                myCommand.Parameters.AddWithValue("@quantity", cmp.quantity);
-                myCommand.Parameters.AddWithValue("@origin", cmp.origin);
-                myCommand.Parameters.AddWithValue("@destination", cmp.destination);
-                myCommand.Parameters.AddWithValue("@vanType", cmp.vanType);
+                    myCommand.Parameters.AddWithValue("@ProductID", cmp.customerID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", cmp.contractID);
+                    myCommand.Parameters.AddWithValue("@UnitPrice", cmp.jobType);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", cmp.quantity);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", cmp.origin);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", cmp.destination);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", cmp.vanType);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
             }
-
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
         }
 
-        /// \brief This method GetLastCustomerId for user 
+
+
+        /// \brief This method UpdateCity for user 
         /// \details <b>Details</b>
-        /// This method will get GetLastCustomerId from database 
-        /// \return  void
-        public string GetLastCustomerId(ContractMarketPlace cmp)
-        {
-            string value = "";
-            using (var myConn = new MySqlConnection(connectionStringLocal))
-            {
-                const string sqlStatement = @"SELECT customerID FROM contract_market_place ORDER BY customerID DESC LIMIT 1; ";
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
-                value = (string)myCommand.ExecuteScalar();
-            }
-            return value;
-        }
-
-        /// \brief This method InsertCMP for user 
-        /// \details <b>Details</b>
-        /// This method will insert data into CMP
+        /// This method will update city from CMP
         /// \return  void
         public void InsertCMP(ContractMarketPlace cmp)
         {
-            using (var myConn = new MySqlConnection(connectionStringLocal))
+            try
             {
-                const string sqlStatement = @"  INSERT INTO contract_market_place (customerID, contractID, jobType, quantity, origin, destination, vanType)
-	                                            VALUES (@customerID, @contractID, @jobType, @quantity, @origin, @destination, @vanType); ";
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
+	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@customerID", cmp.customerID);
-                myCommand.Parameters.AddWithValue("@contractID", cmp.contractID);
-                myCommand.Parameters.AddWithValue("@jobType", cmp.jobType);
-                myCommand.Parameters.AddWithValue("@quantity", cmp.quantity);
-                myCommand.Parameters.AddWithValue("@origin", cmp.origin);
-                myCommand.Parameters.AddWithValue("@destination", cmp.destination);
-                myCommand.Parameters.AddWithValue("@vanType", cmp.vanType);
+                    myCommand.Parameters.AddWithValue("@ProductID", cmp.customerID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", cmp.contractID);
+                    myCommand.Parameters.AddWithValue("@UnitPrice", cmp.jobType);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", cmp.quantity);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", cmp.origin);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", cmp.destination);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", cmp.vanType);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
             }
-
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
         }
+
+
 
         /// \brief This method DeleteCMP for user 
         /// \details <b>Details</b>
-        /// This method will delete CMP for selecting customerID and contractID
+        /// This method will delete CMP for selecting start and end city
         /// \return  void
         public void DeleteCMP(ContractMarketPlace cmp)
         {
-            using (var myConn = new MySqlConnection(connectionStringLocal))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM contract_market_place WHERE customerID = @customerID AND contractID = @contractID;";
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                myCommand.Parameters.AddWithValue("@customerID", cmp.customerID);
-                myCommand.Parameters.AddWithValue("@contractID", cmp.contractID);
-
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
-            }
-        }
-
-        /// \brief This method LoadOrderList for user 
-        /// \details <b>Details</b>
-        /// This method will get order list that has orderID and orderDate into DataGrid table
-        /// \return  void
-        public void LoadCMPList(DataGrid grid)
-        {
-            const string sqlStatement = @" SELECT Client_Name, Job_Type, Quantity, Origin, Destination, Van_Type FROM Contract;";
-
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
+                    const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
+												DELETE FROM products WHERE ProductID = @ProductID; ";
 
-                DataTable dataTable = new DataTable("Contract");
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myAdapter.Fill(dataTable);
+                    myCommand.Parameters.AddWithValue("@ProductID", cmp.customerID);
 
-                grid.ItemsSource = dataTable.DefaultView;
+                    myConn.Open();
+
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
+            
         }
 
-        /// \brief This method GetCMPs for user 
-        /// \details <b>Details</b>
-        /// This method will get CMP list that is based on searchItem
-        /// \return List<ContractMarketPlace>
         public List<ContractMarketPlace> GetCMPs(string searchItem)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 ProductId, 
                                                 ProductName, 
                                                 QuantityPerUnit, 
@@ -197,27 +168,35 @@ namespace TMSProject.Classes.Controller
                                             ORDER BY ProductName; ";
 
 
-            using (var myConn = new MySqlConnection(connectionStringLocal))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var cmps = DataTableToCMPList(dataTable);
+                    var dataTable = new DataTable();
 
-                return cmps;
+                    myAdapter.Fill(dataTable);
+
+                    var cmps = DataTableToCMPList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return cmps;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+            
         }
+
 
         /// \brief This method DataTableToCMPList for user 
         /// \details <b>Details</b>
@@ -225,23 +204,33 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         private List<ContractMarketPlace> DataTableToCMPList(DataTable table)
         {
-            var orders = new List<ContractMarketPlace>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                orders.Add(new ContractMarketPlace
-                {
-                    customerID = row["customerID"].ToString(),
-                    contractID = row["contractID"].ToString(),
-                    jobType = row["jobType"].ToString(),
-                    quantity = Convert.ToInt32(row["quantity"]),
-                    origin = row["origin"].ToString(),
-                    destination = row["destination"].ToString(),
-                    vanType = row["vanType"].ToString()
-                });
-            }
+                var orders = new List<ContractMarketPlace>();
 
-            return orders;
+                foreach (DataRow row in table.Rows)
+                {
+                    orders.Add(new ContractMarketPlace
+                    {
+                        customerID = row["customerID"].ToString(),
+                        contractID = row["contractID"].ToString(),
+                        jobType = row["jobType"].ToString(),
+                        quantity = Convert.ToInt32(row["quantity"]),
+                        origin = row["origin"].ToString(),
+                        destination = row["destination"].ToString(),
+                        vanType = row["vanType"].ToString()
+                    });
+                }
+                Log.Info("ResultSet Execute!!!");
+                return orders;
+                
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+            
         }
-    } // end of class
-} // end of namespace
+    }
+}

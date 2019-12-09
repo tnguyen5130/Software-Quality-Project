@@ -5,7 +5,6 @@
 //* DESCRIPTION		: The file defines a class  : Billing for the biiling infomation 
 
 
-
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,78 +14,65 @@ using TMSProject.Classes.Controller;
 
 namespace TMSProject.Classes.Model
 {
-    /// \class Billing
-    /// \brief This class contains the admin info
-    /// \author : <i>Yonchul Choi <i>
     public class Billing
     {
-        /// A string to store billingID
-        /// A string to store orderID
-        /// A string to store planId
-        /// A string to store customerID
-        /// A string to store totalAmountIDS
         public string billingID { get; set; }
         public string orderID { get; set; }
         public string planID { get; set; }
         public string customerID { get; set; }
         public double totalAmount { get; set; }
+        public string command { get; set; }
 
-        /// \brief This method Billing for user 
-        /// \details <b>Details</b>
-        /// This method will get billing ID
-        /// \return  void
+        public double workingTime { get; set; }
+        public double distance { get; set; }
+        public int jobType { get; set; }
+        public int quantity { get; set; }
+        public int vanType { get; set; }
+        public double ftlRate { get; set; }
+        public double ltlRate { get; set; }
+        public double reeferCharge { get; set; }
+
         public Billing() { }
 
-
-        /// \brief This method Save for user 
-        /// \details <b>Details</b>
-        /// This method will save the bill
-        /// \return  void
-        public void Save()
+        public bool Save()
         {
-            if (planID != "")
+            bool flag = false;
+
+            if (command == "UPDATE")
             {
-                new BillingBizDAO().UpdateBilling(this);
+                flag = new BillingBizDAO().UpdateBilling(this);
             }
-            else
+            else if (command == "INSERT")
             {
-                new BillingBizDAO().InsertBilling(this);
+                flag = new BillingBizDAO().InsertBilling(this);
             }
+
+            return flag;
         }
 
-        /// \brief This method Delete for user 
-        /// \details <b>Details</b>
-        /// This method will Delete the bill
-        /// \return  void
         public void Delete()
         {
             new BillingBizDAO().DeleteBilling(this);
         }
 
-        /// \brief This method GetById for user 
-        /// \details <b>Details</b>
-        /// This method will GetById the bill
-        /// \return  void
-        public Billing GetById(string billingID)
+        public Billing GetById(string billingID, string orderID)
         {
-            var billings = new BillingBizDAO().GetBillings(billingID);
+            var billings = new BillingBizDAO().GetBillings(billingID, orderID);
             return billings[0];
         }
 
-        /// \brief This method GetBillings for user 
-        /// \details <b>Details</b>
-        /// This method will get the bill
-        /// \return  void
-        public List<Billing> GetBillings(string pattern)
+        public List<Billing> GetBillings(string planID, string orderID)
         {
-            var billingList = new BillingBizDAO().GetBillings(pattern);
+            var billingList = new BillingBizDAO().GetBillings(planID, orderID);
             return billingList;
         }
 
-        /// \brief This method generateBillingID for user 
-        /// \details <b>Details</b>
-        /// This method will generate the bill
-        /// \return  void
+        public List<Billing> GetBillingID(string planID, string orderID)
+        {
+            var billingList = new BillingBizDAO().GetBillingID(planID, orderID);
+            return billingList;
+        }
+
         public string generateBillingID(int seq)
         {
             // Naming BILL + orderID

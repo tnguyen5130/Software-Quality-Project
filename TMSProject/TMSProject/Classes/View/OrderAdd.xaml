@@ -21,7 +21,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label Content="Date:" Foreground="Blue" FontSize="15" FontWeight="Bold" />
-                    <TextBlock x:Name="txtOrderDate" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
+                    <TextBlock x:Name="txtDate" VerticalAlignment="Center" Foreground="Black" FontSize="15" FontWeight="Bold" />
                 </StackPanel>
 
                 <!-- COMPANY TEXTBOX -->
@@ -34,7 +34,15 @@
                 </TextBox>
                 
                 <!-- FIRST NAME TEXT BOX -->
-                <TextBox x:Name="txtName" materialDesign:HintAssist.Hint="Customer Name" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                <TextBox x:Name="txtFirstName" materialDesign:HintAssist.Hint="Customer First Name" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
+                    <TextBox.Resources>
+                        <Style TargetType="ContentControl">
+                            <Setter Property="Foreground" Value="CadetBlue"/>
+                        </Style>
+                    </TextBox.Resources>
+                </TextBox>
+                <!-- LAST NAME TEXT BOX -->
+                <TextBox x:Name="txtLastName" materialDesign:HintAssist.Hint="Customer Last Name" Foreground="Black" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0 5">
                     <TextBox.Resources>
                         <Style TargetType="ContentControl">
                             <Setter Property="Foreground" Value="CadetBlue"/>

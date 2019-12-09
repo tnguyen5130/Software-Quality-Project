@@ -31,7 +31,7 @@ namespace TMSProject.Classes.Model
         public string adminPassword { get; set; }
         public string employeeType { get; set; }
         public string command { get; set; }
-
+       
         public void Save()
         {
             bool flag = false;
@@ -62,7 +62,7 @@ namespace TMSProject.Classes.Model
             var adminList = new AdminBizDAO().GetAdmins(adminEmployeeID, adminPassword);
             return adminList;
         }
-      
+
         /// \brief This method Admin 
         /// \details <b>Details</b>
         /// This method will get admin ID

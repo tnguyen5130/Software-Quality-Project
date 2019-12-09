@@ -15,6 +15,7 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -23,6 +24,8 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>Nhung Luong <i>
     public class TripBizDAO
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
 
@@ -51,11 +54,13 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info(sqlStatement);
                     return true;
                 }
                 catch(Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
             }
@@ -78,17 +83,19 @@ namespace TMSProject.Classes.Controller
 
                     myCommand.Parameters.AddWithValue("@tripID", trip.tripID);
                     myCommand.Parameters.AddWithValue("@orderID", trip.orderID);
-                    myCommand.Parameters.AddWithValue("@startCity", trip.startCity);
-                    myCommand.Parameters.AddWithValue("@endCity", trip.endCity);
+                    myCommand.Parameters.AddWithValue("@startCity", trip.startCityID);
+                    myCommand.Parameters.AddWithValue("@endCity", trip.endCityID);
                     myCommand.Parameters.AddWithValue("@tripStatus", trip.tripStatus);
 
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info(sqlStatement);
                     return true;
                 }
                 catch(Exception ex)
                 {
+                    Log.Error("SQL Error" + ex.Message);
                     Console.WriteLine(ex.Message);
                     return false;
                 }
@@ -102,28 +109,40 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void DeleteTrip(Trip trip)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
 												DELETE FROM products WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", trip.tripID);
+                    myCommand.Parameters.AddWithValue("@ProductID", trip.tripID);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
             }
+            catch(Exception ex)
+            {
+                Log.Error("SQL Error: " + ex.Message);
+            }
+            
         }
       
         /// \brief This method GetTrip for user 
         /// \details <b>Details</b>
         /// This method will get trip info when finishing order
         /// \return  void
+        
         public List<Trip> GetTrips(string tripID)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 orderID, 
                                                 contractID, 
                                                 orderDate, 
@@ -142,31 +161,43 @@ namespace TMSProject.Classes.Controller
                                             WHERE ordering.originalCityID = @startCityID 
                                             AND ordering.desCityID = @endCityID; ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@tripID", tripID);
-                
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@tripID", tripID);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var trips = DataTableToTripList(dataTable);
+                    var dataTable = new DataTable();
 
-                return trips;
+                    myAdapter.Fill(dataTable);
+
+                    var trips = DataTableToTripList(dataTable);
+
+                    Log.Info("SQL Execute: " + sqlStatement);
+
+                    return trips;
+                }
             }
+            catch(Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+            
         }
+      
 
         public List<Trip> GetTrips(string startCityID, string endCityID)
-        {   
-            const string sqlStatement = @" SELECT 
+        {
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 orderID, 
                                                 contractID, 
                                                 orderDate, 
@@ -176,36 +207,192 @@ namespace TMSProject.Classes.Controller
                                                 orderStatus, 
                                                 mileageID,
                                                 startCityID,
+                                                u1.cityName as startCityName, 
                                                 endCityID,
+                                                u2.cityName as endCityName, 
                                                 distance, 
                                                 workingTime
                                             FROM ordering
 		                                        INNER JOIN mileage ON ordering.originalCityID = mileage.startCityID
                                             OR ordering.desCityID = mileage.endCityID
+                                            INNER JOIN city u1 ON mileage.startCityID = u1.cityID 
+                                            INNER JOIN city u2 ON mileage.endCityID = u2.cityID 
                                             WHERE ordering.originalCityID = @startCityID 
                                             AND ordering.desCityID = @endCityID; ";
-  
-            using (var myConn = new MySqlConnection(connectionString))
-            {
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@startCityID", startCityID);
-                myCommand.Parameters.AddWithValue("@endCityID", endCityID);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@startCityID", startCityID);
+                    myCommand.Parameters.AddWithValue("@endCityID", endCityID);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var trips = DataTableToTripList(dataTable);
+                    var dataTable = new DataTable();
 
+                    myAdapter.Fill(dataTable);
+
+                    var trips = DataTableToTripList(dataTable);
+
+                    Log.Info("SQL Execute: " + sqlStatement);
+
+                    return trips;
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error("SQL Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        public List<Trip> GetTripBilling(string orderID)
+        {
+            try
+            {
+                const string sqlStatement = @" SELECT 
+                                                startCity, endCity, carrierID from trip
+                                           INNER JOIN ordering on trip.orderID = ordering.orderID where trip.orderID = @orderID; ";
+
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@orderID", orderID);
+
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
+
+                    var dataTable = new DataTable();
+
+                    myAdapter.Fill(dataTable);
+
+                    var trips = DataTableToTripBillingList(dataTable);
+
+                    Log.Info("SQL Execute: " + sqlStatement);
+
+                    return trips;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error: " + ex.Message);
+                return null;
+            }   
+        }
+
+        public List<Trip> GetTripID()
+        {
+            try
+            {
+                const string sqlStatement = @" SELECT CONCAT_WS('', 'TRIP', '', DATE_FORMAT(curdate(), '%Y%m%d'), LPAD(COUNT(*) + 1, 4, '0')) AS tripID
+                                            FROM trip; ";
+
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
+
+                    var dataTable = new DataTable();
+
+                    myAdapter.Fill(dataTable);
+
+                    var trips = DataTableToTripIDList(dataTable);
+
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return trips;
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error("SQL Error: " + ex.Message);
+                return null;
+            }
+            
+        }
+
+        public List<Trip> GetShowTripsForBillings(string orderID, string carrierID)
+        {
+            try
+            {
+                const string sqlStatement = @" SELECT 
+                                                tripID, startCity, u1.cityName as startCityName, endCity, u2.cityName as endCityName, 
+                                                tripStatus, distance, workingTime, jobtype, quantity, vantype, ftlRate, ltlRate from trip 
+                                           inner join mileage on trip.startCity = mileage.startCityID and trip.endCity = mileage.endCityID 
+                                           inner join ordering on trip.orderID = ordering.orderID 
+                                           inner join carrier on ordering.carrierID = carrier.carrierID 
+                                           INNER JOIN city u1 ON trip.startCity = u1.cityID 
+                                           INNER JOIN city u2 ON trip.endCity = u2.cityID 
+                                           WHERE trip.orderID = @orderID and ordering.carrierID = @carrierID; ";
+
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@orderID", orderID);
+                    myCommand.Parameters.AddWithValue("@carrierID", carrierID);
+
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
+
+                    var dataTable = new DataTable();
+
+                    myAdapter.Fill(dataTable);
+
+                    var trips = DataTableToBillingList(dataTable);
+
+                    Log.Info("SQL Execute: " + sqlStatement);
+
+                    return trips;
+                }
+            }
+            catch(Exception ex)
+            {
+                Log.Error("SQL Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        private List<Trip> DataTableToTripIDList(DataTable table)
+        {
+            try
+            {
+                var trips = new List<Trip>();
+
+                foreach (DataRow row in table.Rows)
+                {
+                    trips.Add(new Trip
+                    {
+                        tripID = row["tripID"].ToString()
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
                 return trips;
             }
+            catch(Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+            
         }
 
 
@@ -215,28 +402,102 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         private List<Trip> DataTableToTripList(DataTable table)
         {
-            var trips = new List<Trip>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                trips.Add(new Trip
-                {   
-                    orderID = row["orderID"].ToString(),
-                    contractID = row["contractID"].ToString(),
-                    orderDate = row["orderDate"].ToString(),
-                    originalCityID = row["originalCityID"].ToString(),
-                    desCityID = row["desCityID"].ToString(),
-                    carrierID = row["carrierID"].ToString(),
-                    orderStatus = row["orderStatus"].ToString(),
-                    mileageID = row["mileageID"].ToString(),
-                    startCityID = row["startCityID"].ToString(),
-                    endCityID = row["endCityID"].ToString(),
-                    distance = Convert.ToDouble(row["distance"]),
-                    workingTime = Convert.ToDouble(row["workingTime"]),
-                });
+                var trips = new List<Trip>();
+
+                foreach (DataRow row in table.Rows)
+                {
+                    trips.Add(new Trip
+                    {
+                        orderID = row["orderID"].ToString(),
+                        contractID = row["contractID"].ToString(),
+                        orderDate = row["orderDate"].ToString(),
+                        originalCityID = row["originalCityID"].ToString(),
+                        desCityID = row["desCityID"].ToString(),
+                        carrierID = row["carrierID"].ToString(),
+                        orderStatus = row["orderStatus"].ToString(),
+                        mileageID = row["mileageID"].ToString(),
+                        startCityID = row["startCityID"].ToString(),
+                        endCityID = row["endCityID"].ToString(),
+                        distance = Convert.ToDouble(row["distance"]),
+                        workingTime = Convert.ToDouble(row["workingTime"]),
+                        startCityName = row["startCityName"].ToString(),
+                        endCityName = row["endCityName"].ToString()
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return trips;
+            }
+            catch(Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
             }
 
-            return trips;
+            
+        }
+
+        private List<Trip> DataTableToBillingList(DataTable table)
+        {   
+            var trips = new List<Trip>();
+            try
+            {
+                foreach (DataRow row in table.Rows)
+                {
+                    trips.Add(new Trip
+                    {
+                        tripID = row["tripID"].ToString(),
+                        startCityID = row["startCity"].ToString(),
+                        startCityName = row["startCityName"].ToString(),
+                        endCity = row["endCity"].ToString(),
+                        endCityName = row["endCityName"].ToString(),
+                        tripStatus = row["tripStatus"].ToString(),
+                        distance = Convert.ToDouble(row["distance"]),
+                        workingTime = Convert.ToDouble(row["workingTime"]),
+                        ftlRate = Convert.ToDouble(row["ftlRate"]),
+                        ltlRate = Convert.ToDouble(row["ltlRate"]),
+                        jobType = Convert.ToInt16(row["jobtype"]),
+                        quantity = Convert.ToInt16(row["quantity"]),
+                        vanType = Convert.ToInt16(row["vantype"])
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return trips;
+            }
+            catch(Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+        }
+
+        private List<Trip> DataTableToTripBillingList(DataTable table)
+        {
+            var trips = new List<Trip>();
+            try
+            {
+                foreach (DataRow row in table.Rows)
+                {
+                    trips.Add(new Trip
+                    {
+                        startCity = row["startCity"].ToString(),
+                        endCity = row["endCity"].ToString(),
+                        carrierID = row["carrierID"].ToString()
+
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return trips;
+            }
+            catch(Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
         }
     }
 }

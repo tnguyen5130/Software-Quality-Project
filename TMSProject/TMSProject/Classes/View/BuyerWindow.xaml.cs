@@ -40,7 +40,7 @@ namespace TMSProject.Classes.View
         {
             UserControl usc = null;
             GridMain.Children.Clear();
-            usc = new CMPWindow();
+            usc = new OrderAdd();
             GridMain.Children.Add(usc);
         }
 
@@ -52,7 +52,7 @@ namespace TMSProject.Classes.View
 			switch (((ListViewItem)((ListView)sender).SelectedItem).Name)
 			{
 				case "ItemOrder":
-					usc = new CMPWindow();
+					usc = new OrderAdd();
 					GridMain.Children.Add(usc);
 					break;
 				case "ItemExit":

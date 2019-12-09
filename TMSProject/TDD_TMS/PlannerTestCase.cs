@@ -110,7 +110,7 @@ namespace TDD_TMS
             Trip trip = new Trip();
             //order.orderID = "ORD20191120001";
             
-            var viewTrips = trip.GetTrips(startCityID, endCityID);
+            var viewTrips = trip.GetTripsST(startCityID, endCityID);
             
             String[] tripID = new String[4];
             tripID[0] = "C00120191120001";
@@ -157,7 +157,7 @@ namespace TDD_TMS
 
             //Planinfo 
             PlanInfo plan = new PlanInfo();
-            var planResult = plan.GetPlanInfos(order.orderID);
+            var planResult = plan.GetPlanInfo(order.orderID);
 
             //set Order.carrierID with selected carrierID
             if(planResult[0] != null)

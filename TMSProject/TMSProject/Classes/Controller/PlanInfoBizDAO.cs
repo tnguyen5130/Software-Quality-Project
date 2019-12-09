@@ -16,6 +16,7 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -24,6 +25,7 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>Nhung Luong <i>
     public class PlanInfoBizDAO
     {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
@@ -55,16 +57,16 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
-                
             }
-
         }
 
         /// \brief This method InsertPlanInfo for user 
@@ -82,7 +84,7 @@ namespace TMSProject.Classes.Controller
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
+                    myCommand.Parameters.AddWithValue("@planID", plan.planID);
                     myCommand.Parameters.AddWithValue("@orderID", plan.orderID);
                     myCommand.Parameters.AddWithValue("@startCityID", plan.startCityID);
                     myCommand.Parameters.AddWithValue("@endCityID", plan.endCityID);
@@ -92,14 +94,15 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
                 }
-                catch(Exception ex)
+                catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
-                
             }
 
         }
@@ -111,18 +114,26 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void DeletePlanInfo(PlanInfo plan)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
 												DELETE FROM products WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
+                    myCommand.Parameters.AddWithValue("@ProductID", plan.planID);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
             }
         }
 
@@ -132,7 +143,9 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public List<PlanInfo> GetPlanInfos(string orderID)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 trip.orderID, 
                                                 sum(distance) as distance, 
                                                 sum(workingTime) as workingTime, 
@@ -142,32 +155,83 @@ namespace TMSProject.Classes.Controller
                                             INNER JOIN 
                                                 mileage on trip.startCity = mileage.startCityID and trip.endCity = mileage.endCityID
                                             INNER JOIN 
-                                                ordering on trip.orderID = ordering.orderID group by trip.orderID
+                                                ordering on trip.orderID = ordering.orderID
                                             WHERE trip.orderID = @orderID
                                             GROUP BY trip.orderID; ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@orderID", orderID);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@orderID", orderID);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var plans = DataTableToPlanInfoList(dataTable);
+                    var dataTable = new DataTable();
 
-                return plans;
+                    myAdapter.Fill(dataTable);
+
+                    var plans = DataTableToPlanInfoList(dataTable);
+
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return plans;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
             }
         }
 
+        public List<PlanInfo> GetPlanID(string orderID)
+        {
+            try
+            {
+                const string sqlStatement = @" SELECT 
+                                                planID, 
+                                                orderID, 
+                                                distance, 
+                                                workingTime, 
+                                                startCityID, 
+                                                endCityID 
+                                            FROM planinfo
+                                            WHERE orderID = @orderID; ";
+
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@orderID", orderID);
+
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
+
+                    var dataTable = new DataTable();
+
+                    myAdapter.Fill(dataTable);
+
+                    var plans = DataTableToPlanIDList(dataTable);
+
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return plans;
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+            
+        }
 
         /// \brief This method DataTableToPlanInfoList for user 
         /// \details <b>Details</b>
@@ -175,21 +239,66 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         private List<PlanInfo> DataTableToPlanInfoList(DataTable table)
         {
-            var plans = new List<PlanInfo>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                plans.Add(new PlanInfo
+                var plans = new List<PlanInfo>();
+
+                foreach (DataRow row in table.Rows)
                 {
-                    planID = row["orderID"].ToString(),
-                    distance = Convert.ToDouble(row["distance"]),
-                    workingTime = Convert.ToDouble(row["workingTime"]),
-                    startCityID = row["originalCityID"].ToString(),
-                    endCityID = row["desCityID"].ToString(),
-            });
+                    plans.Add(new PlanInfo
+                    {
+                        orderID = row["orderID"].ToString(),
+                        distance = Convert.ToDouble(row["distance"]),
+                        workingTime = Convert.ToDouble(row["workingTime"]),
+                        startCityID = row["originalCityID"].ToString(),
+                        endCityID = row["desCityID"].ToString(),
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return plans;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+            
+        }
+
+        /// \brief This method DataTableToPlanInfoList for user 
+        /// \details <b>Details</b>
+        /// This method will store plan info when finishing order
+        /// \return  void
+        private List<PlanInfo> DataTableToPlanIDList(DataTable table)
+        {
+            try
+            {
+                var plans = new List<PlanInfo>();
+
+                foreach (DataRow row in table.Rows)
+                {
+                    plans.Add(new PlanInfo
+                    {
+                        planID = row["planID"].ToString(),
+                        orderID = row["orderID"].ToString(),
+                        distance = Convert.ToDouble(row["distance"]),
+                        workingTime = Convert.ToDouble(row["workingTime"]),
+                        startCityID = row["startCityID"].ToString(),
+                        endCityID = row["endCityID"].ToString()
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return plans;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
             }
 
-            return plans;
+            
         }
     }
 }

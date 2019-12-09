@@ -1,8 +1,8 @@
-﻿//* FILE			: ContractBizDAO.cs
+﻿//* FILE			: CMPBizDAO.cs
 //* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
 //* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Projetc Slinger
 //* FIRST VERSON	: Nov 11, 2019
-//* DESCRIPTION		: The file defines a class  : CityBizDAO for the billing infomation
+//* DESCRIPTION		: The file defines a class  : CityBizDAO for the biiling infomation
 
 
 
@@ -16,6 +16,7 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -24,7 +25,8 @@ namespace TMSProject.Classes.Controller
     /// \brief This class contains the contract's information for a billing file when buyer make an order
     /// \author : <i>Nhung Luong<i>
     public class ContractBizDAO
-    {   
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         /// \brief This method UpdateContract for user 
@@ -56,15 +58,18 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
                 }
                 catch(Exception ex)
                 {
+                    Log.Error("SQL Error" + ex.Message);
                     Console.WriteLine(ex.Message);
                     return false;
                 }
             }
         }
+
 
         /// \brief This method InsertContract for user 
         /// \details <b>Details</b>
@@ -81,45 +86,28 @@ namespace TMSProject.Classes.Controller
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@contractID", contract.contractID);
-                    myCommand.Parameters.AddWithValue("@initiateBy", contract.initiateBy);
-                    myCommand.Parameters.AddWithValue("@startDate", contract.startDate);
-                    myCommand.Parameters.AddWithValue("@endDate", contract.endDate);
-                    myCommand.Parameters.AddWithValue("@completeStatus", contract.completeStatus);
+                    myCommand.Parameters.AddWithValue("@ProductID", contract.contractID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", contract.initiateBy);
+                    myCommand.Parameters.AddWithValue("@UnitPrice", contract.startDate);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", contract.endDate);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", contract.completeStatus);
 
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
                 }
                 catch (Exception ex)
                 {
+                    Log.Error("SQL Error" + ex.Message);
                     Console.WriteLine(ex.Message);
                     return false;
                 }
             }
         }
 
-        /// \brief This method GetLastContractID for user 
-        /// \details <b>Details</b>
-        /// This method will get the last contract id to check whether DB contains it
-        /// \return  void
-        public string GetLastContractID(Contract contract)
-        {
-            string value = "";
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-                const string sqlStatement = @"  SELECT contractID FROM contract ORDER BY contractID DESC LIMIT 1; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
-                value = (string)myCommand.ExecuteScalar();
-            }
-            return value;
-        }
 
         /// \brief This method DeleteContract for user 
         /// \details <b>Details</b>
@@ -127,19 +115,27 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void DeleteContract(Contract contract)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
 												DELETE FROM products WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", contract.contractID);
+                    myCommand.Parameters.AddWithValue("@ProductID", contract.contractID);
 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    myCommand.ExecuteNonQuery();
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
+            
         }
 
         /// \brief This method GetContracts for user 
@@ -148,7 +144,9 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public List<Contract> GetContracts(string contractID)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 contractID, 
                                                 InitiateBy, 
                                                 startDate, 
@@ -157,27 +155,35 @@ namespace TMSProject.Classes.Controller
                                             FROM contract
                                             WHERE contractID = @contractID; ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@contractID", contractID);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@contractID", contractID);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var contracts = DataTableToContractList(dataTable);
+                    var dataTable = new DataTable();
 
-                return contracts;
+                    myAdapter.Fill(dataTable);
+
+                    var contracts = DataTableToContractList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return contracts;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+            
         }
+
 
         /// \brief This method DataTableToContractList for user 
         /// \details <b>Details</b>
@@ -185,21 +191,31 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         private List<Contract> DataTableToContractList(DataTable table)
         {
-            var contracts = new List<Contract>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                contracts.Add(new Contract
-                {
-                    contractID = row["contractID"].ToString(),
-                    initiateBy = row["initiateBy"].ToString(),
-                    startDate = row["startDate"].ToString(),
-                    endDate = row["endDate"].ToString(),
-                    completeStatus = row["completeStatus"].ToString()
-            });
-            }
+                var contracts = new List<Contract>();
 
-            return contracts;
+                foreach (DataRow row in table.Rows)
+                {
+                    contracts.Add(new Contract
+                    {
+                        contractID = row["contractID"].ToString(),
+                        initiateBy = row["initiateBy"].ToString(),
+                        startDate = row["startDate"].ToString(),
+                        endDate = row["endDate"].ToString(),
+                        completeStatus = row["completeStatus"].ToString()
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return contracts;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
+            
         }
-    } // End of class
-} // End of namespace 
+    }
+}

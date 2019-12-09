@@ -40,6 +40,8 @@ using System.Windows;
 											  // app, or any theme specific resource dictionaries)
 )]
 
+// Let log4net know that it can look for configuration in the default application config file
+[assembly: log4net.Config.XmlConfigurator(Watch = true)]
 
 // Version information for an assembly consists of the following four values:
 //

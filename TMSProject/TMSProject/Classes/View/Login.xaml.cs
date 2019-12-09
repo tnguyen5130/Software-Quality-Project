@@ -11,7 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using log4net;
+using log4net.Config;
 using TMSProject.DBConnect;
 
 namespace TMSProject.Classes.View
@@ -28,7 +29,19 @@ namespace TMSProject.Classes.View
 
 		private void Login_Click(object sender, RoutedEventArgs e)
 		{
-			string username = usernameBox.Text;
+            //log4net.GlobalContext.Properties["LogFileName"] = @"C:\Temp\log4"; //log file path 
+            //log4net.Config.XmlConfigurator.Configure();
+
+            //ILog logger = LogManager.GetLogger("TMSAppender");
+            //log4net.GlobalContext.Properties["LogFileName"] = "MyLog";
+            //XmlConfigurator.Configure();
+
+            ILog logger = LogManager.GetLogger("SampleAppender");
+            log4net.GlobalContext.Properties["LogFileName"] = "MyLog";
+            XmlConfigurator.Configure();
+
+
+            string username = usernameBox.Text;
 			string password = passwordBox.Password;
 			// check if username textbox or password field empty
 			if (username.Length == 0)

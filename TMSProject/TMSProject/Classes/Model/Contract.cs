@@ -1,8 +1,8 @@
-﻿//* FILE			: Contract.cs
+﻿//* FILE			: Carrier.cs
 //* PROJECT			: SENG2020-19F-Sec1-Software Quallity - Group Project 
 //* PROGRAMMER		: Nhung Luong, Yonchul Choi, Trung Nguyen, Adullar - Project Slinger
 //* FIRST VERSON	: Nov 11, 2019
-//* DESCRIPTION		: The file defines a class  : contract
+//* DESCRIPTION		: The file defines a class  : buyer for the login page
 
 
 
@@ -15,18 +15,18 @@ using TMSProject.Classes.Controller;
 
 namespace TMSProject.Classes.Model
 {
-    /// \class Contract
+    /// \class PlanInfo
     /// \brief This class contains the Trip info
     /// \author : <i>Yonchul Choi <i>
     public class Contract
     {
         /// <summary>
-        /// A string to get contractID 
-        /// A string to get initiateBy
-        /// A string to get startDate
-        /// A string to get endDate
-        /// A string to get completeStatus
-        /// A string to get command
+        /// A string to get planID 
+        /// A string to get tripID
+        /// A string to get startCityID
+        /// A string to get endCityID
+        /// A string to get workingTime
+        /// A string to get distance
         /// </summary>
         public string contractID { get; set; }
         public string initiateBy { get; set; }
@@ -37,9 +37,10 @@ namespace TMSProject.Classes.Model
 
         public Contract() { }
 
+
         /// \brief This method Save
         /// \details <b>Details</b>
-        /// This method will save contract info
+        /// This method will save plan info
         /// \return  void
         public void Save()
         {
@@ -54,42 +55,51 @@ namespace TMSProject.Classes.Model
             }
         }
 
-        /// \brief This method Delete
+
+
+        /// \brief This method Save
         /// \details <b>Details</b>
-        /// This method will delete contract info
+        /// This method will save plan info
         /// \return  void
         public void Delete()
         {
             new ContractBizDAO().DeleteContract(this);
         }
 
-        /// \brief This method NewContractID
+
+
+        /// \brief This method Save
         /// \details <b>Details</b>
-        /// This method will generate contractID
-        /// \return  string
-        public string NewContractID(int seq)
+        /// This method will save plan info
+        /// \return  void
+        public Contract GetById(string contractID)
         {
-            string value = String.Format("{0:D3}", seq);
-            return "CON" + DateTime.Now.ToString("MMddyyyy") + value;
+            var contracts = new ContractBizDAO().GetContracts(contractID);
+            return contracts[0];
         }
 
-        /// \brief This method NewContractDate
+
+
+        /// \brief This method Save
         /// \details <b>Details</b>
-        /// This method will generate contract Date
-        /// \return  string
-        public string NewContractDate()
+        /// This method will save plan info
+        /// \return  void
+        public List<Contract> GetContracts(string pattern)
         {
-            return DateTime.Now.ToString("yyyy-MM-dd");
+            var contractsList = new ContractBizDAO().GetContracts(pattern);
+            return contractsList;
         }
 
-        /// \brief This method GetLastId
+
+
+        /// \brief This method Save
         /// \details <b>Details</b>
-        /// This method will get last contract ID
-        /// \return  string
-        public string GetLastId()
+        /// This method will save plan info
+        /// \return  void
+        public string generateContractID(int seq)
         {
-            var contractID = new ContractBizDAO().GetLastContractID(this);
-            return contractID;
+            // Naming cont + date + hour + seq (1~)
+            return null;
         }
     }
 }
