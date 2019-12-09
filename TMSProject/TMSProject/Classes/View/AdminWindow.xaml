@@ -97,6 +97,12 @@
                             <TextBlock Text="Backup Files" VerticalAlignment="Center" Margin="20 10"/>
                         </StackPanel>
                     </ListViewItem>
+                    <ListViewItem x:Name="Configuration" Height="60">
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Settings" Height="25" Width="25" Margin="10"/>
+                            <TextBlock Text="Configuration" VerticalAlignment="Center" Margin="20 10"/>
+                        </StackPanel>
+                    </ListViewItem>
                     <ListViewItem x:Name="ItemExit" Height="60">
                         <StackPanel Orientation="Horizontal">
                             <materialDesign:PackIcon Kind="ExitToApp" Height="25" Width="25" Margin="10"/>

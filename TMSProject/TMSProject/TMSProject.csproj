@@ -125,6 +125,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Classes\View\GeneralConfiguration.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Classes\View\InvoiceSummary.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -216,6 +220,9 @@
     </Compile>
     <Compile Include="Classes\View\CMPWindow.xaml.cs">
       <DependentUpon>CMPWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Classes\View\GeneralConfiguration.xaml.cs">
+      <DependentUpon>GeneralConfiguration.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\View\InvoiceSummary.xaml.cs">
       <DependentUpon>InvoiceSummary.xaml</DependentUpon>

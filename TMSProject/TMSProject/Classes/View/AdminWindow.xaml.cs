@@ -57,6 +57,10 @@ namespace TMSProject.Classes.View
                     usc = new BackUpWindow();
                     GridMain.Children.Add(usc);
                     break;
+                case "Configuration":
+                    usc = new GeneralConfiguration();
+                    GridMain.Children.Add(usc);
+                    break;
                 case "ItemExit":
                     this.Close();
                     break;
