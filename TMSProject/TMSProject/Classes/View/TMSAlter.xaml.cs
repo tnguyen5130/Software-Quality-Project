@@ -151,31 +151,23 @@ namespace TMSProject.Classes.View
             else
             {
                 // do yes stuff
-                // Validation
-                if (carrier.GetCarrierIDbyDepotCity(txtDepotCity.Text) != null)
+                if (carrier.carrierID != carrier.GetLastCarrierID() && carrier.carrierID != null || carrier.GetLastCarrierID() == null)
                 {
-                    MessageBox.Show("Carrier exist, can not insert!");
+                    carrier.carrierID = carrier.NewCarrierID(1);
                 }
-                else
+                else if (carrier.carrierID == carrier.GetLastCarrierID() || carrier.carrierID == null)
                 {
-                    if (carrier.carrierID != carrier.GetLastCarrierID() && carrier.carrierID != null || carrier.GetLastCarrierID() == null)
-                    {
-                        carrier.carrierID = carrier.NewCarrierID(1);
-                    }
-                    else if (carrier.carrierID == carrier.GetLastCarrierID() || carrier.carrierID == null)
-                    {
-                        string buffer = carrier.GetLastCarrierID();
-                        // Get the last character in the last OrderID
-                        string last = buffer.Substring(buffer.Length - 3);
-                        // Convert it into INT
-                        int temp = Convert.ToInt32(last);
-                        // Add by 1
-                        temp += 1;
-                        //Delete the last character of the buffer
-                        string newBuffer = RemoveLastChar(buffer);
-                        // Add with new temp
-                        carrier.carrierID = newBuffer + String.Format("{0:D3}", temp);
-                    }
+                    string buffer = carrier.GetLastCarrierID();
+                    // Get the last character in the last OrderID
+                    string last = buffer.Substring(buffer.Length - 3);
+                    // Convert it into INT
+                    int temp = Convert.ToInt32(last);
+                    // Add by 1
+                    temp += 1;
+                    //Delete the last character of the buffer
+                    string newBuffer = RemoveLastChar(buffer);
+                    // Add with new temp
+                    carrier.carrierID = newBuffer + String.Format("{0:D3}", temp);
 
                     carrier.depotCity = txtDepotCity.Text;
                     carrier.carrierName = txtCompanyName.Text;
@@ -215,7 +207,7 @@ namespace TMSProject.Classes.View
 
         private void Delete_Carrier_Button_Click(object sender, RoutedEventArgs e)
         {
-            tempCarrierID = carrier.carrierID;
+            carrier.carrierID = tempCarrierID;
             carrier.Delete();
             MessageBox.Show("DELETE SUCCESSFUL");
             ClearCarrierDetail();
@@ -300,7 +292,7 @@ namespace TMSProject.Classes.View
 
         private void Delete_Route_Button_Click(object sender, RoutedEventArgs e)
         {
-            tempMileageID = mileage.mileageID;
+            mileage.mileageID = tempMileageID;
             mileage.Delete();
             MessageBox.Show("DELETE SUCCESSFUL");
             ClearMileageDetail();

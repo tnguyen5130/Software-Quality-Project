@@ -83,19 +83,19 @@ namespace TMSProject.Classes.Controller
             {
                 try
                 {
-                    const string sqlStatement = @"  INSERT INTO products (carrierID, depotCity, carrierName, ftlAvail, ltlAvail, ftlRate, ltlRate, reeferCharge)
+                    const string sqlStatement = @"  INSERT INTO carrier (carrierID, depotCity, carrierName, ftlAvail, ltlAvail, ftlRate, ltlRate, reeferCharge)
 	                                            VALUES (@carrierID, @depotCity, @carrierName, @ftlAvail, @ltlAvail, @ftlRate, @ltlRate, @reeferCharge); ";
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@ProductID", carrier.carrierID);
-                    myCommand.Parameters.AddWithValue("@CategoryId", carrier.depotCity);
-                    myCommand.Parameters.AddWithValue("@UnitPrice", carrier.carrierName);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlAvail);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlAvail);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ftlRate);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.ltlRate);
-                    myCommand.Parameters.AddWithValue("@UnitsInStock", carrier.reeferCharge);
+                    myCommand.Parameters.AddWithValue("@carrierID", carrier.carrierID);
+                    myCommand.Parameters.AddWithValue("@depotCity", carrier.depotCity);
+                    myCommand.Parameters.AddWithValue("@carrierName", carrier.carrierName);
+                    myCommand.Parameters.AddWithValue("@ftlAvail", carrier.ftlAvail);
+                    myCommand.Parameters.AddWithValue("@ltlAvail", carrier.ltlAvail);
+                    myCommand.Parameters.AddWithValue("@ftlRate", carrier.ftlRate);
+                    myCommand.Parameters.AddWithValue("@ltlRate", carrier.ltlRate);
+                    myCommand.Parameters.AddWithValue("@reeferCharge", carrier.reeferCharge);
 
 
                     myConn.Open();

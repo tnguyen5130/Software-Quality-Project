@@ -48,11 +48,11 @@ namespace TMSProject.Classes.Controller
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                    myCommand.Parameters.AddWithValue("@depotCity", mileage.startCityID);
-                    myCommand.Parameters.AddWithValue("@carrierName", mileage.endCityID);
-                    myCommand.Parameters.AddWithValue("@ftlAvail", mileage.distance);
-                    myCommand.Parameters.AddWithValue("@ltlAvail", mileage.workingTime);
-                    myCommand.Parameters.AddWithValue("@ftlRate", mileage.mileageID);
+                    myCommand.Parameters.AddWithValue("@startCityID", mileage.startCityID);
+                    myCommand.Parameters.AddWithValue("@endCityID", mileage.endCityID);
+                    myCommand.Parameters.AddWithValue("@distance", mileage.distance);
+                    myCommand.Parameters.AddWithValue("@workingTime", mileage.workingTime);
+                    myCommand.Parameters.AddWithValue("@mileageID", mileage.mileageID);
 
                     myConn.Open();
 
@@ -78,7 +78,7 @@ namespace TMSProject.Classes.Controller
             {
                 try
                 {
-                    const string sqlStatement = @"  INSERT INTO products (mileageID, startCityID, endCityID, distance, workingTime)
+                    const string sqlStatement = @"  INSERT INTO mileage (mileageID, startCityID, endCityID, distance, workingTime)
 	                                            VALUES (@mileageID, @depotCity, @endCityID, @distance, @workingTime); ";
 
                     var myCommand = new MySqlCommand(sqlStatement, myConn);
