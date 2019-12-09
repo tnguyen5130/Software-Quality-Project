@@ -7,17 +7,17 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800">
 
-    
-        <Grid Background="White" x:Name="GridCarrier" Margin="-39,-36,0,-803">
-        <ScrollViewer HorizontalAlignment="Left" Width="1000" Margin="10,2,0,-2">
+
+    <Grid Background="White" x:Name="GridCarrier">
+        <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto">
             <Grid>
-                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="172,357,0,0" TextWrapping="Wrap"  Name ="CompanyName" VerticalAlignment="Top" Width="199" />
-                <TextBox FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="506,353,0,0" TextWrapping="Wrap" Name ="DepotCity"  VerticalAlignment="Top" Width="220"/>
-                <TextBox FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="506,407,0,0" TextWrapping="Wrap" Name ="ftlAvail"  VerticalAlignment="Top" Width="220" />
-                <TextBox FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="172,407,0,0" TextWrapping="Wrap"  Name ="ltlAvail"  VerticalAlignment="Top" Width="199"/>
-                <TextBox FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="506,458,0,0" TextWrapping="Wrap" Name ="ftlRate"  VerticalAlignment="Top" Width="220"/>
-                <TextBox FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="172,458,0,0" TextWrapping="Wrap"  Name ="ltlRate"  VerticalAlignment="Top" Width="199" />
-                <TextBox FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="172,499,0,0" TextWrapping="Wrap" Name ="rerferChager"  VerticalAlignment="Top" Width="199" />
+                <TextBox Name ="txtCompanyName" FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="172,357,0,0" TextWrapping="Wrap"   VerticalAlignment="Top" Width="199" />
+                <TextBox Name ="txtDepotCity"  FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="506,353,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="220"/>
+                <TextBox Name ="txtFtlAvail" FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="506,407,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220" />
+                <TextBox Name ="txtLtlAvail" FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="172,407,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="199"/>
+                <TextBox Name ="txtFtlRate" FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="506,458,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="220"/>
+                <TextBox Name ="txtLtlRate" FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="172,458,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Width="199" />
+                <TextBox Name ="txtReeferCharge" FontSize="13" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="172,499,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="199" />
 
 
 
@@ -27,31 +27,30 @@
                 <Label FontSize="14" Foreground="DarkBlue" Content="Ltl Availabilty:" HorizontalAlignment="Left" Margin="58,407,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.554,0.879" Width="106"/>
                 <Label FontSize="14" Foreground="DarkBlue" Content="Reefer Charger:" HorizontalAlignment="Left" Margin="38,495,0,0" VerticalAlignment="Top"/>
                 <Label FontSize="14" Foreground="DarkBlue" Content="Depot City:" HorizontalAlignment="Left" Margin="408,357,0,0" VerticalAlignment="Top" Width="76"/>
-                <Label FontSize="14" Foreground="DarkBlue" Content="Comapny Name:" HorizontalAlignment="Left" Margin="48,353,0,0" VerticalAlignment="Top" Width="116"/>
+                <Label FontSize="14" Foreground="DarkBlue" Content="Company Name:" HorizontalAlignment="Left" Margin="48,353,0,0" VerticalAlignment="Top" Width="116"/>
                 <Label FontSize="14" Foreground="DarkBlue" Content="Ftl Rate:" HorizontalAlignment="Left" Margin="425,454,0,0" VerticalAlignment="Top" Width="59"/>
                 <Label FontSize="14" Foreground="DarkBlue" Content="Ftl Availabilty:" HorizontalAlignment="Left" Margin="408,407,0,0" VerticalAlignment="Top" Width="93" RenderTransformOrigin="0.484,-1"/>
                 <TextBlock HorizontalAlignment="Left" Margin="38,21,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Text="CARRIER " Width="210" Height="32" FontSize="25" FontWeight="DemiBold" Foreground="Red"/>
                 <TextBlock HorizontalAlignment="Left" Margin="38,629,0,0" TextWrapping="Wrap"  VerticalAlignment="Top" Text="ROUTE AND BILL " Width="313" Height="32" FontSize="25" FontWeight="DemiBold" Foreground="Red"/>
 
 
-                <Button Content="Load Route" HorizontalAlignment="Left" Margin="372,678,0,0" VerticalAlignment="Top" Width="129" Name="Load_Route_Button" Click="Load_Route_Button_Click"/>
+                <Button Content="Load Route" HorizontalAlignment="Left" Margin="290,666,0,0" VerticalAlignment="Top" Width="129" Name="Load_Route_Button" Click="Load_Route_Button_Click" />
 
-                <DataGrid x:Name="Load_Route_data" HorizontalAlignment="Left" Margin="48,727,0,393" Width="774" />
-
+                <DataGrid x:Name="Route_data" HorizontalAlignment="Left" SelectionMode="Single" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="True" Margin="48,727,0,393" Height="200" Width="632" Background="LightBlue" SelectionChanged="Load_Route_data_SelectionChanged"/>
                 <Button Content="Delete" HorizontalAlignment="Left" Margin="372,1152,0,0" VerticalAlignment="Top" Width="95" Name="Delete_Route_Button" Click="Delete_Route_Button_Click"/>
 
-                <DataGrid Name="Carrier_Data" HorizontalAlignment="Left" Height="191" Margin="82,108,0,0" VerticalAlignment="Top" Width="698" Background="LightBlue" SelectionChanged="Carrier_Data_SelectionChanged"/>
+                <DataGrid Name="Carrier_Data" SelectionMode="Single" CanUserSortColumns="True" CanUserAddRows="False" AutoGenerateColumns="True" HorizontalAlignment="Left" Height="191" Margin="48,106,0,0" VerticalAlignment="Top" Width="698" Background="LightBlue" SelectionChanged="Carrier_Data_SelectionChanged"/>
                 <TextBlock HorizontalAlignment="Left" Margin="408,-255,0,0" TextWrapping="Wrap" Text="TextBlock" VerticalAlignment="Top"/>
-                <TextBlock Text="Start City:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="48,951,0,0" VerticalAlignment="Top" Width="59"/>
-                <TextBlock Text="End City:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="442,955,0,0" VerticalAlignment="Top" Width="59"/>
-                <TextBlock Text="Distance:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="48,1004,0,0" VerticalAlignment="Top" Width="93" Height="19"/>
-                <TextBlock Text="Working Time:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="425,1004,0,0" VerticalAlignment="Top" Width="90" Height="19"/>
-                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="152,947,0,0" TextWrapping="Wrap"  x:Name ="Start_City"/>
-                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="527,947,0,0" TextWrapping="Wrap"  x:Name ="End_City"/>
-                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="152,1004,0,0" TextWrapping="Wrap"  x:Name ="Distance"/>
-                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="527,1004,0,0" TextWrapping="Wrap"  x:Name ="Working_Time" />
-                <TextBlock Text="Status:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="48,1064,0,0" VerticalAlignment="Top" Width="59"/>
-                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="152,1064,0,0" TextWrapping="Wrap"  x:Name ="Status" />
+                <TextBlock Text="Start City:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="48,1009,0,0" VerticalAlignment="Top" Width="59"/>
+                <TextBlock Text="End City:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="425,1005,0,0" VerticalAlignment="Top" Width="59"/>
+                <TextBlock Text="Distance:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="48,1063,0,0" VerticalAlignment="Top" Width="93" Height="19"/>
+                <TextBlock Text="Working Time:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="425,1063,0,0" VerticalAlignment="Top" Width="90" Height="19"/>
+                <TextBox  FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="139,1000,0,297" TextWrapping="Wrap"  x:Name ="txtStart_City"/>
+                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="506,1004,0,293" TextWrapping="Wrap"  x:Name ="txtEnd_City"/>
+                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="139,1059,0,238" TextWrapping="Wrap"  x:Name ="txtDistance"/>
+                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="551,1059,0,238" TextWrapping="Wrap"  x:Name ="txtWorking_Time" />
+                <TextBlock Text="Status:" FontSize="14" Foreground="DarkBlue"  HorizontalAlignment="Left" Margin="48,1107,0,0" VerticalAlignment="Top" Width="59"/>
+                <TextBox FontSize="13"  Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="112,1103,0,194" TextWrapping="Wrap"  x:Name ="Status" />
                 <Button Content="Update" HorizontalAlignment="Left" Margin="551,1152,0,0" VerticalAlignment="Top" Width="95" Name="Update_Route_Button" Click="Update_Route_Button_Click"/>
                 <Button Content="Insert" HorizontalAlignment="Left" Margin="172,1152,0,0" VerticalAlignment="Top" Width="95" Name="Insert_Route_Button" Click="Insert_Route_Button_Click"/>
                 <Button Content="Load Carrier" HorizontalAlignment="Left" Margin="392,53,0,0" VerticalAlignment="Top" Width="109" Name="Load_Carrier_Button" Click="Load_Carrier_Button_Click"/>

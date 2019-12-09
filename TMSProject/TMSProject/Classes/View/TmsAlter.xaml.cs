@@ -60,6 +60,29 @@ namespace TMSProject.Classes.View
             }
         }
 
+        private void Load_Route_Button_Click(object sender, RoutedEventArgs e)
+        {
+            // We call LOAD_MILEAGE sql function to load all the order we have
+            using (MySqlConnection connection = new MySqlConnection(connectionString))
+            {
+                connection.Open();
+                // My Query
+                const string query = @"LOAD_MILEAGE";
+                using (MySqlCommand cmdSel = new MySqlCommand(query, connection))
+                {
+                    DataTable dt = new DataTable();
+
+                    cmdSel.CommandType = System.Data.CommandType.StoredProcedure;
+
+                    MySqlDataAdapter da = new MySqlDataAdapter(cmdSel);
+                    da.Fill(dt);
+
+                    Route_data.ItemsSource = dt.DefaultView;
+                }
+                connection.Close();
+            }
+        }
+
         private void Insert_Carrier_Button_Click(object sender, RoutedEventArgs e)
         {
 
@@ -87,11 +110,7 @@ namespace TMSProject.Classes.View
         {
 
         }
-
-        private void Load_Route_Button_Click(object sender, RoutedEventArgs e)
-        {
-
-        }
+        
 
         private void Delete_Route_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -100,7 +119,31 @@ namespace TMSProject.Classes.View
 
         private void Carrier_Data_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            DataGrid grid = (DataGrid)sender;
+            DataRowView selectedItemRow = grid.SelectedItem as DataRowView;
+            if (selectedItemRow != null)
+            {
+                txtCompanyName.Text = selectedItemRow["carrierName"].ToString();
+                txtDepotCity.Text = selectedItemRow["depotCity"].ToString();
+                txtFtlAvail.Text = selectedItemRow["ftlAvail"].ToString();
+                txtLtlAvail.Text = selectedItemRow["ltlAvail"].ToString();
+                txtFtlRate.Text = selectedItemRow["ftlRate"].ToString();
+                txtLtlRate.Text = selectedItemRow["ltlRate"].ToString();
+                txtReeferCharge.Text = selectedItemRow["reeferCharge"].ToString();
+            }
+        }
 
+        private void Load_Route_data_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            DataGrid grid = (DataGrid)sender;
+            DataRowView selectedItemRow = grid.SelectedItem as DataRowView;
+            if (selectedItemRow != null)
+            {
+                txtStart_City.Text = selectedItemRow["startCityID"].ToString();
+                txtEnd_City.Text = selectedItemRow["endCityID"].ToString();
+                txtDistance.Text = selectedItemRow["distance"].ToString();
+                txtWorking_Time.Text = selectedItemRow["workingTime"].ToString();
+            }
         }
     }
 }
