@@ -1,4 +1,6 @@
+
 -- MySQL Workbench Forward Engineering
+
 
 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
@@ -52,7 +54,7 @@ CREATE TABLE IF NOT EXISTS `employee` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-CREATE INDEX `fk_employee_customerID_idx` ON `employee` (`customerID` ASC) VISIBLE;
+CREATE INDEX `fk_employee_customerID_idx` ON `employee` (`employeeID` ASC) VISIBLE;
 
 
 -- -----------------------------------------------------
@@ -120,11 +122,11 @@ DROP TABLE IF EXISTS `contract_market_place` ;
 CREATE TABLE IF NOT EXISTS `contract_market_place` (
   `customerID` VARCHAR(20) NOT NULL DEFAULT '',
   `contractID` VARCHAR(20) NOT NULL DEFAULT '',
-  `jobType` ENUM('LTL', 'FTL') NOT NULL DEFAULT 'LTL',
+  `jobType` INT NOT NULL DEFAULT 0,
   `quantity` INT(11) NOT NULL DEFAULT '0',
   `origin` VARCHAR(10) NOT NULL,
   `destination` VARCHAR(10) NOT NULL,
-  `vanType` ENUM('F', 'R') NOT NULL DEFAULT 'F',
+  `vanType` INT NOT NULL DEFAULT 0,
   PRIMARY KEY (`customerID`, `contractID`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
@@ -371,16 +373,15 @@ DEFAULT CHARACTER SET = utf8;
 CREATE INDEX `fk_trip_orderID` ON `trip` (`orderID` ASC) VISIBLE;
 
 USE `projectslinger` ;
-
 /* INSERT SOME DATA */
-INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('CITY001', 'Windsor');
-INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('CITY002', 'London');
-INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('CITY003', 'Hamilton');
-INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('CITY004', 'Toronto');
-INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('CITY005', 'Oshawa');
-INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('CITY006', 'Belleville');
-INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('CITY007', 'Kingston');
-INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('CITY008', 'Ottawa');
+INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('C001', 'Windsor');
+INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('C002', 'London');
+INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('C003', 'Hamilton');
+INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('C004', 'Toronto');
+INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('C005', 'Oshawa');
+INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('C006', 'Belleville');
+INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('C007', 'Kingston');
+INSERT INTO `projectslinger`.`city` (`cityID`, `cityName`) VALUES ('C008', 'Ottawa');
 
 INSERT INTO `projectslinger`.`employee` (`employeeID`, `firstName`, `lastName`, `employeeType`) VALUES ('BY001', 'Jose', 'Mouth', 'BUYER');
 INSERT INTO `projectslinger`.`employee` (`employeeID`, `firstName`, `lastName`, `employeeType`) VALUES ('PL001', 'John', 'Luke', 'PLANNER');
@@ -390,20 +391,43 @@ INSERT INTO `projectslinger`.`planner` (`plannerEmployeeID`, `plannerPassword`) 
 INSERT INTO `projectslinger`.`buyer` (`buyerEmployeeID`, `buyerPassword`) VALUES ('BY001', '123');
 INSERT INTO `projectslinger`.`admin` (`adminEmployeeID`, `adminPassword`) VALUES ('AD001', '123');
 
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR001', 'CITY001', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR002', 'CITY003', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR003', 'CITY005', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR004', 'CITY006', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR005', 'CITY008', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR006', 'CITY002', 'Schooner\'s', '18', '98', '5.05', '0.3434', '0.07');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR007', 'CITY004', 'Schooner\'s', '18', '98', '5.05', '0.3434', '0.07');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR008', 'CITY007', 'Schooner\'s', '18', '98', '5.05', '0.3434', '0.07');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR009', 'CITY001', 'Tillman Transport', '24', '35', '5.11', '0.3012', '0.09');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR010', 'CITY002', 'Tillman Transport', '18', '45', '5.11', '0.3012', '0.09');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR011', 'CITY003', 'Tillman Transport', '18', '45', '5.11', '0.3012', '0.09');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR012', 'CITY008', 'We Haul', '11', '0', '5.2', '0', '0.065');
-INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CAR013', 'CITY004', 'We Haul', '11', '0', '5.2', '0', '0.065');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101001', 'C001', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101002', 'C003', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101003', 'C005', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101004', 'C006', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101005', 'C008', 'Planet Express', '50', '640', '5.21', '0.3621', '0.08');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101006', 'C002', 'Schooner\'s', '18', '98', '5.05', '0.3434', '0.07');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101007', 'C004', 'Schooner\'s', '18', '98', '5.05', '0.3434', '0.07');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101008', 'C007', 'Schooner\'s', '18', '98', '5.05', '0.3434', '0.07');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101009', 'C001', 'Tillman Transport', '24', '35', '5.11', '0.3012', '0.09');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101010', 'C002', 'Tillman Transport', '18', '45', '5.11', '0.3012', '0.09');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101011', 'C003', 'Tillman Transport', '18', '45', '5.11', '0.3012', '0.09');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101012', 'C008', 'We Haul', '11', '0', '5.2', '0', '0.065');
+INSERT INTO `projectslinger`.`carrier` (`carrierID`, `depotCity`, `carrierName`, `ftlAvail`, `ltlAvail`, `ftlRate`, `ltlRate`, `reeferCharge`) VALUES ('CA20190101013', 'C004', 'We Haul', '11', '0', '5.2', '0', '0.065');
 
+
+
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE001', 'C001', 'C001', 0, 2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE002', 'C002', 'C001', 191, 2.5);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE003', 'C002', 'C002', 0, 2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE004', 'C001', 'C002', 128, 1.75);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE005', 'C003', 'C002', 128, 1.75);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE006', 'C003', 'C003', 0, 2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE007', 'C002', 'C003', 68, 1.25);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE008', 'C004', 'C003', 68, 1.25);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE009', 'C004', 'C004', 0, 2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE010', 'C003', 'C004', 60, 1.3);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE011', 'C005', 'C004', 60, 1.3);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE012', 'C005', 'C005', 0, 2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE013', 'C004', 'C005', 134, 1.65);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE014', 'C006', 'C005', 134, 1.65);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE015', 'C006', 'C006', 0, 2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE016', 'C005', 'C006', 82, 1.2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE017', 'C007', 'C006', 82, 1.2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE018', 'C007', 'C007', 0, 2);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE019', 'C006', 'C007', 196, 2.5);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE020', 'C008', 'C007', 196, 2.5);
+insert into mileage(mileageID, startCityID, endCityID, distance, workingTime) values ('MILE021', 'C008', 'C008', 0, 2);
 
 -- -----------------------------------------------------
 -- procedure GET_CUS_NAME
@@ -421,6 +445,26 @@ SELECT @startCityName as startCityName;
 
 END$$
 
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS LOAD_CARRIER;
+
+DELIMITER //
+ 
+CREATE PROCEDURE LOAD_CARRIER()
+BEGIN
+select * from carrier;
+END //
+DELIMITER ; 
+
+DROP PROCEDURE IF EXISTS LOAD_MILEAGE;
+
+DELIMITER //
+ 
+CREATE PROCEDURE LOAD_MILEAGE()
+BEGIN
+select * from mileage;
+END //
 DELIMITER ;
 
 SET SQL_MODE=@OLD_SQL_MODE;

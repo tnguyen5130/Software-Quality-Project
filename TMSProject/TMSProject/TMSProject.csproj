@@ -68,12 +68,6 @@
     <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
       <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
     </Reference>
-    <Reference Include="ResponsiveGrid.Wpf, Version=0.3.3.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ResponsiveGrid.0.3.3\lib\net45\ResponsiveGrid.Wpf.dll</HintPath>
-    </Reference>
-    <Reference Include="ShowMeTheXAML, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\ShowMeTheXAML.1.0.12\lib\net45\ShowMeTheXAML.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
