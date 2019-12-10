@@ -31,8 +31,9 @@ namespace TMSProject.Classes.Controller
         /// </summary>
         private string connectionString = "server=" + CMPConfigs.dbServer + ";user id=" + CMPConfigs.dbUID + ";password=" + CMPConfigs.dbPassword + ";database=" + CMPConfigs.dbDatabase + ";SslMode=none";
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        //private string connectionStringLocal = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+
         private string connectionStringLocal = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+
 
 
         /// \brief This method UpdateCMP for user 
