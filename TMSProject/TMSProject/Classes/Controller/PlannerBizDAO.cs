@@ -8,12 +8,15 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
     public class PlannerBizDAO
     {
-        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+        private static readonly log4net.ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         public bool UpdatePlanner(Planner planner)
         {
@@ -33,12 +36,13 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
-
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
             }
@@ -62,12 +66,14 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
                     return true;
 
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
 
                 }
@@ -77,24 +83,35 @@ namespace TMSProject.Classes.Controller
 
         public void DeletePlanner(Planner planner)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM planner WHERE plannerEmployeeID = @plannerEmployeeID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM planner WHERE plannerEmployeeID = @plannerEmployeeID;
 												DELETE FROM employee WHERE employeeID = @plannerEmployeeID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@plannerEmployeeID", planner.plannerEmployeeID);
+                    myCommand.Parameters.AddWithValue("@plannerEmployeeID", planner.plannerEmployeeID);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
+
         }
 
         public List<Planner> GetPlanners(string plannerID, string password)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 employeeID, 
                                                 employeeType, 
                                                 plannerPassword
@@ -104,44 +121,61 @@ namespace TMSProject.Classes.Controller
                                             WHERE employee.employeeID = @plannerID 
                                             AND planner.plannerPassword = @password ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@plannerID", plannerID);
-                myCommand.Parameters.AddWithValue("@password", password);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@plannerID", plannerID);
+                    myCommand.Parameters.AddWithValue("@password", password);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var planners = DataTableToOrderList(dataTable);
+                    var dataTable = new DataTable();
 
-                return planners;
+                    myAdapter.Fill(dataTable);
+
+                    var planners = DataTableToOrderList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return planners;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+
         }
 
         private List<Planner> DataTableToOrderList(DataTable table)
         {
-            var planners = new List<Planner>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                planners.Add(new Planner
+                var planners = new List<Planner>();
+
+                foreach (DataRow row in table.Rows)
                 {
-                    plannerEmployeeID = row["employeeID"].ToString(),
-                    plannerPassword = row["plannerPassword"].ToString(),
-                    employeeType = row["employeeType"].ToString()
-                });
+                    planners.Add(new Planner
+                    {
+                        plannerEmployeeID = row["employeeID"].ToString(),
+                        plannerPassword = row["plannerPassword"].ToString(),
+                        employeeType = row["employeeType"].ToString()
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return planners;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
             }
 
-            return planners;
         }
 
     }

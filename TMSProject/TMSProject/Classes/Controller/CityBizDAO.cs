@@ -17,6 +17,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
 using System.Windows.Controls;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -24,8 +25,10 @@ namespace TMSProject.Classes.Controller
     /// \brief This class contains the City's information for a billing file when buyer make an order
     /// \author : <i>nhung Luong<i>
     public class CityBizDAO
-    {       
-        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         /// \brief This method UpdateCity for user 
         /// \details <b>Details</b>

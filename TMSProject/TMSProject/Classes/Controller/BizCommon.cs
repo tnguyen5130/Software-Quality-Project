@@ -28,7 +28,7 @@ namespace TMSProject.Classes.Controller
             string value = String.Format("{0:D3}", GlobalSeq.orderSeq);
             GlobalSeq.orderSeq = GlobalSeq.orderSeq + 1;
             return "ORD" + DateTime.Now.ToString("yyyyMMdd") + value;
-            
+
         }
 
 

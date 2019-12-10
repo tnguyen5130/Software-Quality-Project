@@ -16,16 +16,19 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
+
     /// \class CarrierBizDAO
     /// \brief This class contains the employee's information for a employee file when buyer make an order
     /// \author : <i>Nhung Luong <i>
     public class EmployeeBizDAO
     {
-        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         /// \brief This method UpdateCarrier for user 
         /// \details <b>Details</b>
@@ -33,26 +36,32 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void UpdateEmployee(Employee employee)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  UPDATE products
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  UPDATE products
 	                                            SET CategoryId = @CategoryId,
                                                     UnitPrice = @UnitPrice,
 		                                            UnitsInStock = @UnitsInStock
 	                                            WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", employee.employeeID);
-                myCommand.Parameters.AddWithValue("@CategoryId", employee.firstName);
-                myCommand.Parameters.AddWithValue("@UnitPrice", employee.lastName);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", employee.employeeType);
-                
-                myConn.Open();
+                    myCommand.Parameters.AddWithValue("@ProductID", employee.employeeID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", employee.firstName);
+                    myCommand.Parameters.AddWithValue("@UnitPrice", employee.lastName);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", employee.employeeType);
 
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    myCommand.ExecuteNonQuery();
+                }
             }
-
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
         }
 
 
@@ -63,23 +72,29 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void InsertEmployee(Employee employee)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  INSERT INTO products (ProductName, SupplierID, CategoryID, QuantityPerUnit, UnitPrice, UnitsInStock, UnitsOnOrder, ReorderLevel, Discontinued)
 	                                            VALUES (@ProductName, @SupplierID, @CategoryID, @QuantityPerUnit, @UnitPrice, @UnitsInStock, @UnitsOnOrder, @ReorderLevel, 0); ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", employee.employeeID);
-                myCommand.Parameters.AddWithValue("@CategoryId", employee.firstName);
-                myCommand.Parameters.AddWithValue("@UnitPrice", employee.lastName);
-                myCommand.Parameters.AddWithValue("@UnitsInStock", employee.employeeType);
+                    myCommand.Parameters.AddWithValue("@ProductID", employee.employeeID);
+                    myCommand.Parameters.AddWithValue("@CategoryId", employee.firstName);
+                    myCommand.Parameters.AddWithValue("@UnitPrice", employee.lastName);
+                    myCommand.Parameters.AddWithValue("@UnitsInStock", employee.employeeType);
 
-                myConn.Open();
-
-                myCommand.ExecuteNonQuery();
+                    myConn.Open();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
             }
-
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
         }
 
 
@@ -89,18 +104,26 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void DeleteEmployee(Employee employee)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
 												DELETE FROM products WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", employee.employeeID);
+                    myCommand.Parameters.AddWithValue("@ProductID", employee.employeeID);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info("SQL Execute: " + sqlStatement);
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
             }
         }
 
@@ -112,7 +135,9 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public List<Employee> GetEmployees(string searchItem)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 ProductId, 
                                                 ProductName, 
                                                 QuantityPerUnit, 
@@ -138,30 +163,33 @@ namespace TMSProject.Classes.Controller
                                             ORDER BY ProductName; ";
 
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@SearchItem", searchItem);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var employees = DataTableToEmployeeList(dataTable);
+                    var dataTable = new DataTable();
 
-                return employees;
+                    myAdapter.Fill(dataTable);
+
+                    var employees = DataTableToEmployeeList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return employees;
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
             }
         }
-
-
-
 
         /// \brief This method DataTableToEmployeeList for user 
         /// \details <b>Details</b>
@@ -169,21 +197,29 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         private List<Employee> DataTableToEmployeeList(DataTable table)
         {
-            var employees = new List<Employee>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                employees.Add(new Employee
-                {
-                    employeeID = row["employeeID"].ToString(),
-                    firstName = row["firstName"].ToString(),
-                    lastName = row["lastName"].ToString(),
-                    employeeType = row["employeeType"].ToString()
-                    
-                });
-            }
+                var employees = new List<Employee>();
 
-            return employees;
+                foreach (DataRow row in table.Rows)
+                {
+                    employees.Add(new Employee
+                    {
+                        employeeID = row["employeeID"].ToString(),
+                        firstName = row["firstName"].ToString(),
+                        lastName = row["lastName"].ToString(),
+                        employeeType = row["employeeType"].ToString()
+
+                    });
+                }
+                Log.Info("ResultSet Execute!!!");
+                return employees;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
         }
     }
 }

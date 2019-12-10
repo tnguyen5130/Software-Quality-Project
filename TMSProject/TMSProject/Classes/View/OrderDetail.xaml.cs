@@ -1,4 +1,5 @@
-﻿using System;
+﻿using log4net;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,9 @@ namespace TMSProject.Classes.View
     /// </summary>
     public partial class OrderDetails : UserControl
     {
+        private static readonly log4net.ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
         public OrderDetails(Order order)
-        {   
+        {
             InitializeComponent();
             var cityNames = order.GetOrderWithID(order.orderID);
             order.startCityName = cityNames[0].startCityName;
@@ -45,17 +47,27 @@ namespace TMSProject.Classes.View
         private void Load_Carrier_Btn_Click(object sender, RoutedEventArgs e)
         {
             Carrier carrier = new Carrier();
-            resultDataGrid.ItemsSource = carrier.GetCarriers(StartCity.Text);
+            IList<DataGridCarrier> viewGrids = new List<DataGridCarrier>();
 
-            Order order = new Order();
-            order.orderID = Order.Text;
-            UserControl usc = null;
-            usc = new Test(order);
-            //GridMain.Children.Add(usc);
+            //retrieve carrier data
+            var carrierResult = carrier.GetCarriers(StartCity.Text);
 
+            for (int i = 0; i < carrierResult.Count; i++)
+            {
+                viewGrids.Add(new DataGridCarrier
+                {
+                    carrierID = carrierResult[i].carrierID,
+                    carrierName = carrierResult[i].carrierName,
+                    depotCityName = StartCity.Text,
+                    ftlAvail = carrierResult[i].ftlAvail.ToString("0.##"),
+                    ltlAvail = carrierResult[i].ltlAvail.ToString("0.##"),
+                    ftlRate = carrierResult[i].ftlRate.ToString("0.##"),
+                    ltlRate = carrierResult[i].ltlRate.ToString("0.##"),
+                    reeferCharge = carrierResult[i].reeferCharge.ToString("0.##"),
+                });
+            }
 
-            //GridMain.Children.Add(usc);
-
+            resultDataGrid.ItemsSource = viewGrids;
         }
 
         private void Confirm_Carrier_Btn_Click(object sender, RoutedEventArgs e)
@@ -63,20 +75,22 @@ namespace TMSProject.Classes.View
             bool flag = false;
             Order order = new Order();
             order.orderID = Order.Text;
+            order.carrierID = CarrierID.Text;
             order.command = "UPDATE";
 
-            if (MessageBox.Show("Do you want to select this carrier company?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.No)
+            if (MessageBox.Show("Do you want to select this carrier company?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 flag = order.Save();
 
-                if(flag==true)
+                if (flag == true)
                 {
                     MessageBox.Show("Carreir selected successfully.", "Select Carrier");
                     //Open the Planning & Billing page
                     BillingAndPlanning OP = new BillingAndPlanning(order);
-                    var host = new Window();
-                    host.Content = OP;
-                    host.ShowDialog();
+
+                    UserControl usc = new BillingAndPlanning(order);
+                    GridMain.Children.Add(usc);
+
                 }
                 else
                 {
@@ -85,7 +99,7 @@ namespace TMSProject.Classes.View
             }
             else
             {
-                // Stay in the same window
+                MessageBox.Show("1111Carreir didn't select. You need to check this.", "Fail Select Carrier");
             }
         }
 
@@ -95,10 +109,24 @@ namespace TMSProject.Classes.View
             {
                 IList rows = resultDataGrid.SelectedItems;
                 Carrier carrier = new Carrier();
-                Rate.Text = carrier.ltlRate.ToString();
-                CompanyName.Text = carrier.carrierName;
-                Availability.Text = carrier.ftlAvail.ToString();
-                RefeerChanger.Text = carrier.reeferCharge.ToString();
+                DataGridCarrier dataGrid = new DataGridCarrier();
+
+                dataGrid = (DataGridCarrier)rows[0];
+
+                if (JobType.Text == "0")
+                {
+                    Rate.Text = dataGrid.ftlRate;
+                    Availability.Text = dataGrid.ftlAvail;
+                }
+                else
+                {
+                    Rate.Text = dataGrid.ltlRate;
+                    Availability.Text = dataGrid.ltlAvail;
+                }
+
+                CompanyName.Text = dataGrid.carrierName;
+                RefeerChanger.Text = dataGrid.reeferCharge;
+                CarrierID.Text = dataGrid.carrierID;
             }
         }
     }

@@ -17,6 +17,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
 using System.Windows.Controls;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -29,10 +30,9 @@ namespace TMSProject.Classes.Controller
         /// Remote DB connectionString
         /// </summary>
         private string connectionString = "server=" + CMPConfigs.dbServer + ";user id=" + CMPConfigs.dbUID + ";password=" + CMPConfigs.dbPassword + ";database=" + CMPConfigs.dbDatabase + ";SslMode=none";
-        /// <summary>
-        /// Local DB connectionString
-        /// </summary>
-        private string connectionStringLocal = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private string connectionStringLocal = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
 
         /// \brief This method UpdateCMP for user 

@@ -15,8 +15,8 @@ namespace TMSProject.Classes.Controller
     public class BuyerBizDAO
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         public bool UpdateBuyer(Buyer buyer)
         {
@@ -37,7 +37,6 @@ namespace TMSProject.Classes.Controller
 
                     myCommand.ExecuteNonQuery();
                     Log.Info("SQL Execute: " + sqlStatement);
-
                     return true;
                 }
                 catch (Exception ex)
@@ -49,6 +48,7 @@ namespace TMSProject.Classes.Controller
             }
 
         }
+
 
         public bool InsertBuyer(Buyer buyer)
         {
@@ -95,22 +95,22 @@ namespace TMSProject.Classes.Controller
                     myCommand.Parameters.AddWithValue("@adminEmployeeID", buyer.buyerEmployeeID);
 
                     myConn.Open();
-
-                    myCommand.ExecuteNonQuery();
                     Log.Info("SQL Execute: " + sqlStatement);
-
+                    myCommand.ExecuteNonQuery();
                 }
             }
             catch (Exception ex)
             {
                 Log.Error("SQL Error" + ex.Message);
+            }
 
-            }            
         }
 
         public List<Buyer> GetBuyers(string buyerID, string password)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 employeeID, 
                                                 employeeType, 
                                                 buyerPassword
@@ -120,44 +120,60 @@ namespace TMSProject.Classes.Controller
                                             WHERE employee.employeeID = @buyerID 
                                             AND buyer.buyerPassword = @password ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@buyerID", buyerID);
-                myCommand.Parameters.AddWithValue("@password", password);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@buyerID", buyerID);
+                    myCommand.Parameters.AddWithValue("@password", password);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var buyers = DataTableToOrderList(dataTable);
-                Log.Info("SQL Execute: " + sqlStatement);
-                return buyers;
+                    var dataTable = new DataTable();
+
+                    myAdapter.Fill(dataTable);
+
+                    var buyers = DataTableToOrderList(dataTable);
+                    Log.Info("SQL Execute: " + sqlStatement);
+                    return buyers;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+
         }
 
         private List<Buyer> DataTableToOrderList(DataTable table)
         {
-            var buyers = new List<Buyer>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                buyers.Add(new Buyer
+                var buyers = new List<Buyer>();
+
+                foreach (DataRow row in table.Rows)
                 {
-                    buyerEmployeeID = row["employeeID"].ToString(),
-                    buyerPassword = row["buyerPassword"].ToString(),
-                    employeeType = row["employeeType"].ToString()
-                });
+                    buyers.Add(new Buyer
+                    {
+                        buyerEmployeeID = row["employeeID"].ToString(),
+                        buyerPassword = row["buyerPassword"].ToString(),
+                        employeeType = row["employeeType"].ToString()
+                    });
+                }
+                Log.Info("ResultSet Execute!!!");
+                return buyers;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
             }
 
-            return buyers;
         }
 
     }

@@ -16,6 +16,7 @@ using TMSProject.DBConnect;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Configuration;
+using log4net;
 
 namespace TMSProject.Classes.Controller
 {
@@ -24,8 +25,10 @@ namespace TMSProject.Classes.Controller
     /// \brief This class contains the contract's information for a billing file when buyer make an order
     /// \author : <i>Nhung Luong<i>
     public class ContractBizDAO
-    {   
-        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+    {
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         /// \brief This method UpdateContract for user 
         /// \details <b>Details</b>

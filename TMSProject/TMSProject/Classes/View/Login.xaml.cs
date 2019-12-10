@@ -11,7 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-
+using log4net;
+using log4net.Config;
 using TMSProject.DBConnect;
 
 namespace TMSProject.Classes.View
@@ -26,70 +27,73 @@ namespace TMSProject.Classes.View
             InitializeComponent();
         }
 
-		private void Login_Click(object sender, RoutedEventArgs e)
-		{
-			string username = usernameBox.Text;
-			string password = passwordBox.Password;
-			// check if username textbox or password field empty
-			if (username.Length == 0)
-			{
-				MessageBox.Show("Please enter your user ID");
-				usernameBox.Focus();
-			}
-			else if(passwordBox.Password.ToString() == "")
-			{
-				MessageBox.Show("Please enter your password");
-				passwordBox.Focus();
-			}
-			else
-			{
-				DBHandler db = new DBHandler();
-				int status = 1; 
-				if (BuyerRadioButton.IsChecked == true)
-				{
-					status = 0; // sign in as Buyer
-				}
-				else if (PlannerRadioButton.IsChecked == true)
-				{
-					status = 1; // default sign in as Planner
-				}
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+
+            ILog logger = LogManager.GetLogger("SampleAppender");
+            log4net.GlobalContext.Properties["LogFileName"] = "MyLog";
+            XmlConfigurator.Configure();
+
+
+            string username = usernameBox.Text;
+            string password = passwordBox.Password;
+            // check if username textbox or password field empty
+            if (username.Length == 0)
+            {
+                MessageBox.Show("Please enter your user ID");
+                usernameBox.Focus();
+            }
+            else if (passwordBox.Password.ToString() == "")
+            {
+                MessageBox.Show("Please enter your password");
+                passwordBox.Focus();
+            }
+            else
+            {
+                DBHandler db = new DBHandler();
+                int status = 1;
+                if (BuyerRadioButton.IsChecked == true)
+                {
+                    status = 0; // sign in as Buyer
+                }
+                else if (PlannerRadioButton.IsChecked == true)
+                {
+                    status = 1; // default sign in as Planner
+                }
                 else if (AdminRadioButton.IsChecked == true)
                 {
                     status = 2;
                 }
-				else
-				{
-					MessageBox.Show("Please choose to sign in as ...");
-				}
-
-				bool input = db.validate_login(username, password, status);
-				if (input && status == 0) // login as Buyer
-				{
-					BuyerWindow buyer = new BuyerWindow();
-					this.Visibility = Visibility.Collapsed; // hide window
-					buyer.ShowDialog();
-					this.Visibility = Visibility.Visible; // show window
-				}
-				else if (input && status == 1) // login as planner
-				{
-					PlannerWindow planner = new PlannerWindow();
-					this.Visibility = Visibility.Collapsed; // hide window
-					planner.ShowDialog();
-					this.Visibility = Visibility.Visible; // show window
-				}
-                else if (input && status == 2)
+                else
                 {
-                    AdminWindow admin = new AdminWindow();
+                    MessageBox.Show("Please choose to sign in as ...");
+                }
+
+                bool input = db.validate_login(username, password, status);
+                if (input && status == 0) // login as Buyer
+                {
+                    BuyerWindow buyer = new BuyerWindow();
                     this.Visibility = Visibility.Collapsed; // hide window
-                    admin.ShowDialog();
+                    buyer.ShowDialog();
                     this.Visibility = Visibility.Visible; // show window
                 }
-				else 
-				{
-					MessageBox.Show("Incorrect Login Credentials");
-				}
-			}
-		} // end Login_Click
+                else if (input && status == 1) // login as planner
+                {
+                    PlannerWindow planner = new PlannerWindow();
+                    this.Visibility = Visibility.Collapsed; // hide window
+                    planner.ShowDialog();
+                    this.Visibility = Visibility.Visible; // show window
+                }
+                else if (input && status == 2)
+                {
+
+                }
+                else
+                {
+                    MessageBox.Show("Incorrect Login Credentials");
+                }
+            }
+        } // end Login_Click
 
         private void btn_Exit(object sender, RoutedEventArgs e)
         {
