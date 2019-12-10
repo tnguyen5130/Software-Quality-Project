@@ -26,8 +26,8 @@ namespace TMSProject.Classes.Controller
     public class CarrierBizDAO
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+        //private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         /// \brief This method UpdateCarrier for user 
         /// \details <b>Details</b>

@@ -320,8 +320,6 @@
   <ItemGroup>
     <Resource Include="Resource\splashscreen.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="InvoicePrint\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
