@@ -41,7 +41,14 @@ namespace TMSProject.Classes.View
             {
                 MessageBox.Show("No existing customer");
             }
-            customer = new Customer();            
+            customer = new Customer();
+            customer = new Customer();
+            txtClientName.IsReadOnly = true;
+            txtJobType.IsReadOnly = true;
+            txtDestination.IsReadOnly = true;
+            txtOrigin.IsReadOnly = true;
+            txtQuantity.IsReadOnly = true;
+            txtVanType.IsReadOnly = true;
         }
 
         /// \brief This method LoadCMPList for user 

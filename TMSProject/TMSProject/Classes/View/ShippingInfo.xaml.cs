@@ -89,22 +89,16 @@ namespace TMSProject.Classes.View
 		{
             if (currentStatus == "CHANGE")
             {
-                Order order = new Order();
-                // Job Type
-                if (boxFTL.IsChecked ?? false)
+                Order order = new Order();                            
+                if (boxFrom.Items.Count == 0)
                 {
-                    order.jobType = 0;
+                    MessageBox.Show("No Original City");
                 }
-                else if (boxLTL.IsChecked ?? false)
+                else if (boxTo.Items.Count == 0)
                 {
-                    order.jobType = 1;
+                    MessageBox.Show("No Destination City");
                 }
-                else
-                {
-                    MessageBox.Show("No Job Type Selection!!!");
-                }
-
-                if (txtVanType.Text == "")
+                else if (txtVanType.Text == "")
                 {
                     MessageBox.Show("Please insert van type");
                 }
@@ -112,9 +106,22 @@ namespace TMSProject.Classes.View
                 {
                     MessageBox.Show("Please insert pallet");
                 }
-
-                if ((boxFTL.IsChecked ?? false) || (boxLTL.IsChecked ?? false))
+                else if (Convert.ToDouble(txtPallet.Text) > 1000)
                 {
+                    MessageBox.Show("Pallet should be lower than 1000 lbs");
+                }                              
+                else if ((boxFTL.IsChecked ?? false) || (boxLTL.IsChecked ?? false))
+                {
+                    // Job Type
+                    if (boxFTL.IsChecked ?? false)
+                    {
+                        order.jobType = 0;
+                    }
+                    else if (boxLTL.IsChecked ?? false)
+                    {
+                        order.jobType = 1;
+                    }
+
                     // OrderID
                     order.orderID = txtOrderID.Text;
                     // ContractID
@@ -154,6 +161,10 @@ namespace TMSProject.Classes.View
                         generateOrderInvoice(order);
                     }
                     MessageBox.Show("Order Invoice generated");
+                }
+                else if (((bool)boxFTL.IsChecked == false) && ((bool)boxLTL.IsChecked == false))
+                {
+                    MessageBox.Show("No Job Type Selection!!!");
                 }
             }
             else if (currentStatus == "NOT CHANGE")
