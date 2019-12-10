@@ -21,8 +21,8 @@ namespace TMSProject.Classes.Model
         public string endCityName { get; set; }
         public double distance { get; set; }
         public double workingTime { get; set; }
-        public double rate { get; set; }
-        public double price { get; set; }
+        public string rate { get; set; }
+        public string price { get; set; }
         public string tripStatus { get; set; }
 
         public DataGridRoute() { }

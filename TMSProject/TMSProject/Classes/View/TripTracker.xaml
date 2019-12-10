@@ -8,36 +8,22 @@
       d:DesignHeight="540" d:DesignWidth="1010">
 
     <Grid x:Name="GridMain" Background="White">
-        <Button x:Name="Load_Trip_Button" Content="OK" HorizontalAlignment="Left" Margin="763,121,0,0" VerticalAlignment="Top" Width="75" Click="Load_Trip_Button_Click"/>
-        <TextBox x:Name="txtorderID" HorizontalAlignment="Left" Height="23" Margin="137,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="227"/>
+        <Button x:Name="Load_Trip_Button" Content="OK" HorizontalAlignment="Left" Margin="763,121,0,0" VerticalAlignment="Top" Width="75" Click="Trip_Tracker_Click"/>
+        <TextBox x:Name="txtorderID" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="137,73,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="227"/>
         <Label Content="Order ID:" HorizontalAlignment="Left" Margin="49,73,0,0" VerticalAlignment="Top" FontSize="16" FontFamily="Segoe UI Black"/>
         <TextBlock HorizontalAlignment="Left" Margin="49,25,0,0" TextWrapping="Wrap" Text="Trip Tracker for Order" VerticalAlignment="Top" FontSize="20" FontWeight="Bold" Foreground="ForestGreen" Width="217"/>
         <Label Content="Start City:" HorizontalAlignment="Left" Margin="63,125,0,0" VerticalAlignment="Top" FontSize="14"/>
         <Label Content="End City:" HorizontalAlignment="Left" Margin="388,125,0,0" VerticalAlignment="Top" FontSize="14"/>
-        <DataGrid AutoGenerateColumns="True" HorizontalAlignment="Left" Height="233" Margin="36,195,0,0" VerticalAlignment="Top" Width="729" Background="LightGreen" Name="Trip_" IsReadOnly="False" >
+
+        <DataGrid AutoGenerateColumns="true" HorizontalAlignment="Left" Height="248" Margin="36,192,0,0" VerticalAlignment="Top" Width="818" Background="LightGreen" Name="resultDataGrid" IsReadOnly="False" >
+            <DataGrid.RowStyle>
+                <Style TargetType="{x:Type DataGridRow}">
+                    <EventSetter Event="MouseDoubleClick" Handler="resultDataGrid_MouseDoubleClick"/>
+                </Style>
+            </DataGrid.RowStyle>
 
         </DataGrid>
-        <ComboBox HorizontalAlignment="Left" Margin="132,125,0,0" VerticalAlignment="Top" Width="227" Name="Start_City">
-            <ComboBoxItem Content="Windsor" />
-            <ComboBoxItem Content="London" />
-            <ComboBoxItem Content="Hamilton" />
-            <ComboBoxItem Content="Toronto" />
-            <ComboBoxItem Content="Oshawa" />
-            <ComboBoxItem Content="Belleville" />
-            <ComboBoxItem Content="Kingston" />
-            <ComboBoxItem Content="Ottawa" />
-        </ComboBox>
-
-        <ComboBox HorizontalAlignment="Left" Margin="481,125,0,0" VerticalAlignment="Top" Width="227" Name="End_City">
-            <ComboBoxItem Content="Windsor" />
-            <ComboBoxItem Content="London" />
-            <ComboBoxItem Content="Hamilton" />
-            <ComboBoxItem Content="Toronto" />
-            <ComboBoxItem Content="Oshawa" />
-            <ComboBoxItem Content="Belleville" />
-            <ComboBoxItem Content="Kingston" />
-            <ComboBoxItem Content="Ottawa" />
-        </ComboBox>
-
+        <TextBox x:Name="StartCity" Foreground="Black" HorizontalAlignment="Left" Height="23" Margin="140,131,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="226"/>
+        <TextBox x:Name="EndCity" Foreground="Black" HorizontalAlignment="Left" Height="24" Margin="472,130,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="227"/>
     </Grid>
 </UserControl>

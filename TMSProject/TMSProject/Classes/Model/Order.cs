@@ -24,7 +24,7 @@ namespace TMSProject.Classes.Model
         /// <summary>
         /// A string to get orderID 
         /// A string to get contractID
-        /// A string to get originalCityID
+        /// A string to get origincalCityID
         /// A string to get customerID
         /// A string to get completeStatus
         /// </summary>
@@ -44,6 +44,11 @@ namespace TMSProject.Classes.Model
         public string customerName { get; set; }
         public string startCityName { get; set; }
         public string endCityName { get; set; }
+        public string carrierName { get; set; }
+        public string startDate { get; set; }
+        public string endDate { get; set; }
+        public string tripComplete { get; set; }
+        public string tripStatus { get; set; }
 
         public Order() { }
 
@@ -124,6 +129,13 @@ namespace TMSProject.Classes.Model
             return orderID;
         }
 
+        public bool UpdateOrderCondition(string orderID)
+        {
+            bool flag = false;
+            flag = new OrderBizDAO().UpdateOrderCondition(orderID);
+            return flag;
+        }
+
         /// \brief This method GetOrders
         /// \details <b>Details</b>
         /// This method will get  order
@@ -149,6 +161,18 @@ namespace TMSProject.Classes.Model
         public List<Order> GetOrderDetailWithID(string orderID)
         {
             var orderList = new OrderBizDAO().GetOrderDetailWithID(orderID);
+            return orderList;
+        }
+
+        public List<Order> GetOrdersSummary(string orderStatus, string startDate, string endDate)
+        {
+            var orderList = new OrderBizDAO().GetOrdersSummary(orderStatus, startDate, endDate);
+            return orderList;
+        }
+
+        public List<Order> GetTrackerTrip(string orderID, string startCity, string endCity)
+        {
+            var orderList = new OrderBizDAO().GetTrackerTrip(orderID, startCity, endCity);
             return orderList;
         }
 

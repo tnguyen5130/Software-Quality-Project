@@ -12,8 +12,7 @@ using TMSProject.Classes.Model;
 using MySql.Data.MySqlClient;
 using System.Data;
 using TMSProject.DBConnect;
-
-
+using log4net;
 
 /// \namespace TMSProject.Classes.Controller
 /// \brief The purpose of this namespace is to create a handle billing menu option. 
@@ -33,8 +32,9 @@ namespace TMSProject.Classes.Controller
     /// \author : <i>Nhung Luong<i>
     public class BillingBizDAO
     {
-        ///private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
-        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+        private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
 
         /* =========================================================================================================================
@@ -72,12 +72,13 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info(sqlStatement);
                     return true;
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Log.Error("SQL Error" + ex.Message);
                 return false;
             }
         }
@@ -114,11 +115,13 @@ namespace TMSProject.Classes.Controller
                     myConn.Open();
 
                     myCommand.ExecuteNonQuery();
+                    Log.Info(sqlStatement);
                     return true;
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Log.Error("SQL Error" + ex.Message);
                     return false;
                 }
             }
@@ -137,50 +140,69 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public void DeleteBilling(Billing billing)
         {
-            using (var myConn = new MySqlConnection(connectionString))
+            try
             {
-                const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
+                using (var myConn = new MySqlConnection(connectionString))
+                {
+                    const string sqlStatement = @"  DELETE FROM orderdetails WHERE ProductID = @ProductID;
 												DELETE FROM products WHERE ProductID = @ProductID; ";
 
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
 
-                myCommand.Parameters.AddWithValue("@ProductID", billing.billingID);
+                    myCommand.Parameters.AddWithValue("@ProductID", billing.billingID);
 
-                myConn.Open();
+                    myConn.Open();
 
-                myCommand.ExecuteNonQuery();
+                    myCommand.ExecuteNonQuery();
+                    Log.Info(sqlStatement);
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+            }
+
         }
 
         public List<Billing> GetBillingID(string planID, string orderID)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 billingID
                                             FROM billing 
                                             WHERE orderID = @orderID
                                             AND planID = @planID; ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@planID", planID);
-                myCommand.Parameters.AddWithValue("@orderID", orderID);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@planID", planID);
+                    myCommand.Parameters.AddWithValue("@orderID", orderID);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var billings = DataTableToBillingIDList(dataTable);
+                    var dataTable = new DataTable();
 
-                return billings;
+                    myAdapter.Fill(dataTable);
+
+                    var billings = DataTableToBillingIDList(dataTable);
+
+                    Log.Info(sqlStatement);
+                    return billings;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+
         }
 
         /* =========================================================================================================================
@@ -196,7 +218,9 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         public List<Billing> GetBillings(string planID, string orderID)
         {
-            const string sqlStatement = @" SELECT 
+            try
+            {
+                const string sqlStatement = @" SELECT 
                                                 planID, 
                                                 planinfo.orderID, 
                                                 customerID,
@@ -216,27 +240,35 @@ namespace TMSProject.Classes.Controller
                                             WHERE ordering.orderID = @orderID
                                             AND planID = @planID; ";
 
-            using (var myConn = new MySqlConnection(connectionString))
-            {
-
-                var myCommand = new MySqlCommand(sqlStatement, myConn);
-                myCommand.Parameters.AddWithValue("@planID", planID);
-                myCommand.Parameters.AddWithValue("@orderID", orderID);
-
-                //For offline connection we weill use  MySqlDataAdapter class.  
-                var myAdapter = new MySqlDataAdapter
+                using (var myConn = new MySqlConnection(connectionString))
                 {
-                    SelectCommand = myCommand
-                };
 
-                var dataTable = new DataTable();
+                    var myCommand = new MySqlCommand(sqlStatement, myConn);
+                    myCommand.Parameters.AddWithValue("@planID", planID);
+                    myCommand.Parameters.AddWithValue("@orderID", orderID);
 
-                myAdapter.Fill(dataTable);
+                    //For offline connection we weill use  MySqlDataAdapter class.  
+                    var myAdapter = new MySqlDataAdapter
+                    {
+                        SelectCommand = myCommand
+                    };
 
-                var billings = DataTableToBillingList(dataTable);
+                    var dataTable = new DataTable();
 
-                return billings;
+                    myAdapter.Fill(dataTable);
+
+                    var billings = DataTableToBillingList(dataTable);
+
+                    Log.Info(sqlStatement);
+                    return billings;
+                }
             }
+            catch (Exception ex)
+            {
+                Log.Error("SQL Error" + ex.Message);
+                return null;
+            }
+
         }
 
 
@@ -253,44 +285,62 @@ namespace TMSProject.Classes.Controller
         /// \return  void
         private List<Billing> DataTableToBillingList(DataTable table)
         {
-            var billings = new List<Billing>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                billings.Add(new Billing
+                var billings = new List<Billing>();
+
+                foreach (DataRow row in table.Rows)
                 {
-                    //billingID = row["billingID"].ToString(),
-                    orderID = row["orderID"].ToString(),
-                    planID = row["planID"].ToString(),
-                    customerID = row["customerID"].ToString(),
-                    workingTime = Convert.ToDouble(row["workingTime"]),
-                    distance = Convert.ToDouble(row["distance"]),
-                    jobType = Convert.ToInt32(row["jobType"]),
-                    quantity = Convert.ToInt32(row["quantity"]),
-                    vanType = Convert.ToInt32(row["vanType"]),
-                    ftlRate = Convert.ToDouble(row["ftlRate"]),
-                    ltlRate = Convert.ToDouble(row["ltlRate"]),
-                    reeferCharge = Convert.ToDouble(row["reeferCharge"]),
+                    billings.Add(new Billing
+                    {
+                        //billingID = row["billingID"].ToString(),
+                        orderID = row["orderID"].ToString(),
+                        planID = row["planID"].ToString(),
+                        customerID = row["customerID"].ToString(),
+                        workingTime = Convert.ToDouble(row["workingTime"]),
+                        distance = Convert.ToDouble(row["distance"]),
+                        jobType = Convert.ToInt32(row["jobType"]),
+                        quantity = Convert.ToInt32(row["quantity"]),
+                        vanType = Convert.ToInt32(row["vanType"]),
+                        ftlRate = Convert.ToDouble(row["ftlRate"]),
+                        ltlRate = Convert.ToDouble(row["ltlRate"]),
+                        reeferCharge = Convert.ToDouble(row["reeferCharge"]),
 
-                });
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return billings;
             }
-
-            return billings;
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
         }
 
         private List<Billing> DataTableToBillingIDList(DataTable table)
         {
-            var billings = new List<Billing>();
-
-            foreach (DataRow row in table.Rows)
+            try
             {
-                billings.Add(new Billing
-                {
-                    billingID = row["billingID"].ToString()
-                });
-            }
+                var billings = new List<Billing>();
 
-            return billings;
+                foreach (DataRow row in table.Rows)
+                {
+                    billings.Add(new Billing
+                    {
+                        billingID = row["billingID"].ToString()
+                    });
+                }
+
+                Log.Info("ResultSet Execute!!!");
+                return billings;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("ResultSet Error: " + ex.Message);
+                return null;
+            }
         }
     }
 }

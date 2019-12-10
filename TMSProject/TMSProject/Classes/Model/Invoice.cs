@@ -24,8 +24,8 @@ namespace TMSProject.Classes.Model
         public string billingID { get; set; }
         public string contractID { get; set; }
         public string customerID { get; set; }
-        public string invoiceDate { get; set; }
         public string completeStatus { get; set; }
+        public string invoiceDate { get; set; }
         public string command { get; set; }
 
         //extended properties
@@ -40,8 +40,9 @@ namespace TMSProject.Classes.Model
         public string customerProvince { get; set; }
         public string startCityName { get; set; }
         public string endCityName { get; set; }
+        public string originalCityName { get; set; }
+        public string desCityName { get; set; }
         public int jobType { get; set; }
-
 
         public Invoice() { }
 

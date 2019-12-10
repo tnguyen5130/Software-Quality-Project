@@ -61,17 +61,12 @@ namespace TMSProject.Classes.View
                     GridMain.Children.Add(usc);
                     break;
                 case "InvoiceSummary":
-                    usc = new InvoiceSummary();
-                    GridMain.Children.Add(usc);
-                    break;
-                case "TripTracker":
-                    usc = new TripTracker();
+                    //usc = new InvoiceSummary();
                     GridMain.Children.Add(usc);
                     break;
                 case "ItemExit":
                     //usc = new Test(order);
-                    //usc = new UserControl1(order);
-                    //GridMain.Children.Add(usc);
+
                     this.Close();
                     break;
                 default:

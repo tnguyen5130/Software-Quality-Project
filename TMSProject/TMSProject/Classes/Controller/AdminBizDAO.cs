@@ -15,8 +15,8 @@ namespace TMSProject.Classes.Controller
     public class AdminBizDAO
     {
         private static readonly ILog Log = LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
-
-        private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
+        private string connectionString = ConfigurationManager.ConnectionStrings["ConnectionString"].ConnectionString;
+        //private string connectionString = "server=" + Configs.dbServer + ";user id=" + Configs.dbUID + ";password=" + Configs.dbPassword + ";database=" + Configs.dbDatabase + ";SslMode=none";
 
         public bool UpdateAdmin(Admin admin)
         {
@@ -49,6 +49,7 @@ namespace TMSProject.Classes.Controller
             }
 
         }
+
 
         public bool InsertAdmin(Admin admin)
         {
@@ -85,6 +86,7 @@ namespace TMSProject.Classes.Controller
         {
             try
             {
+
                 using (var myConn = new MySqlConnection(connectionString))
                 {
                     const string sqlStatement = @"  DELETE FROM admin WHERE adminEmployeeID = @adminEmployeeID;
@@ -103,10 +105,8 @@ namespace TMSProject.Classes.Controller
             catch (Exception ex)
             {
                 Log.Error("SQL Error" + ex.Message);
-            }            
+            }
         }
-
-
 
         public List<Admin> GetAdmins(string adminID, string password)
         {
@@ -117,6 +117,8 @@ namespace TMSProject.Classes.Controller
                                                 employeeType, 
                                                 adminPassword
                                             FROM employee
+                                            INNER JOIN admin ON
+                                            employee.employeeID = admin.adminEmployeeID
                                             WHERE employee.employeeID = @adminID 
                                             and admin.adminPassword = @password ";
 
@@ -139,7 +141,6 @@ namespace TMSProject.Classes.Controller
 
                     var admins = DataTableToOrderList(dataTable);
                     Log.Info("SQL Execute: " + sqlStatement);
-
                     return admins;
                 }
             }
@@ -148,6 +149,7 @@ namespace TMSProject.Classes.Controller
                 Log.Error("SQL Error" + ex.Message);
                 return null;
             }
+
         }
 
         private List<Admin> DataTableToOrderList(DataTable table)
@@ -167,13 +169,14 @@ namespace TMSProject.Classes.Controller
                 }
                 Log.Info("ResultSet Execute!!!");
                 return admins;
+
             }
             catch (Exception ex)
             {
                 Log.Error("ResultSet Error: " + ex.Message);
                 return null;
             }
-        }
 
+        }
     }
 }
