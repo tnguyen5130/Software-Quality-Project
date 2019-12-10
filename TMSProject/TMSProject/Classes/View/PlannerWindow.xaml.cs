@@ -61,7 +61,7 @@ namespace TMSProject.Classes.View
                     GridMain.Children.Add(usc);
                     break;
                 case "InvoiceSummary":
-                    //usc = new InvoiceSummary();
+                    usc = new InvoiceSummary();
                     GridMain.Children.Add(usc);
                     break;
                 case "ItemExit":
