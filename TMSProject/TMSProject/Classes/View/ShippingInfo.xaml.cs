@@ -129,7 +129,7 @@ namespace TMSProject.Classes.View
                     order.contractID = contract.GetLastId();
                     // Customer ID
                     Customer customer = new Customer();
-                    order.customerID = customer.GetLastCusID();
+                    order.customerID = customer.GetCustomerIDbyName(currentCustomerName);
                     // Quantity
                     order.quantity = Convert.ToInt32(txtPallet.Text);
                     // Van Type
@@ -157,7 +157,7 @@ namespace TMSProject.Classes.View
                     {
                         // Save to DB
                         order.Save();
-                        MessageBox.Show("Order Successful\nOrder Details:\nOrderID:" + order.orderID + "\nOrder Date: " + order.orderDate + "\nFrom: " + boxFrom.SelectedItem.ToString() + "\nTo: " + boxTo.SelectedItem.ToString());
+                        MessageBox.Show("Order Successful\nOrder Details:\nOrderID:" + order.orderID + "\nOrder Date: " + order.orderDate + "\nFrom: " + boxFrom.SelectedItem.ToString() + "\nTo: " + boxTo.SelectedItem.ToString() + "\nQuantity: " + order.quantity + "\nVan Type: "+ order.vanType + "\nJob Type: " + order.jobType);
                         generateOrderInvoice(order);
                     }
                     MessageBox.Show("Order Invoice generated");
@@ -180,6 +180,15 @@ namespace TMSProject.Classes.View
                 order.customerID = customer.GetCustomerIDbyName(currentCustomerName);
                 // Quantity
                 order.quantity = Convert.ToInt32(txtPallet.Text);
+                // Job Type
+                if (boxFTL.IsChecked ?? false)
+                {
+                    order.jobType = 0;
+                }
+                else if (boxLTL.IsChecked ?? false)
+                {
+                    order.jobType = 1;
+                }
                 // Van Type
                 order.vanType = Convert.ToInt32(txtVanType.Text);
                 // Order Date
@@ -205,7 +214,7 @@ namespace TMSProject.Classes.View
                 {
                     // Save to DB
                     order.Save();
-                    MessageBox.Show("Order Successful\nOrder Details:\nOrderID:" + order.orderID + "\nOrder Date: " + order.orderDate + "\nFrom: " + txtOriginalCity.Text + "\nTo: " + txtDestinationCity.Text);
+                    MessageBox.Show("Order Successful\nOrder Details:\nOrderID:" + order.orderID + "\nOrder Date: " + order.orderDate + "\nFrom: " + txtOriginalCity.Text + "\nTo: " + txtDestinationCity.Text + "\nQuantity: " + order.quantity + "\nVan Type: " + order.vanType + "\nJob Type: " + order.jobType);
                     generateOrderInvoice(order);
                 }
                 MessageBox.Show("Order Invoice generated");
